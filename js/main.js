@@ -46,9 +46,10 @@ function init()
 
     
     // preload audio:
-    console.log(audio.readyState)
-    // document.getElementById("loadingContent").style.display="none";
-    // container.style.display = "block";
+    if(audio.readyState==4){
+        document.getElementById("loadingContent").style.display="none";
+        container.style.display = "block";
+    }
 }
 
 var holdFrame = function(frame, time) {
