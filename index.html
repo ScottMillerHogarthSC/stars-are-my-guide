@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    
+    <script type="text/javascript">
+        var clickTag = "https://www.youtube.com/playlist?list=PL1qVXFGbQD4eZJgBHsKRtMqal_qtsBW1D"; 
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function(){
+            loadAssets();
+        });
+        function loadAssets() {
+            // Load in banner CSS
+            var extCSS = document.createElement("link");
+            extCSS.setAttribute("rel", "stylesheet");
+            extCSS.setAttribute("type", "text/css");
+            extCSS.setAttribute("href", "styles/styles.css");
+                extCSS.onload = function()
+                {
+                    cssLoadedHandler();
+                }
+
+            document.getElementsByTagName("head")[0].appendChild(extCSS);
+        }
+
+        /**
+        * Fired when the banners external CSS has been loaded
+        */
+        function cssLoadedHandler()
+        {
+            console.log("CSS LOADED");
+            // start loading external JS
+            loadExtJavaScript();
+        }
+
+        // array of all the external js files we want to politely load
+
+        var arrExtJs = ['https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js','https://cdnjs.cloudflare.com/ajax/libs/gsap/3.4.2/gsap.min.js','https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js','js/main.js'];
+        var loadJsIndex = 0;
+
+        /**
+        * Function loads in an external JS file
+        */
+        function loadExtJavaScript()
+        {
+            // Load in external Javascript file
+            var extJavaScript = document.createElement("script");
+            extJavaScript.setAttribute("type", "text/javascript");
+            extJavaScript.setAttribute("src", arrExtJs[loadJsIndex]);
+                extJavaScript.onload = function()
+                {
+                    jsLoadedHandler();
+                }
+            document.getElementsByTagName("head")[0].appendChild(extJavaScript);
+        }
+
+        /**
+        * Fired when an External JS file has been loaded
+        */
+        function jsLoadedHandler()
+        {
+            console.log("JS LOADED (" + arrExtJs[loadJsIndex] + ")");
+
+            loadJsIndex++;
+
+            if(loadJsIndex < arrExtJs.length)
+            {
+                loadExtJavaScript(); // load next JS file
+            }
+            else
+            {
+                init(); // start ad
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style type="text/css">
+        body{
+            position:absolute;
+            border:0 none;
+            outline:0;
+            padding:0;
+            margin:0;
+        }
+        #container {
+            display: none;
+        }
+        #loadingContent{
+            position:absolute;
+            background-color:transparent;
+            z-index:10;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            border:1px solid #666666;
+        }
+        #loadingImage{
+            position:absolute;
+            left:50%;
+            top:50%;
+            transform: translate(-50%,-50%);
+            height: 30px;
+            width: 30px;
+        }
+    </style>
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
+
+</head>
+<body>
+    <div id="loadingContent">
+        <div id="loadingImage">
+            
+        </div>
+    </div>
+    <div id="wrap">
+        <div id="container">
+            
+            <img src="images/nebula_bg.png" class="bg bgToGo" id="bgToGo1">
+            <img src="images/eclipse_bg.png" class="bg bgToGo" id="bgToGo2">
+            <img src="images/nebula_bg.png" class="bg bgToGo" id="bgToGo3">
+            
+            <img src="images/stars_1.png" class="bg bgStars" id="bgStars1">
+            <img src="images/stars_2.png" class="bg bgStars" id="bgStars2">
+            <img src="images/stars_1.png" class="bg bgStars" id="bgStars3">
+            
+            <div id="tilt">
+                <img src="images/fg-intro.png" class="fg" id="fg-intro">
+                
+
+                <img src="images/moon_fg.png" class="fg fgToGo hidden" id="fgToGo1">
+                <img src="images/moon_fg.png" class="fg fgToGo hidden" id="fgToGo2">
+
+                <div id="area">
+
+                    <div id="obstacle1" class="hidden hole obstacle">
+                        <img src="images/obstacle_hole.png" class="hole">
+                    </div>
+                    <div id="obstacle2" class="hidden wallL obstacle">
+                        <img src="images/obstacle_sputnik.png" class="wallL">
+                    </div>
+
+                    <div id="player" class="forwards">
+                        <div id="playerMovements">
+                            <img src="images/shadow.png" class="player" id="shadow">
+
+                            <div id="rider">
+                                <img src="images/rider-stopped.png" class="player" id="rider-stopped">
+                                <img src="images/rider-go.png" class="player hidden" id="rider-go">
+                                <div id="rider-jets" class="player"></div>
+
+                                <img src="images/flame.gif" class="player hidden" id="flame">
+                            </div>
+
+                                
+                            <div id="speechbub">
+                                <div id="speechtxt" class="speechtxt jumpingtxt">...</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    
+                    <div id="obstacle3" class="hidden wall obstacle">
+                        <img src="images/obstacle_sputnik.png" class="wall">
+                        <img src="images/obstacle_warning.png" class="wall">
+                    </div>
+                    <div id="obstacle4" class="hidden bridge obstacle">
+                        <img src="images/obstacle_bridge.png" class="bridge">
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            <div id="copyWrap">
+                <div id="introTxt0" class="introTxtButt copy">press <img id="introBtnS" src="images/introBtnS.png"> to start</div>
+
+                <div id="gameover" class="copy hidden">game over</div>
+                <div id="pausedtxt" class="copy hidden">paused</div>
+                <div id="resumetxt" class="copy hidden">press <img id="introBtnS" src="images/introBtnS.png"> to continue</div>
+                
+                <div id="introTxt1" class="copy introTxt hidden">primitai</div>
+                <div id="introTxt2" class="copy introTxt hidden">stars are my guide</div>
+                <div id="introTxt3" class="copy introTxt introTxtButt hidden">use <span id="introBtn"><img src="images/introBtn.png"></span> to move</div>
+                <div id="introTxt4" class="copy introTxt introTxtButt hidden">use <span id="introBtnK"><img src="images/introBtnK.png"></span> to jump</div>
+                <div id="endtxt" class="copy hidden">
+                    score<br>
+                    <div id="scoretxt">81</div><br>
+                    enter initials<br>
+                    <input id="initialstxt" name="initialstxt" type="text" maxlength="3" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+                </div>
+            </div>
+            
+            <div id="jumpingtxt" class="jumpingtxt">...</div>
+            <div id="pointstxt" class="pointstxt">0</div>
+         </div>    
+    </div>
+    <audio id="audio" preload="auto">
+        <source type="audio/mp3" mute src="01_Stars_Are_My_Guide.mp3">
+    </audio>
+    <audio id="oww" preload="auto">
+        <source type="audio/mp3" src="oww.mp3">
+    </audio>
+</body>
+</html>

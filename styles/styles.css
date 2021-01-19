@@ -1,0 +1,356 @@
+@charset "UTF-8";
+/* CSS Document */
+
+img,div{border:0; /*position: absolute; */}
+body{
+    /*position:absolute;*/
+    border:0 none;
+    outline:0;
+    padding:0;
+    margin:0;
+    background-color:#000;
+
+    /* below improves consistancey of font rendering across browsers */
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased;
+    -o-font-smoothing: antialiased;
+
+    /* below stops FireFox rendering copy too heavily */
+    -moz-osx-font-smoothing: grayscale;
+
+    font-family: 'Press Start 2P';
+}
+#wrap {
+    background-color: #000;
+}
+#container {
+    background-color: #000;
+    perspective: 500px;
+    perspective-origin: left top;
+    overflow:hidden;
+    width: 970px;
+    height: 475px;
+    /*margin: 50% auto 0;*/
+    position: absolute;;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.hidden {
+    opacity: 0;
+}
+
+
+.bg,.fg{
+    position: absolute;
+}
+.bg {
+    width:1800px;
+}
+.bgStars {
+    width: 1300px;
+    opacity: .3;
+}
+#bgStars2{
+    transform: translateX(1300px);
+}
+.fg{
+    width: 1800px;
+    left: 0px;
+    top: 20px;
+}
+#fg-intro {
+    left: 0;
+    top: 20px;
+    width: 2250px;
+}
+
+
+#area {
+    position: absolute;
+    width: 100%;
+    height: 470px; 
+    top: 0;
+    left: 0;
+}
+
+#player{
+    position: absolute;
+    left: 40px;
+    height: 150px;
+    top: 270px;
+    transition: left 2s;
+    width:150px;
+    perspective: 250px;
+}
+.player {
+    height: 150px;
+    position: absolute;
+}
+#playerMovements {
+    transform: translateZ(0px);
+}
+#rider {
+    
+}
+#bike {
+    /*animation: */
+}
+
+#shadow{
+    opacity: .4;
+}
+.riderBounce {
+     animation: riderBounce 1s infinite linear;
+}
+@keyframes riderBounce {
+    0%{ transform: translateY(0px); }
+    50%{ transform: translateY(10px);}
+    100%{ transform: translateY(0px);}
+}
+.riderFly #rider-jets,
+.riderFly #rider-go {
+    opacity: 1;
+}
+#rider-jets {
+    background-image: url(../images/rider-jets.png);
+    width: 164px;
+    height: 150px;
+    top: 0;
+    left: 0;
+    background-size: 164px 300px; 
+    animation: jetsGo 0.1s steps(2, end) infinite;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    opacity: 0;
+}
+@keyframes jetsGo {
+    0%{ 
+        background-position-y: 0px; 
+    }
+    100%{ 
+        background-position-y: -300px;    
+    }
+}
+.shadowBounce {
+     animation: shadowBounce 1s infinite linear;
+     transform-origin: center 90%;
+}
+@keyframes shadowBounce {
+    0%{ 
+        transform: translateY(0px) scale(1);
+        opacity: .3; 
+    }
+    50%{ 
+        transform: translateY(0px) scale(1.1); 
+        opacity: .5;
+    }
+    100%{ 
+        transform: translateY(0px) scale(1); 
+        opacity: .3; 
+    }
+}
+#player.forwards {
+    left: 200px;
+}
+#flame {
+    width: 200px;
+    height: 250px;
+    top: -85px;
+    left: 30px;
+}
+
+
+
+
+.obstacle {
+    width: 60px;
+    left: 340px;
+    position: absolute;
+}
+
+img.wallL {
+    width: 60px;
+    height: 60px;
+    transform: translateY(95px) rotate(78deg) scaleY(-1);
+}
+div.wallL {
+    top: 185px;
+}
+
+img.wall {
+    width: 60px;
+    height: 60px;
+    transform: translateY(-30px);
+    position: absolute;
+}
+div.wall {
+    top: 426px;
+    height: 60px;
+}
+img.hole {
+    width: 484px;
+    margin-left: -60px;
+}
+div.hole {
+    top: 292px;
+    width: 360px;
+}
+img.bridge {
+    width: 600px;
+    margin-left: -140px;
+}
+div.bridge {
+    top: 30px;
+    width: 390px;
+}
+.obstacle, #player{
+    /*background-color: rgba(255,0,0,0.2);*/
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*/// */
+.copy {
+    position: absolute;
+    color: #fff;
+    
+    left: 50%;
+    top: 110px;
+    transform: translate(-50%,-50%) scale(2);
+}
+#jumpingtxt {
+    position: absolute;
+    color: #fff;
+    left: 15px;
+    top: 15px;
+}
+#pointstxt {
+    position: absolute;
+    color: #fff;
+    left: auto;
+    right: 15px;
+    top: 15px;
+}
+#speechbub {
+    background-image: url(../images/speech.png);
+    background-size: 100% 100px;
+    background-repeat: repeat-x;
+    transform: translate(-57px, -60px) scale(0.7, 0.7);
+
+    top: 4px;
+    left: 158px;
+    position: relative;
+    opacity: 0;
+    width: 100%;
+    height: 100px;
+    text-align: center;
+    overflow: visible;
+}
+#speechbub:before {
+    content: " ";
+    background-image: url(../images/speechL.png);
+    width: 69px;
+    height: 100px;
+    left: -69px;
+    top: 0;
+    position: absolute;
+}
+#speechbub:after {
+    content: " ";
+    background-image: url(../images/speechR.png);
+    width: 15px;
+    height: 100px;
+    top: 0;
+    right: -15px;
+    position: absolute;
+}
+.speechtxt {
+    color: #000;
+    position: relative;
+    width: 100%;
+    height: auto;
+    text-align: center;
+    overflow: visible;
+    position: absolute;
+    left: -37px;
+    top: 38%;
+    transform: translateY(-50%);
+    line-height: 22px;
+}
+#pausedtxt {
+    transform: scale(3.5) translate(-50%, -50%);
+    transform-origin: left top;
+    background-color: rgba(84,36,84,.9);
+    border: dashed #fff 2px;
+    padding: 1%;
+    z-index: 1;
+    color: #fed9ef;
+}
+
+#introBtn,
+#introBtnK {
+    width: 80px;
+    height: 52px;
+    overflow: hidden;
+    display: inline-block;
+    position: relative;
+}
+#introBtn img,
+#introBtnK img {
+    position: absolute;
+    top: 0;
+    width: 80px;
+}
+#introBtnK.pressedK img { top: -52px; }
+#introBtn.pressedA img { top: -52px; }
+#introBtn.pressedS img { top: -104px; }
+#introBtn.pressedD img { top: -156px; }
+#introBtn.pressedW img { top: -208px; }
+
+
+
+#introBtnK img,
+#introBtnK,#introBtnS {
+    width: 26px;
+}
+#introTxt3,#introTxt4 {
+    top: 155px;
+}
+
+#endtxt {
+    text-align: center;
+    line-height: 30px;
+    display: none;
+}
+#initialstxt {
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    color: #fff;
+    font-family: 'Press Start 2P';
+    font-size: 2em;
+    outline: none;
+    width: 100px;
+}
