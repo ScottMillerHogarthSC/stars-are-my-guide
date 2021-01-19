@@ -51,7 +51,7 @@ body{
     width: 1300px;
     opacity: .3;
 }
-#bgStars2{
+#bgStars2,#bgStars3{
     transform: translateX(1300px);
 }
 .fg{
@@ -64,7 +64,9 @@ body{
     top: 20px;
     width: 2250px;
 }
-
+.fgToGo{
+    transform: translateX(1300px);
+}
 
 #area {
     position: absolute;
@@ -131,6 +133,17 @@ body{
     100%{ 
         background-position-y: -300px;    
     }
+}
+#rider-go {
+    width: 164px;
+}
+.hair-go,.rider-go {
+    width: 100%;
+    opacity: 0;
+    position: absolute;
+}
+.rider-go {
+    opacity: 1;
 }
 .shadowBounce {
      animation: shadowBounce 1s infinite linear;
@@ -353,4 +366,7 @@ div.bridge {
     font-size: 2em;
     outline: none;
     width: 100px;
+}
+#lyricstxt {
+    
 }

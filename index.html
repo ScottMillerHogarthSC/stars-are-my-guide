@@ -37,7 +37,7 @@
 
         // array of all the external js files we want to politely load
 
-        var arrExtJs = ['https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js','https://cdnjs.cloudflare.com/ajax/libs/gsap/3.4.2/gsap.min.js','https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js','js/main.js'];
+        var arrExtJs = ['https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js','https://cdnjs.cloudflare.com/ajax/libs/gsap/3.4.2/gsap.min.js','https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js','js/SplitText.min.js','js/main.js'];
         var loadJsIndex = 0;
 
         /**
@@ -135,8 +135,9 @@
                 <img src="images/fg-intro.png" class="fg" id="fg-intro">
                 
 
-                <img src="images/moon_fg.png" class="fg fgToGo hidden" id="fgToGo1">
-                <img src="images/moon_fg.png" class="fg fgToGo hidden" id="fgToGo2">
+                <img src="images/moon_fg.png" class="fg fgToGo" id="fgToGo1">
+                <img src="images/moon_fg.png" class="fg fgToGo" id="fgToGo2">
+                <img src="images/moon_fg.png" class="fg fgToGo" id="fgToGo3">
 
                 <div id="area">
 
@@ -153,7 +154,14 @@
 
                             <div id="rider">
                                 <img src="images/rider-stopped.png" class="player" id="rider-stopped">
-                                <img src="images/rider-go.png" class="player hidden" id="rider-go">
+                                
+                                <div id="rider-go" class="player hidden">
+                                    <img src="images/rider-go.png" class="rider-go">
+                                    <img src="images/hair-go1.png" class="hair-go" id="hair-go1">
+                                    <img src="images/hair-go2.png" class="hair-go" id="hair-go2">
+                                    <img src="images/hair-go3.png" class="hair-go" id="hair-go3">
+                                </div>
+                                
                                 <div id="rider-jets" class="player"></div>
 
                                 <img src="images/flame.gif" class="player hidden" id="flame">
@@ -196,6 +204,56 @@
                     <div id="scoretxt">81</div><br>
                     enter initials<br>
                     <input id="initialstxt" name="initialstxt" type="text" maxlength="3" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+                </div>
+
+
+                <div id="lyricstxt" class="copy hidden">
+                    Darkness above us, fire burns below us
+
+                    Onwards & upwards, no regrets on my conscience
+
+                    A lonely rider of the sky, my only chance to do or die
+
+                    Nothing left of what was home, only the unknown
+
+                    Now the stars are my guide
+
+                    To the void we ride
+
+                    On the attack, no looking back, for eternal life
+
+                    Now the stars are my guide
+
+                    Vengeance & anger, to no one I answer
+
+                    A lone wolf a straggler, now I’m my own master
+
+                    Out of the storm into the void, a sea of moons & asteroids
+
+                    All in my path I will destroy, my weapons I deploy
+
+                    (Guitar solo by S. Giron)
+
+                    Now the stars are my guide
+
+                    To the void we ride
+
+                    On the attack, no looking back, for eternal life
+
+                    Now the stars are my guide
+
+                    No last goodbye, I sail into the astral plains
+
+                    To fight, defy, I’ll set the galaxy ablaze
+
+                    No last goodbye, I sail into the astral plains
+
+                    To fight, defy, I’ll set the galaxy ablaze
+
+                    I’ll set the galaxy ablaze
+
+                    I’ll set the galaxy ablaze
+
                 </div>
             </div>
             

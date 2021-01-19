@@ -13,7 +13,9 @@ var tlintro = gsap.timeline(),
     tl = gsap.timeline(),
     tlfg = gsap.timeline(),
     tlbg = gsap.timeline(),
-    tlstarsBG = gsap.timeline();
+    tlstarsBG = gsap.timeline(),
+    tlhair = gsap.timeline(),
+    tlLyrics = gsap.timeline();
 
 
 function init()
@@ -249,12 +251,23 @@ function notJumping(){
     gsap.delayedCall(.6,backtoBounce);
 }
 
+var wheelieCount=0;
 function wheelie() {
+    wheelieCount++;
 
     $('#rider').removeClass('riderBounce');
     $('#shadow').removeClass('shadowBounce');
 
-    jumpingtxt.innerHTML="right on!!";
+    if(tl.isActive() && wheelieCount % 3 === 0)
+    {
+        speechtxt.innerHTML="right on!!";    
+        gsap.set(speechbub,{alpha:1});
+        gsap.delayedCall(.7,function(){
+            jumpingtxt.innerHTML="go";
+            speechtxt.innerHTML="";
+            gsap.to(speechbub,0,{alpha:0});
+        })
+    }
 
     points++;
     
@@ -297,7 +310,7 @@ function backwards() {
         jumpingtxt.innerHTML="yo butt head!!";
         speechtxt.innerHTML="what the hell?";
         gsap.set(speechbub,{alpha:1});
-            gsap.delayedCall(.5,function(){
+        gsap.delayedCall(.7,function(){
             jumpingtxt.innerHTML="go";
             speechtxt.innerHTML="";
             gsap.to(speechbub,0,{alpha:0});
@@ -336,82 +349,87 @@ function backtoBounce(){
     if(isJumping){
         isJumping=false;
     }
-    jumpingtxt.innerHTML="go";
-    speechtxt.innerHTML="";
+    // jumpingtxt.innerHTML="go";
+    // speechtxt.innerHTML="";
 
 
     $('#rider').addClass('riderBounce');
-    $('#shadow').addClass('shadowBounce');
-    $('#rider').addClass('riderFly');
-}
+        $('#shadow').addClass('shadowBounce');
+        $('#rider').addClass('riderFly');
+    }
 
 
 
-/**
- * switch statement for animating ad
- */
-function startGame()
-{
-    points=0;
+    /**
+     * switch statement for animating ad
+     */
+    function startGame()
+    {
+        points=0;
 
-    audio.currentTime=85;
-    audio.play();
+        audio.currentTime=85;
+        audio.play();
 
-    document.body.removeEventListener('keypress', startGame);
+        document.body.removeEventListener('keypress', startGame);
 
-    // reset
-    gsap.set([flame,gameover,"#rider-stopped"],{alpha:0});
-    gsap.set(["#player","#rider-go"],{alpha:1});
+        // reset
+        gsap.set([flame,gameover,"#rider-stopped"],{alpha:0});
+        gsap.set(["#player","#rider-go"],{alpha:1});
 
-
-
-    $("#introTxt0").hide();
-    
-    backtoBounce();
+        $("#introTxt0").hide();
         
-    $('#fg-intro').addClass('go');
-
+        backtoBounce();
+            
     document.body.addEventListener('keypress', keypress);
     document.body.addEventListener('keyup', keyUp);
     
     
-    tlfg = gsap.timeline({onComplete:fgTimeLineComplete});
+
     tlbg = gsap.timeline({repeat:-1});
     tlstarsBG = gsap.timeline({repeat:-1});
-    
+    tlhair = gsap.timeline({repeat:-1});
+    tlLyrics = gsap.timeline();
+
+    tlfg = gsap.timeline({onComplete:fgTimeLineComplete});
+
+    TweenMax.fromTo(tlstarsBG,4,{timeScale:0},{timeScale:1,ease:Power1.easeIn})
+    TweenMax.fromTo(tlbg,4,{timeScale:0},{timeScale:1,ease:Power1.easeIn})
+
 
     tlintro = gsap.timeline({onComplete:playObstaclesTL});
     tlintro.addLabel("FGs BGs", "<")
+        .add(writeLyrics, "<")
         .add(playBGs,"<")
         .add(playStarsBG,"<")
-
+        .add(playHairTl,"<")
+        
         .set("#fg-intro",{alpha:1},"<")
         
         // reset obs
         .set(".obstacle", {alpha:1,left:obsStartLeft}, "<")
 
-        .to("#fg-intro",4,{x:"-100%",ease:Power1.easeIn},"<")
+        .to("#fg-intro",5,{x:"-100%",ease:Power1.easeIn},"<")
 
-        .set(fgToGo1,{alpha:1,x:fgWidth},"-=1")
+        .set(fgToGo1,{alpha:1,x:fgWidth},"-=1.25")
         .to(fgToGo1,(fgSpeed/2),{x:0,ease:Linear.easeNone},">")
 
         .add(playFGs,"<")
     
-    // // .addLabel("intro txt", "1")
-    //     .set(introTxt1,{alpha:1},"1")
-    //     .call(typeText,["introTxt1"],"1")
+    // .addLabel("intro txt", "1")
+        .set(introTxt1,{alpha:1},"1")
+        .call(typeText,["introTxt1"],"1")
         
-    //     .set(introTxt1,{alpha:0},"4")
+        .set(introTxt1,{alpha:0},"4")
         
-    //     .call(typeText,["introTxt2"],"5")
-    //     .set(introTxt2,{alpha:1},"5")
-    //     .set(introTxt2,{alpha:0},"8")
+        .call(typeText,["introTxt2"],"5")
+        .set(introTxt2,{alpha:1},"5")
+        .set(introTxt2,{alpha:0},"8")
 
-    //     .set(introTxt3,{alpha:1},"<1")
-    //     .set(introTxt3,{alpha:0},"<5")
+        .set(introTxt3,{alpha:1},"<1")
+        .set(introTxt3,{alpha:0},"<5")
 
-    //     .set(introTxt4,{alpha:1},"<.75")
-    //     .set(introTxt4,{alpha:0},"<2");
+        .set(introTxt4,{alpha:1},"<.75")
+        .set(introTxt4,{alpha:0},"<2");
         
 }
 
@@ -446,19 +464,23 @@ function typeText(whichEle){
 var fgWidth = 1800;
 var fgSpeed = 2;
 function playFGs() {
+    
     // console.log('fg timeline go');
     tlfg.addLabel('fg loop', '<')
-        .set([fgToGo1],{alpha:1,x:0})
-        .set([fgToGo2],{alpha:1,x:fgWidth})
+        .set([fgToGo1],{alpha:1,x:0},"<")
+        .set([fgToGo2],{alpha:1,x:fgWidth},"<")
+        .set([fgToGo3],{alpha:1,x:fgWidth},"<")
+        
         .to(fgToGo1,fgSpeed,{x:-fgWidth,ease:Linear.easeNone},">")
-        .to(fgToGo2,fgSpeed,{x:0,ease:Linear.easeNone},"-="+fgSpeed+"")
+        .to(fgToGo2,fgSpeed,{x:0,ease:Linear.easeNone},"-="+fgSpeed)
+        .to(fgToGo2,fgSpeed,{x:-fgWidth,ease:Linear.easeNone},">")
+        .to(fgToGo3,fgSpeed,{x:0,ease:Linear.easeNone},"-="+fgSpeed)
 }
 
 
-var bgWidth = 1800;
-var bgSpeed = 10;
+var bgWidth = 1800,
+    bgSpeed = 10;
 function playBGs() {
-    // console.log('bg timeline go');
     tlbg.addLabel('bgLoop', '<')
         .set([bgToGo1],{alpha:1,x:0})
         .set([bgToGo2],{alpha:1,x:bgWidth})
@@ -470,10 +492,11 @@ function playBGs() {
         .to(bgToGo3,bgSpeed,{x:0,ease:Linear.easeNone},"-="+bgSpeed)
 }
 
-var starsBGWidth = 1300;
-var starsBGSpeed = 5;
+
+var starsBGWidth = 1300,
+    starsBGSpeed = 5;
 function playStarsBG() {
-    // console.log('bg timeline go');
+
     tlstarsBG.addLabel('starsBGLoop', '<')
         .set([bgStars1],{alpha:.3,x:0})
         .set([bgStars2],{alpha:.3,x:starsBGWidth})
@@ -483,6 +506,37 @@ function playStarsBG() {
         .to(bgStars2,starsBGSpeed,{x:0,ease:Linear.easeNone},"-="+starsBGSpeed+"")
         .to(bgStars2,starsBGSpeed,{x:-starsBGWidth,ease:Linear.easeNone},">")
         .to(bgStars3,starsBGSpeed,{x:0,ease:Linear.easeNone},"-="+starsBGSpeed);
+}
+
+
+var hairspeed = 1,
+    maxhairspeed=5;
+function playHairTl() {
+    tlhair.addLabel('rider','<')
+        .add(function(){ 
+            if(hairspeed<maxhairspeed) {
+                hairspeed++;
+                tlhair.timeScale(hairspeed/maxhairspeed);
+                console.log("hair:"+hairspeed/maxhairspeed);
+
+            }
+        })
+        .set('#hair-go1',{alpha:1},"<")
+        .set('#hair-go1',{alpha:0},"+=0.1")
+        .set('#hair-go2',{alpha:1},"<")
+        .set('#hair-go2',{alpha:0},"+=0.1")
+        .set('#hair-go3',{alpha:1},"<")
+        .set('#hair-go3',{alpha:0},"+=0.1")
+        
+}
+
+
+
+function increaseSpeed(initspeed,maxspeed,thisTL){ 
+    if(initspeed<maxspeed) {
+        initspeed++;
+        thisTL.timeScale(initspeed/maxspeed);
+    }
 }
 
 var obsSpeed = 1.5;
@@ -597,6 +651,8 @@ var songEndTime = 283;
 // var songEndTime = 90; [for testing]
 var endingPlayed = false;
 function fgTimeLineComplete() {
+    gsap.to(".fgToGo",{alpha:1});
+
     if(Math.floor(audio.currentTime)>=songEndTime) {
         isSongToEnding=true;
     }
@@ -645,9 +701,9 @@ function tlEndingComplete(){
 
     document.getElementById('initialstxt').focus();
 
-    tl.stop();
-    tlintro.stop();
-    tlfg.stop();
+    tl.pause();
+    tlintro.pause();
+    tlfg.pause();
 
 }
 
@@ -730,13 +786,14 @@ function playerCollided(whichObstacleHit) {
                 yAmount,
                 rotateZAmount,
                 rotateYAmount;
-            console.log(playerTop);
-            if(playerTop<=346)
+
+            // console.log(playerTop);
+            if(playerTop<=500)
             {
                 yAmount = 90;
                 rotateZAmount = 40;
                 rotateYAmount = 0;
-            } else if(playerTop>=346 && playerTop<352){
+            } else if(playerTop>=300 && playerTop<500){
                 yAmount = 45;
                 rotateZAmount = 40;
                 rotateYAmount = 0;
@@ -836,6 +893,21 @@ function doRiderCrash(){
         document.body.addEventListener('keypress', gameResume);
     }});
 }
+
+function writeLyrics(){
+    // var mySplitText = new SplitText(lyricstxt, {type:"lines",position:"absolute"}),
+    //     numLines = mySplitText.lines.length;
+        
+    //     for(var i = 0; i < numLines; i++){
+    //         TweenMax.set(mySplitText.lines[i], {alpha:0});
+    //     }
+    //     TweenMax.set(lyricstxt, {alpha:1}); 
+    //     for(var i = 0; i < numLines; i++){
+    //         TweenMax.set(mySplitText.lines[i], {alpha:1,delay:1*i});
+    //         TweenMax.set(mySplitText.lines[i], {alpha:0,delay:(1*i)+1});
+    //     }
+}
+
 
 
 function getWindowSize(){
