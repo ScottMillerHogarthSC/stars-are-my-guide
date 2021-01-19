@@ -71,7 +71,7 @@
             }
             else
             {
-                init(); // start ad
+                init()
             }
         }
     </script>
@@ -109,6 +109,12 @@
 
 </head>
 <body>
+    <audio id="audio">
+        <!-- <source type="audio/mp3" mute src="http://scottapmiller.com/scottoftheriver/01_Stars_Are_My_Guide.mp3"> -->
+        <source type="audio/mp3" src="01_Stars_Are_My_Guide.mp3">
+    </audio>
+
+
     <div id="loadingContent">
         <div id="loadingImage">
             
@@ -197,11 +203,8 @@
             <div id="pointstxt" class="pointstxt">0</div>
          </div>    
     </div>
-    <audio id="audio" preload="auto">
-        <source type="audio/mp3" mute src="01_Stars_Are_My_Guide.mp3">
-    </audio>
     <audio id="oww" preload="auto">
-        <source type="audio/mp3" src="oww.mp3">
+        <source type="audio/mp3" src="http://scottapmiller.com/scottoftheriver/oww.mp3">
     </audio>
 </body>
 </html>

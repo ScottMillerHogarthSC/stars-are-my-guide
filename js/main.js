@@ -18,6 +18,8 @@ var tlintro = gsap.timeline(),
 
 function init()
 {
+    console.log("init");
+
     // main content
     container = document.getElementById("container");
     jumpingtxt = document.getElementById("jumpingtxt");
@@ -33,23 +35,33 @@ function init()
     oww = document.getElementById("oww");
         
     
-    document.body.addEventListener('keypress', startGame);
-    
-    
-
-    
     resizeWindow()
 
 
     gsap.set(player,{x:0,y:0,scale:1,alpha:1});
     gsap.set([flame,gameover],{alpha:0});
 
-    
-    // preload audio:
-    if(audio.readyState==4){
-        document.getElementById("loadingContent").style.display="none";
-        container.style.display = "block";
-    }
+    preloadAudio();   
+}
+
+function preloadAudio(){
+    console.log("preloadAudio");
+
+    // audio.addEventListener('canplaythrough', loadedAudio, false);
+    // loadedAudio();
+
+    // [todo] preloader for audio!
+    loadedAudio();
+}
+
+function loadedAudio(){
+    console.log("loaded Audio");
+
+    // Start Ad
+    document.getElementById("loadingContent").style.display="none";
+    container.style.display = "block";
+
+    document.body.addEventListener('keypress', startGame);
 }
 
 var holdFrame = function(frame, time) {
@@ -349,7 +361,7 @@ function startGame()
 
     // reset
     gsap.set([flame,gameover,"#rider-stopped"],{alpha:0});
-    gsap.set([player,"#rider-go"],{alpha:1});
+    gsap.set(["#player","#rider-go"],{alpha:1});
 
 
 
@@ -673,9 +685,9 @@ var collidedTxts=["move the wreck!",
                 "@#$%&!0"];
 var collide;
 var collideAll;
+var area = $( '#area' )[0],
+    player = $( '#player' )[0];
 function detectCollision() {
-    var area = $( '#area' )[0],
-        player = $( '#player' )[0];
     
     collide = ($( area ).children().not( player ).map( function ( i ) {
         return 'obstacle'+(i+1) + ":" + overlaps( player, this );
@@ -766,6 +778,7 @@ function playerCollided(whichObstacleHit) {
                 console.log('went under bridge');
             } else {
                 // if we hit a bridge while jumping
+                isJumping=false;
                 doObstacleHit();
 
                 doRiderCrash();
