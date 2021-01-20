@@ -148,11 +148,15 @@ function gamePause() {
     tlstarsBG.pause();
     tlintro.pause();
     tl.pause();
+    tlLyrics.pause();
+    tlhair.pause();
 
     $('#rider').removeClass('riderBounce');
     $('#rider').removeClass('riderFly');
     $('#shadow').removeClass('shadowBounce');
 
+    gsap.set(["#rider-stopped"],{alpha:1});
+    gsap.set(["#rider-go"],{alpha:0});
 
     jumpingtxt.innerHTML="pause";
     gsap.set(pausedtxt,{alpha:1});
@@ -192,10 +196,16 @@ function gameResume() {
     tlbg.resume();  
     tlstarsBG.resume();
     tlfg.resume();  
+    tlhair.resume();  
+    tlLyrics.resume();
+
 
     $('#rider').addClass('riderBounce');
     $('#rider').addClass('riderFly');
     $('#shadow').addClass('shadowBounce');
+
+    gsap.set(["#rider-stopped"],{alpha:0});
+    gsap.set(["#rider-go"],{alpha:1});
 
     
     jumpingtxt.innerHTML="go";
@@ -354,32 +364,34 @@ function backtoBounce(){
 
 
     $('#rider').addClass('riderBounce');
-        $('#shadow').addClass('shadowBounce');
-        $('#rider').addClass('riderFly');
-    }
+    $('#shadow').addClass('shadowBounce');
+    $('#rider').addClass('riderFly');
+}
 
 
 
-    /**
-     * switch statement for animating ad
-     */
-    function startGame()
-    {
-        points=0;
+/**
+ * switch statement for animating ad
+ */
+function startGame()
+{
+    points=0;
 
-        audio.currentTime=85;
-        audio.play();
+    audio.currentTime=85;
+    audio.play();
+    traceAudioTime();
+    
 
-        document.body.removeEventListener('keypress', startGame);
+    document.body.removeEventListener('keypress', startGame);
 
-        // reset
-        gsap.set([flame,gameover,"#rider-stopped"],{alpha:0});
-        gsap.set(["#player","#rider-go"],{alpha:1});
+    // reset
+    gsap.set([flame,gameover,"#rider-stopped"],{alpha:0});
+    gsap.set(["#player","#rider-go"],{alpha:1});
 
-        $("#introTxt0").hide();
+    $("#introTxt0").hide();
+    
+    backtoBounce();
         
-        backtoBounce();
-            
     document.body.addEventListener('keypress', keypress);
     document.body.addEventListener('keyup', keyUp);
     
@@ -388,7 +400,7 @@ function backtoBounce(){
     tlbg = gsap.timeline({repeat:-1});
     tlstarsBG = gsap.timeline({repeat:-1});
     tlhair = gsap.timeline({repeat:-1});
-    tlLyrics = gsap.timeline();
+    tlLyrics = gsap.timeline({repeat:-1});
 
     tlfg = gsap.timeline({onComplete:fgTimeLineComplete});
 
@@ -396,7 +408,8 @@ function backtoBounce(){
     TweenMax.fromTo(tlbg,4,{timeScale:0},{timeScale:1,ease:Power1.easeIn})
 
 
-    tlintro = gsap.timeline({onComplete:playObstaclesTL});
+    // [todo] - obs back in!
+    // tlintro = gsap.timeline({onComplete:playObstaclesTL});
     tlintro.addLabel("FGs BGs", "<")
         .add(writeLyrics, "<")
         .add(playBGs,"<")
@@ -409,21 +422,21 @@ function backtoBounce(){
         .set(".obstacle", {alpha:1,left:obsStartLeft}, "<")
 
         .to("#fg-intro",5,{x:"-100%",ease:Power1.easeIn},"<")
-
+        .to("#fgs",{alpha:1},"-=1.25")
         .set(fgToGo1,{alpha:1,x:fgWidth},"-=1.25")
         .to(fgToGo1,(fgSpeed/2),{x:0,ease:Linear.easeNone},">")
 
         .add(playFGs,"<")
     
     // .addLabel("intro txt", "1")
-        .set(introTxt1,{alpha:1},"1")
-        .call(typeText,["introTxt1"],"1")
+        // .set(introTxt1,{alpha:1},"1")
+        // .call(typeText,["introTxt1"],"1")
         
-        .set(introTxt1,{alpha:0},"4")
+        // .set(introTxt1,{alpha:0},"4")
         
-        .call(typeText,["introTxt2"],"5")
-        .set(introTxt2,{alpha:1},"5")
-        .set(introTxt2,{alpha:0},"8")
+        // .call(typeText,["introTxt2"],"5")
+        // .set(introTxt2,{alpha:1},"5")
+        // .set(introTxt2,{alpha:0},"8")
 
         .set(introTxt3,{alpha:1},"<1")
         .set(introTxt3,{alpha:0},"<5")
@@ -464,17 +477,15 @@ function typeText(whichEle){
 var fgWidth = 1800;
 var fgSpeed = 2;
 function playFGs() {
-    
-    // console.log('fg timeline go');
+
     tlfg.addLabel('fg loop', '<')
-        .set([fgToGo1],{alpha:1,x:0},"<")
-        .set([fgToGo2],{alpha:1,x:fgWidth},"<")
-        .set([fgToGo3],{alpha:1,x:fgWidth},"<")
+        .to([fgToGo3],0,{alpha:0},">")
         
-        .to(fgToGo1,fgSpeed,{x:-fgWidth,ease:Linear.easeNone},">")
-        .to(fgToGo2,fgSpeed,{x:0,ease:Linear.easeNone},"-="+fgSpeed)
-        .to(fgToGo2,fgSpeed,{x:-fgWidth,ease:Linear.easeNone},">")
-        .to(fgToGo3,fgSpeed,{x:0,ease:Linear.easeNone},"-="+fgSpeed)
+        .to([fgToGo1],0,{x:0},"<")
+        .to([fgToGo2],0,{x:fgWidth},"<")
+        
+        .to([fgToGo1],fgSpeed,{x:-fgWidth,ease:Linear.easeNone},">")
+        .to([fgToGo2],fgSpeed,{x:0,ease:Linear.easeNone},"<");
 }
 
 
@@ -651,7 +662,7 @@ var songEndTime = 283;
 // var songEndTime = 90; [for testing]
 var endingPlayed = false;
 function fgTimeLineComplete() {
-    gsap.to(".fgToGo",{alpha:1});
+    // gsap.to(".fgToGo",{alpha:1});
 
     if(Math.floor(audio.currentTime)>=songEndTime) {
         isSongToEnding=true;
@@ -861,6 +872,7 @@ function doObstacleHit() {
     tlbg.pause();
     tlstarsBG.pause();
     tl.pause();
+    tlhair.pause();
 }
 
 function doRiderCrash(){
@@ -895,19 +907,36 @@ function doRiderCrash(){
 }
 
 function writeLyrics(){
-    // var mySplitText = new SplitText(lyricstxt, {type:"lines",position:"absolute"}),
-    //     numLines = mySplitText.lines.length;
+    gsap.set(lyricstxt,{alpha:1});
+
+    tlLyrics.addLabel('playLyrics')
+        .to("#lyrics1",{display:"block",duration:0},1.25)
+        .to("#lyrics1",{display:"none",duration:0},3)
         
-    //     for(var i = 0; i < numLines; i++){
-    //         TweenMax.set(mySplitText.lines[i], {alpha:0});
-    //     }
-    //     TweenMax.set(lyricstxt, {alpha:1}); 
-    //     for(var i = 0; i < numLines; i++){
-    //         TweenMax.set(mySplitText.lines[i], {alpha:1,delay:1*i});
-    //         TweenMax.set(mySplitText.lines[i], {alpha:0,delay:(1*i)+1});
-    //     }
+        .to("#lyrics2",{display:"block",duration:0},4)
+        .to("#lyrics2",{display:"none",duration:0},6)
+        
+        .to("#lyrics3",{display:"block",duration:0},6.5)
+        .to("#lyrics3",{display:"none",duration:0},8.5)
+
+        .to("#lyrics4",{display:"block",duration:0},8.5)
+        .to("#lyrics4",{display:"none",duration:0},11)
+
+        .to("#lyrics5",{display:"block",duration:0},12.5)
+        .to("#lyrics5",{display:"none",duration:0},15)
+
+        .to("#lyrics6",{display:"block",duration:0},15)
+        .to("#lyrics6",{display:"none",duration:0},17.5)
+    
 }
 
+function traceAudioTime(){
+    
+    console.log(audio.currentTime-85);
+    if(audio.currentTime<audio.duration){
+        gsap.delayedCall(.5,traceAudioTime);
+    }
+}
 
 
 function getWindowSize(){

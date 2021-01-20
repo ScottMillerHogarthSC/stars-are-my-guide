@@ -37,7 +37,7 @@
 
         // array of all the external js files we want to politely load
 
-        var arrExtJs = ['https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js','https://cdnjs.cloudflare.com/ajax/libs/gsap/3.4.2/gsap.min.js','https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js','js/SplitText.min.js','js/main.js'];
+        var arrExtJs = ['https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js','https://cdnjs.cloudflare.com/ajax/libs/gsap/3.4.2/gsap.min.js','https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js','js/splitText.min.js','js/main.js'];
         var loadJsIndex = 0;
 
         /**
@@ -134,10 +134,11 @@
             <div id="tilt">
                 <img src="images/fg-intro.png" class="fg" id="fg-intro">
                 
-
-                <img src="images/moon_fg.png" class="fg fgToGo" id="fgToGo1">
-                <img src="images/moon_fg.png" class="fg fgToGo" id="fgToGo2">
-                <img src="images/moon_fg.png" class="fg fgToGo" id="fgToGo3">
+                <div id="fgs">
+                    <img src="images/moon_fg.png" class="fg fgToGo" id="fgToGo3">
+                    <img src="images/moon_fg.png" class="fg fgToGo" id="fgToGo1">
+                    <img src="images/moon_fg.png" class="fg fgToGo" id="fgToGo2">
+                </div>
 
                 <div id="area">
 
@@ -195,8 +196,8 @@
                 <div id="pausedtxt" class="copy hidden">paused</div>
                 <div id="resumetxt" class="copy hidden">press <img id="introBtnS" src="images/introBtnS.png"> to continue</div>
                 
-                <div id="introTxt1" class="copy introTxt hidden">primitai</div>
-                <div id="introTxt2" class="copy introTxt hidden">stars are my guide</div>
+                <!-- <div id="introTxt1" class="copy introTxt hidden">primitai</div>
+                <div id="introTxt2" class="copy introTxt hidden">stars are my guide</div> -->
                 <div id="introTxt3" class="copy introTxt introTxtButt hidden">use <span id="introBtn"><img src="images/introBtn.png"></span> to move</div>
                 <div id="introTxt4" class="copy introTxt introTxtButt hidden">use <span id="introBtnK"><img src="images/introBtnK.png"></span> to jump</div>
                 <div id="endtxt" class="copy hidden">
@@ -208,52 +209,34 @@
 
 
                 <div id="lyricstxt" class="copy hidden">
-                    Darkness above us, fire burns below us
+                    <div id="lyrics1" class="lyrics">Darkness above us,</div>
+                    <div id="lyrics2" class="lyrics">fire burns below us</div>
+                    <div id="lyrics3" class="lyrics">Onwards & upwards,</div>
+                    <div id="lyrics4" class="lyrics">no regrets on my conscience</div>
+                    <div id="lyrics5" class="lyrics">A lonely rider of the sky,</div>
+                    <div id="lyrics6" class="lyrics">6. my only chance to do or die</div>
+                    <div id="lyrics7" class="lyrics">7. Nothing left of what was home, only the unknown</div>
+                    <div id="lyrics8" class="lyrics">8. the stars are my guide</div>
+                    <div id="lyrics9" class="lyrics">9. To the void we ride</div>
+                    <div id="lyrics10" class="lyrics">10. On the attack, no looking back,</div>
+                    <div id="lyrics11" class="lyrics">11. for eternal life</div>
+                    <div id="lyrics12" class="lyrics">12. Now the stars are my guide</div>
 
-                    Onwards & upwards, no regrets on my conscience
-
-                    A lonely rider of the sky, my only chance to do or die
-
-                    Nothing left of what was home, only the unknown
-
-                    Now the stars are my guide
-
-                    To the void we ride
-
-                    On the attack, no looking back, for eternal life
-
-                    Now the stars are my guide
-
-                    Vengeance & anger, to no one I answer
-
-                    A lone wolf a straggler, now I’m my own master
-
-                    Out of the storm into the void, a sea of moons & asteroids
-
-                    All in my path I will destroy, my weapons I deploy
-
-                    (Guitar solo by S. Giron)
-
-                    Now the stars are my guide
-
-                    To the void we ride
-
-                    On the attack, no looking back, for eternal life
-
-                    Now the stars are my guide
-
-                    No last goodbye, I sail into the astral plains
-
-                    To fight, defy, I’ll set the galaxy ablaze
-
-                    No last goodbye, I sail into the astral plains
-
-                    To fight, defy, I’ll set the galaxy ablaze
-
-                    I’ll set the galaxy ablaze
-
-                    I’ll set the galaxy ablaze
-
+                    <!-- <div id="lyrics8" class="lyrics">Vengeance & anger, to no one I answer</div>
+                    <div id="lyrics9" class="lyrics">A lone wolf a straggler, now I’m my own master</div>
+                    <div id="lyrics10" class="lyrics">Out of the storm into the void, a sea of moons & asteroids</div>
+                    <div id="lyrics11" class="lyrics">All in my path I will destroy, my weapons I deploy</div>
+                    <div id="lyrics12" class="lyrics">(Guitar solo by S. Giron)</div>
+                    <div id="lyrics13" class="lyrics">Now the stars are my guide</div>
+                    <div id="lyrics14" class="lyrics">To the void we ride</div>
+                    <div id="lyrics15" class="lyrics">On the attack, no looking back, for eternal life</div>
+                    <div id="lyrics16" class="lyrics">Now the stars are my guide</div>
+                    <div id="lyrics17" class="lyrics">No last goodbye, I sail into the astral plains</div>
+                    <div id="lyrics18" class="lyrics">To fight, defy, I’ll set the galaxy ablaze</div>
+                    <div id="lyrics19" class="lyrics">No last goodbye, I sail into the astral plains</div>
+                    <div id="lyrics20" class="lyrics">To fight, defy, I’ll set the galaxy ablaze</div>
+                    <div id="lyrics21" class="lyrics">I’ll set the galaxy ablaze</div>
+                    <div id="lyrics22" class="lyrics">I’ll set the galaxy ablaze</div> -->
                 </div>
             </div>
             
