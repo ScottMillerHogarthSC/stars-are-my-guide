@@ -81,11 +81,12 @@ body{
 #player{
     position: absolute;
     left: 40px;
-    height: 150px;
+    height: 120px;
     top: 270px;
     transition: left 2s;
     width:150px;
     perspective: 250px;
+    overflow: visible;
 }
 .player {
     height: 150px;
@@ -359,6 +360,7 @@ div.bridge {
     text-align: center;
     line-height: 30px;
     display: none;
+    top: 220px;
 }
 #initialstxt {
     padding: 0;
@@ -376,6 +378,7 @@ div.bridge {
     transform: scale(1);
     left: 0;
     top: 8px;
+    color: rgb(245 20 245);
 }
 .lyrics{
     width: 100%;
@@ -396,11 +399,20 @@ div.bridge {
     margin-right: 1em;
 }
 
+#lyricsChorustxt{
+    width: 970px;
+    display: block;
+    transform: scale(1);
+    left: 0;
+    top: 8px;
+    color: rgb(245 20 245);
+}
+
 
 
 
 #mobileControls {
-    display: none;
+    /*display: none;*/
     position: absolute;
     top: 0;
     left: 0;
@@ -408,6 +420,8 @@ div.bridge {
     height: 100%;
     z-index: 100;
     padding: 0;
+    opacity: .5;
+    filter: invert(1);
 }
 .mobileControl,.btnMove  {
     position: absolute;
@@ -425,17 +439,17 @@ div.bridge {
     background-image: url(../images/introBtn.png);
     background-size: 160px auto;
 }
-#btnMove.backwards{
+#btnsMove.backwards{
     background-position-y: -104px;
 }
-#btnMove.down{
+#btnsMove.down{
     background-position-y: -208px;
 }
-#btnMove.up{
-    background-position-y: -312px;
-}
-#btnMove.forwards{
+#btnsMove.up{
     background-position-y: -416px;
+}
+#btnsMove.forwards{
+    background-position-y: -312px;
 }
 .btnMove,#btnJump{
     width: 50px;
@@ -468,4 +482,11 @@ div.bridge {
 }
 #btnJump:active {
     background-position: 0px bottom;
+}
+
+#btnStart {
+    width: 550px;
+    height: 55px;
+    top: 110px;
+    left: 210px;
 }

@@ -8,7 +8,7 @@ html = document.documentElement;
 var pageHeight = Math.max( body.scrollHeight, body.offsetHeight, 
 html.clientHeight, html.scrollHeight, html.offsetHeight );
 
-var btnMoveUp, btnMoveForwards, btnMoveBackwards, btnMoveDown, btnJump;
+var btnMoveUp, btnMoveForwards, btnMoveBackwards, btnMoveDown, btnJump, btnStart;
 
 
 var tlintro = gsap.timeline(),
@@ -43,12 +43,13 @@ function init()
     btnMoveBackwards = document.getElementById("btnMoveBackwards");
     btnMoveDown = document.getElementById("btnMoveDown");
     btnJump = document.getElementById("btnJump");
+    btnStart = document.getElementById("btnStart");
     
     resizeWindow()
 
     $( window ).resize(resizeWindow);
 
-    
+
 
     gsap.set(player,{x:0,y:0,scale:1,alpha:1});
     gsap.set([flame,gameover],{alpha:0});
@@ -73,12 +74,120 @@ function loadedAudio(){
     document.getElementById("loadingContent").style.display="none";
     container.style.display = "block";
 
+    btnStart.addEventListener('touchend', startGame);
+    btnStart.addEventListener('mouseup', startGame);
     document.body.addEventListener('keypress', startGame);
 }
 
 var holdFrame = function(frame, time) {
     var delay = time*1000;
     frameWaitTimer = window.setTimeout(function(){showFrame(frame);}, delay);
+}
+
+function bindButtons(){
+    document.body.addEventListener('keypress', keypress);
+    document.body.addEventListener('keyup', keyUp);
+
+
+    btnMoveUp.addEventListener("touchstart", mobileBtnPressed);
+    btnMoveForwards.addEventListener("touchstart", mobileBtnPressed);
+    btnMoveBackwards.addEventListener("touchstart", mobileBtnPressed);
+    btnMoveDown.addEventListener("touchstart", mobileBtnPressed);
+    btnJump.addEventListener("touchstart", mobileBtnPressed);
+
+    btnMoveUp.addEventListener("touchend", mobileBtnReleased);
+    btnMoveForwards.addEventListener("touchend", mobileBtnReleased);
+    btnMoveBackwards.addEventListener("touchend", mobileBtnReleased);
+    btnMoveDown.addEventListener("touchend", mobileBtnReleased);
+    btnJump.addEventListener("touchend", mobileBtnReleased);
+
+    btnMoveUp.addEventListener("mousedown", mobileBtnPressed);
+    btnMoveForwards.addEventListener("mousedown", mobileBtnPressed);
+    btnMoveBackwards.addEventListener("mousedown", mobileBtnPressed);
+    btnMoveDown.addEventListener("mousedown", mobileBtnPressed);
+    btnJump.addEventListener("mousedown", mobileBtnPressed);
+
+    btnMoveUp.addEventListener("mouseup", mobileBtnReleased);
+    btnMoveForwards.addEventListener("mouseup", mobileBtnReleased);
+    btnMoveBackwards.addEventListener("mouseup", mobileBtnReleased);
+    btnMoveDown.addEventListener("mouseup", mobileBtnReleased);
+    btnJump.addEventListener("mouseup", mobileBtnReleased);
+}
+
+function mobileBtnPressed(){
+    if(!collided && !isSongToEnding){
+    
+        // if(which=="KeyJ") {
+        //     wheelie();
+        // }
+        if(this.id=="btnJump") {
+            gsap.killTweensOf(backtoBounce);
+            jump();
+            $('#introBtnK').addClass('pressedK');
+        }
+        if(this.id=="btnMoveForwards") {
+            forwards();
+            $('#btnsMove').addClass('forwards');
+            $('#introBtn').addClass('pressedD');
+        }
+        if(this.id=="btnMoveBackwards") {
+            backwards();
+            $('#btnsMove').addClass('backwards');
+            $('#introBtn').addClass('pressedA');
+        }
+        if(this.id=="btnMoveUp") {
+            upwards();
+            $('#btnsMove').addClass('up');
+            $('#introBtn').addClass('pressedW');
+        }
+        if(this.id=="btnMoveDown") {
+            downwards();
+            $('#btnsMove').addClass('down');
+            $('#introBtn').addClass('pressedS');
+
+        }
+
+        // // pause 
+        // if(e.code=="KeyZ"){
+        //     gamePause();
+        //     pausedtxt.innerHTML="paused";
+
+        // }
+        // // mute (pause) 
+        // if(e.code=="KeyM"){
+        //     gamePause();
+        //     pausedtxt.innerHTML="muted";
+        // }
+
+        // // // end 
+        // // if(e.code=="KeyZ"){
+        // //     // playerCollided();
+        // // }
+
+    }
+}
+function mobileBtnReleased() {
+    if(this.id=="btnMoveForwards") {
+        $('#btnsMove').removeClass("forwards");
+        $('#introBtn').removeClass('pressedD');
+    }
+    if(this.id=="btnMoveBackwards") {
+        $('#btnsMove').removeClass("backwards");
+        $('#introBtn').removeClass('pressedA');
+
+    }
+    if(this.id=="btnMoveUp") {
+        $('#btnsMove').removeClass("up");
+        $('#introBtn').removeClass('pressedW');
+
+    }
+    if(this.id=="btnMoveDown") {
+        $('#btnsMove').removeClass("down");
+        $('#introBtn').removeClass('pressedS');
+    }
+    if(this.id=="btnJump") {
+        $('#introBtnK').removeClass('pressedK');
+    }
 }
 
 function keypress(e){
@@ -136,13 +245,8 @@ function keypress(e){
 
     }
 }
-
 function keyUp(){
     $('#introBtn,#introBtnK').removeClass();
-}
-
-function shoot() {
-
 }
 
 function gamePause() {
@@ -151,6 +255,8 @@ function gamePause() {
     audio.pause();
 
 
+    btnStart.removeEventListener('touchend', startGame);
+    btnStart.removeEventListener('mouseup', startGame);
     document.body.removeEventListener('keypress', startGame);
     
     tlfg.pause();
@@ -172,13 +278,16 @@ function gamePause() {
     gsap.set(pausedtxt,{alpha:1});
 
     document.body.addEventListener('keypress', gameResume);
-
+    btnStart.addEventListener('touchend', gameResume);
+    btnStart.addEventListener('mouseup', gameResume);
 }
 
 function gameResume() {
     console.log('resume');
 
     document.body.removeEventListener('keypress', gameResume);
+    btnStart.removeEventListener('touchend', gameResume);
+    btnStart.removeEventListener('mouseup', gameResume);
 
     // resuming after crash
     if(collided) {
@@ -319,30 +428,55 @@ function nollie() {
 }
 
 var backwardsCount = 0;
+var brakingPhrases = ["hit the brakes",
+                    "what the hell?",
+                    "yo butt head!!"];
 function backwards() {
     backwardsCount++;
+
     $('#player').removeClass('forwards');   
 
-    jumpingtxt.innerHTML="hit the brakes";
+    jumpingtxt.innerHTML="brakes";
 
     if(tl.isActive() && backwardsCount % 3 === 0)
     {
-        jumpingtxt.innerHTML="yo butt head!!";
-        speechtxt.innerHTML="what the hell?";
+        var whichPhrase = Math.floor(Math.random() * brakingPhrases.length-1) + 1; 
+        speechtxt.innerHTML=brakingPhrases[whichPhrase];;
         gsap.set(speechbub,{alpha:1});
         gsap.delayedCall(.7,function(){
-            jumpingtxt.innerHTML="go";
             speechtxt.innerHTML="";
             gsap.to(speechbub,0,{alpha:0});
         })
     }
 
-    
-
+    gsap.delayedCall(1,function(){
+        jumpingtxt.innerHTML="go";
+    })
 }
+
+var forwardsCount = 0;
+var goPhrases = ["drive!",
+                "pedal to the metal",
+                "let's go!",
+                "go go go"];
 function forwards() {
+    forwardsCount++;
+
     $('#player').addClass('forwards');
+    
     jumpingtxt.innerHTML="drive";
+
+    if(tl.isActive() && forwardsCount % 3 === 0)
+    {
+        var whichPhrase = Math.floor(Math.random() * goPhrases.length-1) + 1; 
+        speechtxt.innerHTML=goPhrases[whichPhrase];;
+        gsap.set(speechbub,{alpha:1});
+        
+        gsap.delayedCall(.7,function(){
+            speechtxt.innerHTML="";
+            gsap.to(speechbub,0,{alpha:0});
+        })
+    }
     gsap.delayedCall(1,function(){
         jumpingtxt.innerHTML="go";
     })
@@ -389,9 +523,12 @@ function startGame()
 
     audio.currentTime=85;
     audio.play();
-    traceAudioTime();
+    audio.addEventListener("timeupdate",traceAudioTime);
+
     
 
+    btnStart.removeEventListener('touchend', startGame);
+    btnStart.removeEventListener('mouseup', startGame);
     document.body.removeEventListener('keypress', startGame);
 
     // reset
@@ -402,8 +539,10 @@ function startGame()
     
     backtoBounce();
         
-    document.body.addEventListener('keypress', keypress);
-    document.body.addEventListener('keyup', keyUp);
+
+
+    // setup all listeners for gaming:
+    bindButtons();
     
     
 
@@ -537,8 +676,6 @@ function playHairTl() {
             if(hairspeed<maxhairspeed) {
                 hairspeed++;
                 tlhair.timeScale(hairspeed/maxhairspeed);
-                console.log("hair:"+hairspeed/maxhairspeed);
-
             }
         })
         .set('#hair-go1',{alpha:1},"<")
@@ -840,6 +977,8 @@ function playerCollided(whichObstacleHit) {
 
             // setup kkeypress to resume:
             gsap.set(resumetxt,{alpha:1,delay:1,onComplete:function(){
+                btnStart.addEventListener('touchend', gameResume);
+                btnStart.addEventListener('mouseup', gameResume);
                 document.body.addEventListener('keypress', gameResume);
             }});
         } 
@@ -911,6 +1050,8 @@ function doRiderCrash(){
 
     // setup kkeypress to resume:
     gsap.set(resumetxt,{alpha:1,delay:1,onComplete:function(){
+        btnStart.addEventListener('touchend', gameResume);
+        btnStart.addEventListener('mouseup', gameResume);
         document.body.addEventListener('keypress', gameResume);
     }});
 }
@@ -918,11 +1059,8 @@ function doRiderCrash(){
 function writeLyrics(){
     gsap.set(lyricstxt,{alpha:1});
 
-
     var verse2Start = 42.35;
     var soloStart = 157;
-    var chorus2Start = 178;
-    var outroStart = 209.5;
 
     tlLyrics.addLabel('verse1')
         .to("#lyrics1",{display:"block",duration:0},1.25)
@@ -977,28 +1115,75 @@ function writeLyrics(){
         .addLabel('solo')
         .to("#lyrics17",{display:"block",duration:0},soloStart+1)
         .to("#lyrics17",{display:"none",duration:0},soloStart+3)
+}
 
+function writeChorusLyrics(){
 
-        .addLabel('outro')
-        .to("#lyrics18",{display:"block",duration:0},outroStart+1)
-        .to("#lyrics18",{display:"none",duration:0},outroStart+3)
+    gsap.set(lyricsChorustxt,{alpha:1});
+    var tlChorusLyrics = gsap.timeline({onComplete:tlChorusLyricsComplete});
+    tlChorusLyrics.addLabel('chorus')
+        .to("#lyrics22",{display:"block",duration:0},1)
+        .to("#lyrics22",{display:"none",duration:0},3)
         
-        .to("#lyrics19",{display:"block",duration:0},outroStart+3.5)
-        .to("#lyrics19",{display:"none",duration:0},outroStart+6)
+        .to("#lyrics23",{display:"block",duration:0},3.5)
+        .to("#lyrics23",{display:"none",duration:0},6)
         
-        .to("#lyrics20",{display:"block",duration:0},outroStart+6)
-        .to("#lyrics20",{display:"none",duration:0},outroStart+8.5)
+        .to("#lyrics24",{display:"block",duration:0},6)
+        .to("#lyrics24",{display:"none",duration:0},8.5)
 
-        .to("#lyrics21",{display:"block",duration:0},outroStart+9)
-        .to("#lyrics21",{display:"none",duration:0},outroStart+12)
+        .to("#lyrics25",{display:"block",duration:0},9)
+        .to("#lyrics25",{display:"none",duration:0},12)
+
+        .to("#lyrics26",{display:"block",duration:0},12)
+        .to("#lyrics26",{display:"none",duration:0},14);
 
 }
 
-function traceAudioTime(){
+function tlChorusLyricsComplete(){
+    gsap.set(lyricsChorustxt,{alpha:0});
+}
+
+function writeOutroLyrics(){
+    var tlLyricsOutro = gsap.timeline();
+    tlLyricsOutro.addLabel('outro')
+        .to("#lyrics18",{display:"block",duration:0},1)
+        .to("#lyrics18",{display:"none",duration:0},3)
+        
+        .to("#lyrics19",{display:"block",duration:0},3.5)
+        .to("#lyrics19",{display:"none",duration:0},6)
+        
+        .to("#lyrics20",{display:"block",duration:0},6)
+        .to("#lyrics20",{display:"none",duration:0},8.5)
+
+        .to("#lyrics21",{display:"block",duration:0},9)
+        .to("#lyrics21",{display:"none",duration:0},12)
+}
+
+function tlChorusLyricsComplete(){
     
-    console.log(audio.currentTime-85);
-    if(audio.currentTime<audio.duration){
-        gsap.delayedCall(.5,traceAudioTime);
+}
+
+var chorus1Played = false;
+var chorus2Played = false;
+var outroPlayed = false;
+
+function traceAudioTime(){
+    var chorus1Start = 21;
+    var chorus2Start = 178;
+    var outroStart = 209.5;
+    
+    if(audio.currentTime-85 >= chorus1Start && !chorus1Played){
+        chorus1Played=true;
+        writeChorusLyrics();
+    }
+    if(audio.currentTime-85 >= chorus2Start && !chorus1Played){
+        chorus2Played=true;
+        writeChorusLyrics();
+    }
+    
+    if( audio.currentTime-85 >= outroStart && !outroPlayed){
+        outroPlayed=true;
+        writeOutroLyrics();
     }
 }
 
