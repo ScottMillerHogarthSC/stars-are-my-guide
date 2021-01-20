@@ -8,6 +8,8 @@ html = document.documentElement;
 var pageHeight = Math.max( body.scrollHeight, body.offsetHeight, 
 html.clientHeight, html.scrollHeight, html.offsetHeight );
 
+var btnMoveUp, btnMoveForwards, btnMoveBackwards, btnMoveDown, btnJump;
+
 
 var tlintro = gsap.timeline(),
     tl = gsap.timeline(),
@@ -35,10 +37,18 @@ function init()
     bg = document.getElementsByClassName("bg");
     audio = document.getElementById("audio");
     oww = document.getElementById("oww");
-        
+    
+    btnMoveUp = document.getElementById("btnMoveUp");
+    btnMoveForwards = document.getElementById("btnMoveForwards");
+    btnMoveBackwards = document.getElementById("btnMoveBackwards");
+    btnMoveDown = document.getElementById("btnMoveDown");
+    btnJump = document.getElementById("btnJump");
     
     resizeWindow()
 
+    $( window ).resize(resizeWindow);
+
+    
 
     gsap.set(player,{x:0,y:0,scale:1,alpha:1});
     gsap.set([flame,gameover],{alpha:0});
@@ -400,16 +410,15 @@ function startGame()
     tlbg = gsap.timeline({repeat:-1});
     tlstarsBG = gsap.timeline({repeat:-1});
     tlhair = gsap.timeline({repeat:-1});
-    tlLyrics = gsap.timeline({repeat:-1});
+    tlLyrics = gsap.timeline();
 
     tlfg = gsap.timeline({onComplete:fgTimeLineComplete});
 
     TweenMax.fromTo(tlstarsBG,4,{timeScale:0},{timeScale:1,ease:Power1.easeIn})
     TweenMax.fromTo(tlbg,4,{timeScale:0},{timeScale:1,ease:Power1.easeIn})
 
-
-    // [todo] - obs back in!
-    // tlintro = gsap.timeline({onComplete:playObstaclesTL});
+    
+    tlintro = gsap.timeline({onComplete:playObstaclesTL});
     tlintro.addLabel("FGs BGs", "<")
         .add(writeLyrics, "<")
         .add(playBGs,"<")
@@ -909,7 +918,13 @@ function doRiderCrash(){
 function writeLyrics(){
     gsap.set(lyricstxt,{alpha:1});
 
-    tlLyrics.addLabel('playLyrics')
+
+    var verse2Start = 42.35;
+    var soloStart = 157;
+    var chorus2Start = 178;
+    var outroStart = 209.5;
+
+    tlLyrics.addLabel('verse1')
         .to("#lyrics1",{display:"block",duration:0},1.25)
         .to("#lyrics1",{display:"none",duration:0},3)
         
@@ -927,7 +942,56 @@ function writeLyrics(){
 
         .to("#lyrics6",{display:"block",duration:0},15)
         .to("#lyrics6",{display:"none",duration:0},17.5)
-    
+
+        .to("#lyrics7",{display:"block",duration:0},18)
+        .to("#lyrics7",{display:"none",duration:0},20)
+
+        .to("#lyrics8",{display:"block",duration:0},20.5)
+        .to("#lyrics8",{display:"none",duration:0},22.5) 
+
+        .addLabel('verse2')
+        .to("#lyrics9",{display:"block",duration:0},verse2Start+1.25)
+        .to("#lyrics9",{display:"none",duration:0},verse2Start+3)
+        
+        .to("#lyrics10",{display:"block",duration:0},verse2Start+4)
+        .to("#lyrics10",{display:"none",duration:0},verse2Start+6)
+        
+        .to("#lyrics11",{display:"block",duration:0},verse2Start+6.5)
+        .to("#lyrics11",{display:"none",duration:0},verse2Start+8.5)
+
+        .to("#lyrics12",{display:"block",duration:0},verse2Start+9)
+        .to("#lyrics12",{display:"none",duration:0},verse2Start+11)
+
+        .to("#lyrics13",{display:"block",duration:0},verse2Start+13)
+        .to("#lyrics13",{display:"none",duration:0},verse2Start+15.25)
+
+        .to("#lyrics14",{display:"block",duration:0},verse2Start+15.25)
+        .to("#lyrics14",{display:"none",duration:0},verse2Start+18.5)
+
+        .to("#lyrics15",{display:"block",duration:0},verse2Start+18.5)
+        .to("#lyrics15",{display:"none",duration:0},verse2Start+20.5)
+
+        .to("#lyrics16",{display:"block",duration:0},verse2Start+20.5)
+        .to("#lyrics16",{display:"none",duration:0},verse2Start+23)
+
+        .addLabel('solo')
+        .to("#lyrics17",{display:"block",duration:0},soloStart+1)
+        .to("#lyrics17",{display:"none",duration:0},soloStart+3)
+
+
+        .addLabel('outro')
+        .to("#lyrics18",{display:"block",duration:0},outroStart+1)
+        .to("#lyrics18",{display:"none",duration:0},outroStart+3)
+        
+        .to("#lyrics19",{display:"block",duration:0},outroStart+3.5)
+        .to("#lyrics19",{display:"none",duration:0},outroStart+6)
+        
+        .to("#lyrics20",{display:"block",duration:0},outroStart+6)
+        .to("#lyrics20",{display:"none",duration:0},outroStart+8.5)
+
+        .to("#lyrics21",{display:"block",duration:0},outroStart+9)
+        .to("#lyrics21",{display:"none",duration:0},outroStart+12)
+
 }
 
 function traceAudioTime(){

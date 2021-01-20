@@ -17,12 +17,18 @@
             extCSS.setAttribute("rel", "stylesheet");
             extCSS.setAttribute("type", "text/css");
             extCSS.setAttribute("href", "styles/styles.css");
+            
+            var extCSS1 = document.createElement("link");
+            extCSS1.setAttribute("rel", "stylesheet");
+            extCSS1.setAttribute("type", "text/css");
+            extCSS1.setAttribute("href", "styles/responsive.css");
                 extCSS.onload = function()
                 {
                     cssLoadedHandler();
                 }
 
             document.getElementsByTagName("head")[0].appendChild(extCSS);
+            document.getElementsByTagName("head")[0].appendChild(extCSS1);
         }
 
         /**
@@ -196,8 +202,6 @@
                 <div id="pausedtxt" class="copy hidden">paused</div>
                 <div id="resumetxt" class="copy hidden">press <img id="introBtnS" src="images/introBtnS.png"> to continue</div>
                 
-                <!-- <div id="introTxt1" class="copy introTxt hidden">primitai</div>
-                <div id="introTxt2" class="copy introTxt hidden">stars are my guide</div> -->
                 <div id="introTxt3" class="copy introTxt introTxtButt hidden">use <span id="introBtn"><img src="images/introBtn.png"></span> to move</div>
                 <div id="introTxt4" class="copy introTxt introTxtButt hidden">use <span id="introBtnK"><img src="images/introBtnK.png"></span> to jump</div>
                 <div id="endtxt" class="copy hidden">
@@ -214,35 +218,49 @@
                     <div id="lyrics3" class="lyrics">Onwards & upwards,</div>
                     <div id="lyrics4" class="lyrics">no regrets on my conscience</div>
                     <div id="lyrics5" class="lyrics">A lonely rider of the sky,</div>
-                    <div id="lyrics6" class="lyrics">6. my only chance to do or die</div>
-                    <div id="lyrics7" class="lyrics">7. Nothing left of what was home, only the unknown</div>
-                    <div id="lyrics8" class="lyrics">8. the stars are my guide</div>
-                    <div id="lyrics9" class="lyrics">9. To the void we ride</div>
-                    <div id="lyrics10" class="lyrics">10. On the attack, no looking back,</div>
-                    <div id="lyrics11" class="lyrics">11. for eternal life</div>
-                    <div id="lyrics12" class="lyrics">12. Now the stars are my guide</div>
+                    <div id="lyrics6" class="lyrics">my only chance to do or die</div>
+                    <div id="lyrics7" class="lyrics">Nothing left of what was home,</div>
+                    <div id="lyrics8" class="lyrics">only the unknown</div>
 
-                    <!-- <div id="lyrics8" class="lyrics">Vengeance & anger, to no one I answer</div>
-                    <div id="lyrics9" class="lyrics">A lone wolf a straggler, now I’m my own master</div>
-                    <div id="lyrics10" class="lyrics">Out of the storm into the void, a sea of moons & asteroids</div>
-                    <div id="lyrics11" class="lyrics">All in my path I will destroy, my weapons I deploy</div>
-                    <div id="lyrics12" class="lyrics">(Guitar solo by S. Giron)</div>
-                    <div id="lyrics13" class="lyrics">Now the stars are my guide</div>
-                    <div id="lyrics14" class="lyrics">To the void we ride</div>
-                    <div id="lyrics15" class="lyrics">On the attack, no looking back, for eternal life</div>
-                    <div id="lyrics16" class="lyrics">Now the stars are my guide</div>
-                    <div id="lyrics17" class="lyrics">No last goodbye, I sail into the astral plains</div>
-                    <div id="lyrics18" class="lyrics">To fight, defy, I’ll set the galaxy ablaze</div>
-                    <div id="lyrics19" class="lyrics">No last goodbye, I sail into the astral plains</div>
-                    <div id="lyrics20" class="lyrics">To fight, defy, I’ll set the galaxy ablaze</div>
+                    <div id="lyrics9" class="lyrics">Vengeance & anger,</div>
+                    <div id="lyrics10" class="lyrics">to no one I answer</div>
+                    <div id="lyrics11" class="lyrics">A lone wolf a straggler,</div>
+                    <div id="lyrics12" class="lyrics">now I’m my own master</div>
+                    <div id="lyrics13" class="lyrics">Out of the storm into the void,</div>
+                    <div id="lyrics14" class="lyrics">a sea of moons & asteroids</div>
+                    <div id="lyrics15" class="lyrics">All in my path I will destroy,</div>
+                    <div id="lyrics16" class="lyrics">my weapons I deploy</div>
+
+                    <div id="lyrics17" class="lyrics">(Guitar solo by S. Giron)</div>
+
+                    <div id="lyrics18" class="lyrics">No last goodbye,</div>
+                    <div id="lyrics19" class="lyrics">I sail into the astral plains</div>
+                    <div id="lyrics20" class="lyrics">To fight, defy,</div>
                     <div id="lyrics21" class="lyrics">I’ll set the galaxy ablaze</div>
-                    <div id="lyrics22" class="lyrics">I’ll set the galaxy ablaze</div> -->
+                </div>
+
+                <div id="lyricsChorustxt" class="copy hidden">
+                    <div id="lyrics9" class="lyrics">Now the stars are my guide</div>
+                    <div id="lyrics10" class="lyrics">To the void we ride</div>
+                    <div id="lyrics11" class="lyrics">On the attack, no looking back,</div>
+                    <div id="lyrics12" class="lyrics">for eternal life</div>
+                    <div id="lyrics13" class="lyrics">Now the stars are my guide.</div>
                 </div>
             </div>
             
             <div id="jumpingtxt" class="jumpingtxt">...</div>
             <div id="pointstxt" class="pointstxt">0</div>
-         </div>    
+
+            <div id="mobileControls">
+                <div id="btnsMove" class="mobileControl">
+                    <button id="btnMoveUp" class="btnMove" />
+                    <button id="btnMoveForwards" class="btnMove" />
+                    <button id="btnMoveBackwards" class="btnMove" />
+                    <button id="btnMoveDown" class="btnMove" />
+                </div>
+                <button id="btnJump" class="mobileControl" />
+            </div>
+         </div>
     </div>
     <audio id="oww" preload="auto">
         <source type="audio/mp3" src="http://scottapmiller.com/scottoftheriver/oww.mp3">
