@@ -89,6 +89,7 @@
             outline:0;
             padding:0;
             margin:0;
+
         }
         #container {
             display: none;
@@ -156,12 +157,18 @@
                     <div id="obstacle2" class="hidden wallL obstacle">
                         <img src="images/obstacle_sputnik.png" class="wallL">
                     </div>
+                    <div id="obstacle3" class="hidden ramp obstacle">
+                        <img src="images/obstacle_ramp.png" class="ramp">
+                    </div>
 
                     <div id="player" class="forwards">
                         <div id="playerMovements">
-                            <img src="images/shadow.png" class="player" id="shadow">
-
+                            <img src="images/shadow.png" class="player shadow" id="shadow">
+                            <img src="images/car-shadow.png" class="player hidden" id="car-shadow">
                             <div id="rider">
+                                <img src="images/carBack.png" class="player car hidden" id="carBack">
+                                <div id="car-jets2" class="car car-jets player"></div>
+
                                 <img src="images/rider-stopped.png" class="player" id="rider-stopped">
                                 
                                 <div id="rider-go" class="player hidden">
@@ -173,8 +180,10 @@
                                 
                                 <div id="rider-jets" class="player"></div>
 
+                                <img src="images/carFront.png" class="player car hidden" id="carFront">
+                                <div id="car-jets1" class="car car-jets player"></div>
+                                
                                 <img src="images/flame.gif" class="player hidden" id="flame">
-                                <img src="images/car.png" class="hidden" id="car">
                             </div>
 
                                 
@@ -185,14 +194,15 @@
 
                     </div>
 
-                    
-                    <div id="obstacle3" class="hidden wall obstacle">
-                        <img src="images/obstacle_sputnik.png" class="wall">
-                        <img src="images/obstacle_warning.png" class="wall">
-                    </div>
+                                        
                     <div id="obstacle4" class="hidden bridge obstacle">
                         <img src="images/obstacle_bridge.png" class="bridge">
                     </div>
+                    <div id="obstacle5" class="hidden wall obstacle">
+                        <img src="images/obstacle_sputnik.png" class="wall">
+                        <img src="images/obstacle_warning.png" class="wall">
+                    </div>
+                    
                 </div>
             </div>
             

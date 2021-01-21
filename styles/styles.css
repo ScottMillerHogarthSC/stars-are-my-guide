@@ -24,6 +24,9 @@ body{
 }
 #wrap {
     background-color: #000;
+    background-image: url(../images/primitai-album-BG.jpg);
+    background-size: cover;
+    background-position: center;
 }
 #container {
     background-color: #000;
@@ -101,10 +104,9 @@ body{
     
 }
 #bike {
-    /*animation: */
+    
 }
-
-#shadow{
+.shadow{
     opacity: .4;
 }
 .riderBounce {
@@ -119,6 +121,7 @@ body{
 .riderFly #rider-go {
     opacity: 1;
 }
+.car-jets,
 #rider-jets {
     background-image: url(../images/rider-jets.png);
     width: 164px;
@@ -177,8 +180,23 @@ body{
     top: -85px;
     left: 30px;
 }
+/* for ending */
+.car {
 
-
+}
+.car-jets {
+    top: 40px;
+    left: 23px;
+    transform: scaleY(1.2) scaleX(1.9);
+}
+#car-jets2 {
+    top: -3px;
+    left: -10px;
+    transform: scaleY(1.2) scaleX(1.7);
+}
+#car-shadow {
+    top: 30px;
+}
 
 
 .obstacle {
@@ -221,6 +239,14 @@ img.bridge {
 div.bridge {
     top: 30px;
     width: 390px;
+}
+img.ramp {
+    width: 484px;
+    margin-left: -60px;
+}
+div.ramp {
+    top: 270px;
+    width: 360px;
 }
 .obstacle, #player{
     /*background-color: rgba(255,0,0,0.2);*/
@@ -344,13 +370,12 @@ div.bridge {
     top: 0;
     width: 80px;
 }
-#introBtnK.pressedK img { top: -52px; }
-#introBtnJ.pressedJ img { top: -52px; }
 #introBtn.pressedA img { top: -52px; }
 #introBtn.pressedS img { top: -104px; }
 #introBtn.pressedD img { top: -156px; }
 #introBtn.pressedW img { top: -208px; }
-
+#introBtnK.pressed img,
+#introBtnJ.pressed img {top: -52px;}
 
 #introBtnJ img,
 #introBtnJ,
@@ -502,7 +527,7 @@ div.bridge {
     right: 80px;
     background-image: url(../images/introBtnJ.png);   
 }
-#btnWheelie:active,
-#btnJump:active {
+#btnWheelie.pressed,
+#btnJump.pressed {
     background-position: 0px bottom;
 }
