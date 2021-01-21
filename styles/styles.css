@@ -404,16 +404,14 @@ div.bridge {
     height: 1em;
     margin-right: 1em;
 }
-
-#lyricsChorustxt{
-    width: 970px;
-    display: block;
-    transform: scale(1);
-    left: 0;
-    top: 8px;
-    color: rgb(245 20 245);
+.chorusLyrics {
+    color: #fcac7c;
 }
-
+.chorusLyrics:before {
+    content: " ";
+    display: inline-block;
+    background-image: url(../images/music-note-chorus.png);
+}
 
 
 
@@ -440,12 +438,18 @@ div.bridge {
 
 }
 #btnsMove {
-    bottom: 5%;
-    left: 2%;
+    bottom: 20px;
+    left: 20px;
     width: 160px;
     height: 104px;
     background-image: url(../images/introBtn.png);
     background-size: 160px auto;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 #btnsMove.backwards{
     background-position-y: -104px;
@@ -459,10 +463,16 @@ div.bridge {
 #btnsMove.forwards{
     background-position-y: -312px;
 }
-.btnMove,#btnJump{
+.btnMove,#btnJump,#btnWheelie{
     width: 50px;
     height: 50px;
     position: absolute;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 #btnMoveUp {
     top: 0px;
@@ -480,21 +490,19 @@ div.bridge {
     top: 55px;
     left: 55px;
 }
-
+#btnWheelie,
 #btnJump {
-    bottom: 5%;
-    right: 2%; 
+    bottom: 20px;
+    right: 20px; 
     height: 55px;   
     background-position: 0px -47px;
     background-image: url(../images/introBtnK.png);
 }
+#btnWheelie {
+    right: 80px;
+    background-image: url(../images/introBtnJ.png);   
+}
+#btnWheelie:active,
 #btnJump:active {
     background-position: 0px bottom;
-}
-
-#btnStart {
-    width: 550px;
-    height: 55px;
-    top: 110px;
-    left: 210px;
 }

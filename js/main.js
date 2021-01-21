@@ -17,9 +17,7 @@ var tlintro = gsap.timeline(),
     tlbg = gsap.timeline(),
     tlstarsBG = gsap.timeline(),
     tlhair = gsap.timeline(),
-    tlLyrics = gsap.timeline(),
-    tlChorusLyrics = gsap.timeline(),
-    tlLyricsOutro = gsap.timeline();
+    tlLyrics = gsap.timeline();
 
 
 function init()
@@ -75,6 +73,14 @@ function failedtoLoadAudio(e){
 
 function loadedAudio(){
     audio.removeEventListener('canplaythrough', loadedAudio);
+
+    $(document).on('show.visibility', function() {
+        $('#audio').get(0).play();
+        // [todo] - not if paused!!
+    });
+    $(document).on('hide.visibility', function() {
+        $('#audio').get(0).pause();
+    });
     
 
     console.log("loaded Audio");
@@ -178,7 +184,11 @@ function unBindButtons_gamePlay(){
             btnJump.removeEventListener("touchend", mobileBtnReleased);
 }
 
-function mobileBtnPressed(){
+function mobileBtnPressed(ev){
+    if(ev.cancelable) {
+        ev.preventDefault();
+    }
+
     if(!collided && !isSongToEnding){
     
         // if(which=="KeyJ") {
@@ -230,7 +240,11 @@ function mobileBtnPressed(){
 
     }
 }
-function mobileBtnReleased() {
+function mobileBtnReleased(ev) {
+    if(ev.cancelable) {
+        ev.preventDefault();
+    }
+
     if(this.id=="btnMoveForwards") {
         $('#btnsMove').removeClass("forwards");
         $('#introBtn').removeClass('pressedD');
@@ -326,8 +340,6 @@ function gamePause() {
     tlintro.pause();
     tl.pause();
     tlLyrics.pause();
-    tlChorusLyrics.pause();
-    tlLyricsOutro.pause();
     tlhair.pause();
 
     $('#rider').removeClass('riderBounce');
@@ -381,8 +393,6 @@ function gameResume() {
     tlfg.resume();  
     tlhair.resume();  
     tlLyrics.resume();
-    tlChorusLyrics.resume();
-    tlLyricsOutro.resume();
 
 
     $('#rider').addClass('riderBounce');
@@ -594,7 +604,9 @@ function startGame(ev)
 
 
     // prevent touch default:
-    ev.preventDefault();
+    if(ev.cancelable) {
+        ev.preventDefault();
+    }
 
     
     // reset
@@ -616,11 +628,7 @@ function startGame(ev)
     tlstarsBG = gsap.timeline({repeat:-1});
     tlhair = gsap.timeline({repeat:-1});
     tlLyrics = gsap.timeline();
-
     tlfg = gsap.timeline({onComplete:fgTimeLineComplete});
-    tlChorusLyrics = gsap.timeline({onComplete:tlChorusLyricsComplete});
-    tlLyricsOutro = gsap.timeline({onComplete:tlLyricsOutroComplete});
-
 
     TweenMax.fromTo(tlstarsBG,4,{timeScale:0},{timeScale:1,ease:Power1.easeIn});
     TweenMax.fromTo(tlbg,4,{timeScale:0},{timeScale:1,ease:Power1.easeIn});
@@ -656,30 +664,17 @@ function startGame(ev)
         
 }
 
-function typeText(whichEle){
-
+function typeText(whichEle, speed, thisdelay){
+    console.log(whichEle);
     // typewriter text
-    var whichEleID = document.getElementById(whichEle);
-    var txtToType = whichEleID.innerText;
-    var tmpTextArr=[];
-    var totalletters=txtToType.length;
-    for(i=0; i<totalletters;i++){
-        tmpTextArr[i] = txtToType.charAt(i);
-    }
-    whichEleID.innerText="";
-    var count=0;
-    function writeLetter (){
-            if(tmpTextArr[count]==" ") {
-                whichEleID.innerHTML+="&nbsp";
-            } else {
-            whichEleID.innerText+=tmpTextArr[count];
+    var mySplitText = new SplitText(whichEle, {type:"chars"}),
+        numChars = mySplitText.chars.length,
+        characterTime = (speed/(numChars+6));
+        
+        TweenMax.set(mySplitText.chars, {alpha:0});
+        for(var i = 0; i < numChars; i++){
+            TweenMax.to(mySplitText.chars[i], 0, {alpha:1, delay:thisdelay+(i * characterTime),ease:Linear.easeNone});
         }
-        count++;
-    }
-    var speed = 0.1;
-    for(i=0; i<totalletters;i++){
-        gsap.delayedCall(i*speed, writeLetter)
-    }
 }
 
 
@@ -1118,8 +1113,12 @@ function doRiderCrash(){
 function writeLyrics(){
     gsap.set(lyricstxt,{alpha:1});
 
+    var chorus1Start = 22;
     var verse2Start = 42.35;
     var soloStart = 157;
+    var chorus2Start = 178;
+    var outroStart = 209.5;
+
 
     tlLyrics.addLabel('verse1')
         .to("#lyrics1",{display:"block",duration:0},1.25)
@@ -1146,6 +1145,30 @@ function writeLyrics(){
         .to("#lyrics8",{display:"block",duration:0},20.5)
         .to("#lyrics8",{display:"none",duration:0},21.5) 
 
+
+        .addLabel('chorus')
+        .to("#lyrics22",{display:"block",duration:0},chorus1Start+0)
+        .call(typeText,["#lyrics22",5,chorus1Start+0],this,chorus1Start+0)
+        .to("#lyrics22",{display:"none",duration:0},chorus1Start+5)
+        
+        .to("#lyrics23",{display:"block",duration:0},chorus1Start+5.2)
+        .call(typeText,["#lyrics23",5.3,chorus1Start+5.2],this,chorus1Start+5.2)
+        .to("#lyrics23",{display:"none",duration:0},chorus1Start+10.5)
+        
+        .to("#lyrics24",{display:"block",duration:0},chorus1Start+11)
+        .call(typeText,["#lyrics24",3,chorus1Start+11],this,chorus1Start+11)
+        .to("#lyrics24",{display:"none",duration:0},chorus1Start+14)
+
+        .to("#lyrics25",{display:"block",duration:0},chorus1Start+14)
+        .call(typeText,["#lyrics25",2,chorus1Start+14],this,chorus1Start+14)
+        .to("#lyrics25",{display:"none",duration:0},chorus1Start+16)
+
+        .to("#lyrics26",{display:"block",duration:0},chorus1Start+16)
+        .call(typeText,["#lyrics26",5.5,chorus1Start+16],this,chorus1Start+16)
+        .to("#lyrics26",{display:"none",duration:0},chorus1Start+21.5)
+
+
+
         .addLabel('verse2')
         .to("#lyrics9",{display:"block",duration:0},verse2Start+1.25)
         .to("#lyrics9",{display:"none",duration:0},verse2Start+3)
@@ -1171,81 +1194,51 @@ function writeLyrics(){
         .to("#lyrics16",{display:"block",duration:0},verse2Start+20.5)
         .to("#lyrics16",{display:"none",duration:0},verse2Start+23)
 
+
         .addLabel('solo')
         .to("#lyrics17",{display:"block",duration:0},soloStart+1)
         .to("#lyrics17",{display:"none",duration:0},soloStart+3)
-}
 
-function writeChorusLyrics(){
-    
-    gsap.set(lyricsChorustxt,{alpha:1});
 
-    tlChorusLyrics.addLabel('chorus')
-        .to("#lyrics22",{display:"block",duration:0},0)
-        .to("#lyrics22",{display:"none",duration:0},5)
+        .addLabel('chorus2')
+        .to("#lyrics27",{display:"block",duration:0},chorus2Start+0)
+        .call(typeText,["#lyrics27",5,chorus2Start+0],this,chorus2Start+0)
+        .to("#lyrics27",{display:"none",duration:0},chorus2Start+5)
         
-        .to("#lyrics23",{display:"block",duration:0},5.2)
-        .to("#lyrics23",{display:"none",duration:0},10.5)
+        .to("#lyrics23",{display:"block",duration:0},chorus2Start+5.2)
+        .call(typeText,["#lyrics23",5.3,chorus1Start+5.2],this,chorus2Start+5.2)
+        .to("#lyrics23",{display:"none",duration:0},chorus2Start+10.5)
         
-        .to("#lyrics24",{display:"block",duration:0},11)
-        .to("#lyrics24",{display:"none",duration:0},14)
+        .to("#lyrics24",{display:"block",duration:0},chorus2Start+11)
+        .call(typeText,["#lyrics24",3,chorus1Start+11],this,chorus2Start+11)
+        .to("#lyrics24",{display:"none",duration:0},chorus2Start+14)
 
-        .to("#lyrics25",{display:"block",duration:0},14)
-        .to("#lyrics25",{display:"none",duration:0},16)
+        .to("#lyrics25",{display:"block",duration:0},chorus2Start+14)
+        .call(typeText,["#lyrics25",2,chorus2Start+14],this,chorus2Start+14)
+        .to("#lyrics25",{display:"none",duration:0},chorus2Start+16)
 
-        .to("#lyrics26",{display:"block",duration:0},16)
-        .to("#lyrics26",{display:"none",duration:0},21.5);
+        .to("#lyrics26",{display:"block",duration:0},chorus2Start+16)
+        .call(typeText,["#lyrics26",5.5,chorus2Start+16],this,chorus2Start+16)
+        .to("#lyrics26",{display:"none",duration:0},chorus2Start+21.5)
 
-}
 
-function tlChorusLyricsComplete(){
-    gsap.set(lyricsChorustxt,{alpha:0});
-}
-
-function writeOutroLyrics(){
-    tlLyricsOutro.addLabel('outro')
-        .to("#lyrics18",{display:"block",duration:0},1)
-        .to("#lyrics18",{display:"none",duration:0},3)
+        .addLabel('outro')
+        .to("#lyrics18",{display:"block",duration:0},outroStart+1)
+        .to("#lyrics18",{display:"none",duration:0},outroStart+3)
         
-        .to("#lyrics19",{display:"block",duration:0},3.5)
-        .to("#lyrics19",{display:"none",duration:0},6)
+        .to("#lyrics19",{display:"block",duration:0},outroStart+3.5)
+        .to("#lyrics19",{display:"none",duration:0},outroStart+6)
         
-        .to("#lyrics20",{display:"block",duration:0},6)
-        .to("#lyrics20",{display:"none",duration:0},8.5)
+        .to("#lyrics20",{display:"block",duration:0},outroStart+6)
+        .to("#lyrics20",{display:"none",duration:0},outroStart+8.5)
 
-        .to("#lyrics21",{display:"block",duration:0},9)
-        .to("#lyrics21",{display:"none",duration:0},12)
+        .to("#lyrics21",{display:"block",duration:0},outroStart+9)
+        .to("#lyrics21",{display:"none",duration:0},outroStart+12);
+
 }
-
-function tlLyricsOutroComplete(){
-    gsap.set(lyricsChorustxt,{alpha:0});
-}
-
-var chorus1Played = false;
-var chorus2Played = false;
-var outroPlayed = false;
 
 function traceAudioTime(){
-    console.log(audio.currentTime-85)
-
-    var chorus1Start = 21;
-    var chorus2Start = 178;
-    var outroStart = 209.5;
-    
-    if(audio.currentTime-85 >= chorus1Start && !chorus1Played){
-        chorus1Played=true;
-        writeChorusLyrics();
-    }
-    if(audio.currentTime-85 >= chorus2Start && !chorus2Played){
-        chorus2Played=true;
-        gsap.set(lyricsChorustxt,{alpha:1});
-        tlChorusLyrics.restart();
-    }
-    
-    if( audio.currentTime-85 >= outroStart && !outroPlayed){
-        outroPlayed=true;
-        writeOutroLyrics();
-    }
+    console.log(audio.currentTime-85);
 }
 
 

@@ -43,7 +43,7 @@
 
         // array of all the external js files we want to politely load
 
-        var arrExtJs = ['https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js','https://cdnjs.cloudflare.com/ajax/libs/gsap/3.4.2/gsap.min.js','https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js','js/splittext.min.js','js/main.js'];
+        var arrExtJs = ['https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js','https://cdnjs.cloudflare.com/ajax/libs/gsap/3.4.2/gsap.min.js','https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js','js/splittext.min.js','js/jquery-visibility.js','js/main.js'];
         var loadJsIndex = 0;
 
         /**
@@ -224,6 +224,12 @@
                     <div id="lyrics7" class="lyrics">Nothing left of what was home,</div>
                     <div id="lyrics8" class="lyrics">only the unknown</div>
 
+                    <div id="lyrics22" class="lyrics chorusLyrics">Now the stars are my guide</div>
+                    <div id="lyrics23" class="lyrics chorusLyrics">To the void we ride</div>
+                    <div id="lyrics24" class="lyrics chorusLyrics">On the attack, no looking back,</div>
+                    <div id="lyrics25" class="lyrics chorusLyrics">for eternal life</div>
+                    <div id="lyrics26" class="lyrics chorusLyrics">Now the stars are my guide.</div>
+
                     <div id="lyrics9" class="lyrics">Vengeance & anger,</div>
                     <div id="lyrics10" class="lyrics">to no one I answer</div>
                     <div id="lyrics11" class="lyrics">A lone wolf a straggler,</div>
@@ -235,18 +241,12 @@
 
                     <div id="lyrics17" class="lyrics">(Guitar solo by S. Giron)</div>
 
+                    <div id="lyrics27" class="lyrics chorusLyrics">The stars are my guide</div>
+
                     <div id="lyrics18" class="lyrics">No last goodbye,</div>
                     <div id="lyrics19" class="lyrics">I sail into the astral plains</div>
                     <div id="lyrics20" class="lyrics">To fight, defy,</div>
                     <div id="lyrics21" class="lyrics">I’ll set the galaxy ablaze</div>
-                </div>
-
-                <div id="lyricsChorustxt" class="copy hidden">
-                    <div id="lyrics22" class="lyrics">Now the stars are my guide</div>
-                    <div id="lyrics23" class="lyrics">To the void we ride</div>
-                    <div id="lyrics24" class="lyrics">On the attack, no looking back,</div>
-                    <div id="lyrics25" class="lyrics">for eternal life</div>
-                    <div id="lyrics26" class="lyrics">Now the stars are my guide.</div>
                 </div>
             </div>
             
@@ -261,6 +261,7 @@
                     <button id="btnMoveDown" class="btnMove" />
                 </div>
                 <button id="btnJump" class="mobileControl" />
+                <button id="btnWheelie" class="mobileControl" />
             </div>
          </div>
     </div>
