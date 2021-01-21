@@ -634,7 +634,7 @@ function startGame(ev)
     TweenMax.fromTo(tlbg,4,{timeScale:0},{timeScale:1,ease:Power1.easeIn});
 
     
-    // tlintro = gsap.timeline({onComplete:playObstaclesTL});
+    tlintro = gsap.timeline({onComplete:playObstaclesTL});
 
     tlintro.addLabel("FGs BGs", "<")
         .add(writeLyrics, "<")
