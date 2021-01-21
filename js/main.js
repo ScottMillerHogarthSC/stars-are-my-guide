@@ -654,10 +654,10 @@ function startGame(ev)
 
         .add(playFGs,"<")
     
-        // [todo] - intro off
+        
 
-        // .set(introTxt3,{alpha:1},"<1")
-        // .set(introTxt3,{alpha:0},"+=4")
+        .set(introTxt3,{alpha:1},"<1")
+        .set(introTxt3,{alpha:0},"+=4")
 
         .set(introTxt4,{alpha:1},"<.75")
         .set(introTxt4,{alpha:0},"+=4");
