@@ -17,7 +17,9 @@ var tlintro = gsap.timeline(),
     tlbg = gsap.timeline(),
     tlstarsBG = gsap.timeline(),
     tlhair = gsap.timeline(),
-    tlLyrics = gsap.timeline();
+    tlLyrics = gsap.timeline(),
+    tlChorusLyrics = gsap.timeline(),
+    tlLyricsOutro = gsap.timeline();
 
 
 function init()
@@ -324,6 +326,8 @@ function gamePause() {
     tlintro.pause();
     tl.pause();
     tlLyrics.pause();
+    tlChorusLyrics.pause();
+    tlLyricsOutro.pause();
     tlhair.pause();
 
     $('#rider').removeClass('riderBounce');
@@ -377,6 +381,8 @@ function gameResume() {
     tlfg.resume();  
     tlhair.resume();  
     tlLyrics.resume();
+    tlChorusLyrics.resume();
+    tlLyricsOutro.resume();
 
 
     $('#rider').addClass('riderBounce');
@@ -446,7 +452,7 @@ function wheelie() {
     $('#rider').removeClass('riderBounce');
     $('#shadow').removeClass('shadowBounce');
 
-    if(tl.isActive() && wheelieCount % 3 === 0)
+    if(tl.isActive() && wheelieCount % 2 === 0)
     {
         speechtxt.innerHTML="right on!!";    
         gsap.set(speechbub,{alpha:1});
@@ -525,7 +531,7 @@ function forwards() {
     
     jumpingtxt.innerHTML="drive";
 
-    if(tl.isActive() && forwardsCount % 3 === 0)
+    if(tl.isActive() && forwardsCount % 2 === 0)
     {
         var whichPhrase = Math.floor(Math.random() * goPhrases.length-1) + 1; 
         speechtxt.innerHTML=goPhrases[whichPhrase];;
@@ -581,7 +587,8 @@ function startGame(ev)
     points=0;
 
     // play the song
-    audio.currentTime=85;
+    audio.currentTime=85; 
+    
     audio.play();
     audio.addEventListener("timeupdate",traceAudioTime);
 
@@ -611,12 +618,15 @@ function startGame(ev)
     tlLyrics = gsap.timeline();
 
     tlfg = gsap.timeline({onComplete:fgTimeLineComplete});
+    tlChorusLyrics = gsap.timeline({onComplete:tlChorusLyricsComplete});
+    tlLyricsOutro = gsap.timeline({onComplete:tlLyricsOutroComplete});
 
-    TweenMax.fromTo(tlstarsBG,4,{timeScale:0},{timeScale:1,ease:Power1.easeIn})
-    TweenMax.fromTo(tlbg,4,{timeScale:0},{timeScale:1,ease:Power1.easeIn})
+
+    TweenMax.fromTo(tlstarsBG,4,{timeScale:0},{timeScale:1,ease:Power1.easeIn});
+    TweenMax.fromTo(tlbg,4,{timeScale:0},{timeScale:1,ease:Power1.easeIn});
 
     
-    tlintro = gsap.timeline({onComplete:playObstaclesTL});
+    // tlintro = gsap.timeline({onComplete:playObstaclesTL});
 
     tlintro.addLabel("FGs BGs", "<")
         .add(writeLyrics, "<")
@@ -1134,7 +1144,7 @@ function writeLyrics(){
         .to("#lyrics7",{display:"none",duration:0},20)
 
         .to("#lyrics8",{display:"block",duration:0},20.5)
-        .to("#lyrics8",{display:"none",duration:0},22.5) 
+        .to("#lyrics8",{display:"none",duration:0},21.5) 
 
         .addLabel('verse2')
         .to("#lyrics9",{display:"block",duration:0},verse2Start+1.25)
@@ -1168,25 +1178,23 @@ function writeLyrics(){
 
 function writeChorusLyrics(){
     
-    // [todo] sync chorus lyrics:
+    gsap.set(lyricsChorustxt,{alpha:1});
 
-    // gsap.set(lyricsChorustxt,{alpha:1});
-    var tlChorusLyrics = gsap.timeline({onComplete:tlChorusLyricsComplete});
     tlChorusLyrics.addLabel('chorus')
-        .to("#lyrics22",{display:"block",duration:0},1)
-        .to("#lyrics22",{display:"none",duration:0},3)
+        .to("#lyrics22",{display:"block",duration:0},0)
+        .to("#lyrics22",{display:"none",duration:0},5)
         
-        .to("#lyrics23",{display:"block",duration:0},3.5)
-        .to("#lyrics23",{display:"none",duration:0},6)
+        .to("#lyrics23",{display:"block",duration:0},5.2)
+        .to("#lyrics23",{display:"none",duration:0},10.5)
         
-        .to("#lyrics24",{display:"block",duration:0},6)
-        .to("#lyrics24",{display:"none",duration:0},8.5)
+        .to("#lyrics24",{display:"block",duration:0},11)
+        .to("#lyrics24",{display:"none",duration:0},14)
 
-        .to("#lyrics25",{display:"block",duration:0},9)
-        .to("#lyrics25",{display:"none",duration:0},12)
+        .to("#lyrics25",{display:"block",duration:0},14)
+        .to("#lyrics25",{display:"none",duration:0},16)
 
-        .to("#lyrics26",{display:"block",duration:0},12)
-        .to("#lyrics26",{display:"none",duration:0},14);
+        .to("#lyrics26",{display:"block",duration:0},16)
+        .to("#lyrics26",{display:"none",duration:0},21.5);
 
 }
 
@@ -1195,7 +1203,6 @@ function tlChorusLyricsComplete(){
 }
 
 function writeOutroLyrics(){
-    var tlLyricsOutro = gsap.timeline();
     tlLyricsOutro.addLabel('outro')
         .to("#lyrics18",{display:"block",duration:0},1)
         .to("#lyrics18",{display:"none",duration:0},3)
@@ -1210,8 +1217,8 @@ function writeOutroLyrics(){
         .to("#lyrics21",{display:"none",duration:0},12)
 }
 
-function tlChorusLyricsComplete(){
-    
+function tlLyricsOutroComplete(){
+    gsap.set(lyricsChorustxt,{alpha:0});
 }
 
 var chorus1Played = false;
@@ -1219,6 +1226,8 @@ var chorus2Played = false;
 var outroPlayed = false;
 
 function traceAudioTime(){
+    console.log(audio.currentTime-85)
+
     var chorus1Start = 21;
     var chorus2Start = 178;
     var outroStart = 209.5;
@@ -1227,9 +1236,10 @@ function traceAudioTime(){
         chorus1Played=true;
         writeChorusLyrics();
     }
-    if(audio.currentTime-85 >= chorus2Start && !chorus1Played){
+    if(audio.currentTime-85 >= chorus2Start && !chorus2Played){
         chorus2Played=true;
-        writeChorusLyrics();
+        gsap.set(lyricsChorustxt,{alpha:1});
+        tlChorusLyrics.restart();
     }
     
     if( audio.currentTime-85 >= outroStart && !outroPlayed){
