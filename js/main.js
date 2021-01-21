@@ -100,28 +100,28 @@ var holdFrame = function(frame, time) {
 
 
 function BindButtons_gameResume(){
-    console.log("BindButtons_gameResume");
+    // console.log("BindButtons_gameResume");
     
     btnMoveDown.addEventListener('touchend', gameResume);
     document.body.addEventListener('keypress', gameResume);
 }
 
 function unBindButtons_gameResume(){
-    console.log("unBindButtons_gameResume");
+    // console.log("unBindButtons_gameResume");
 
     btnMoveDown.removeEventListener('touchend', gameResume);
     document.body.removeEventListener('keypress', gameResume);
 }
 
 function BindButtons_startGame(){
-    console.log("BindButtons_startGame");
+    // console.log("BindButtons_startGame");
 
     btnMoveDown.addEventListener('touchend', startGame);
     document.body.addEventListener('keypress', startGame);
 }
 
 function unBindButtons_startGame(){
-    console.log("unBindButtons_startGame");
+    // console.log("unBindButtons_startGame");
 
     btnMoveDown.removeEventListener('touchend', startGame);
     document.body.removeEventListener('keypress', startGame);
@@ -129,7 +129,7 @@ function unBindButtons_startGame(){
 
 
 function BindButtons_gamePlay(){
-    console.log("BindButtons_gamePlay")
+    // console.log("BindButtons_gamePlay")
 
     // remove StartGame Event Listeners 
     unBindButtons_startGame();
@@ -349,7 +349,7 @@ function gamePause() {
     gsap.set(["#rider-stopped"],{alpha:1});
     gsap.set(["#rider-go"],{alpha:0});
 
-    jumpingtxt.innerHTML="pause";
+    jumpingtxt.innerHTML="paused";
     gsap.set(pausedtxt,{alpha:1});
 
 
@@ -462,12 +462,16 @@ function wheelie() {
     $('#rider').removeClass('riderBounce');
     $('#shadow').removeClass('shadowBounce');
 
+    jumpingtxt.innerHTML="&#47;&#47;";
+    gsap.delayedCall(.7,function(){
+        jumpingtxt.innerHTML="go";
+    });
+
     if(tl.isActive() && wheelieCount % 2 === 0)
     {
         speechtxt.innerHTML="right on!!";    
         gsap.set(speechbub,{alpha:1});
         gsap.delayedCall(.7,function(){
-            jumpingtxt.innerHTML="go";
             speechtxt.innerHTML="";
             gsap.to(speechbub,0,{alpha:0});
         })
@@ -491,8 +495,11 @@ function nollie() {
     $('#rider').removeClass('riderBounce');
     $('#shadow').removeClass('shadowBounce');
 
-    jumpingtxt.innerHTML="woah";
-    speechtxt.innerHTML="";
+    jumpingtxt.innerHTML='&#92;&#92;';
+    gsap.delayedCall(.7,function(){
+        jumpingtxt.innerHTML="go";
+    });
+    
 
     gsap.to(rider,1,{rotationZ:30})
     gsap.to(shadow,1,{x:-45})
@@ -512,6 +519,9 @@ function backwards() {
     $('#player').removeClass('forwards');   
 
     jumpingtxt.innerHTML="brakes";
+    gsap.delayedCall(.7,function(){
+        jumpingtxt.innerHTML="go";
+    });
 
     if(tl.isActive() && backwardsCount % 3 === 0)
     {
@@ -523,10 +533,6 @@ function backwards() {
             gsap.to(speechbub,0,{alpha:0});
         })
     }
-
-    gsap.delayedCall(1,function(){
-        jumpingtxt.innerHTML="go";
-    })
 }
 
 var forwardsCount = 0;
@@ -578,8 +584,6 @@ function backtoBounce(){
     if(isJumping){
         isJumping=false;
     }
-    // jumpingtxt.innerHTML="go";
-    // speechtxt.innerHTML="";
 
 
     $('#rider').addClass('riderBounce');
@@ -664,16 +668,15 @@ function startGame(ev)
         
 }
 
-function typeText(whichEle, speed, thisdelay){
-    console.log(whichEle);
+function typeText(whichEle, thisLength){
     // typewriter text
-    var mySplitText = new SplitText(whichEle, {type:"chars"}),
+    var mySplitText = new SplitText(whichEle, {type:"words,chars"}),
         numChars = mySplitText.chars.length,
-        characterTime = (speed/(numChars+6));
+        characterTime = (thisLength/(numChars+6));
         
         TweenMax.set(mySplitText.chars, {alpha:0});
         for(var i = 0; i < numChars; i++){
-            TweenMax.to(mySplitText.chars[i], 0, {alpha:1, delay:thisdelay+(i * characterTime),ease:Linear.easeNone});
+            TweenMax.to(mySplitText.chars[i], 0, {alpha:1, delay:(i * characterTime),ease:Linear.easeNone});
         }
 }
 
@@ -1021,10 +1024,11 @@ function playerCollided(whichObstacleHit) {
 
             gsap.to(shadow,.2,{alpha:0})
             
+
+            jumpingtxt.innerHTML="@";
+
             // say random phrase:
             var whichPhrase = Math.floor(Math.random() * collidedTxts.length-1) + 1; 
-            jumpingtxt.innerHTML=collidedTxts[whichPhrase];
-
             speechtxt.innerHTML=collidedTxts[4];
 
             gsap.set(speechbub,{alpha:1});
@@ -1086,17 +1090,18 @@ function doRiderCrash(){
 
     $('#rider').removeClass('riderFly');
 
-    oww.play();
+    // [todo] //better crash sound
+    // oww.play();
 
     gsap.set(flame,{alpha:1});
 
     // say random phrase:
     var whichPhrase = Math.floor(Math.random() * collidedTxts.length-1) + 1; 
     
-    // say move the wreck hahah
-    jumpingtxt.innerHTML=collidedTxts[whichPhrase];
+    
+    jumpingtxt.innerHTML="crashed";
 
-    // another random phrase:
+    // say something for crash
     whichPhrase = Math.floor(Math.random() * collidedTxts.length-1) + 1; 
 
     speechtxt.innerHTML=collidedTxts[whichPhrase];
@@ -1147,24 +1152,24 @@ function writeLyrics(){
 
 
         .addLabel('chorus')
-        .to("#lyrics22",{display:"block",duration:0},chorus1Start+0)
-        .call(typeText,["#lyrics22",5,chorus1Start+0],this,chorus1Start+0)
+        .to("#lyrics22",{display:"block",duration:0},chorus1Start+0)        
+        .call(typeText,["#lyrics22",5],chorus1Start+0)
         .to("#lyrics22",{display:"none",duration:0},chorus1Start+5)
         
         .to("#lyrics23",{display:"block",duration:0},chorus1Start+5.2)
-        .call(typeText,["#lyrics23",5.3,chorus1Start+5.2],this,chorus1Start+5.2)
+        .call(typeText,["#lyrics23",5.3],chorus1Start+5.2)
         .to("#lyrics23",{display:"none",duration:0},chorus1Start+10.5)
         
         .to("#lyrics24",{display:"block",duration:0},chorus1Start+11)
-        .call(typeText,["#lyrics24",3,chorus1Start+11],this,chorus1Start+11)
+        .call(typeText,["#lyrics24",3],chorus1Start+11)
         .to("#lyrics24",{display:"none",duration:0},chorus1Start+14)
 
         .to("#lyrics25",{display:"block",duration:0},chorus1Start+14)
-        .call(typeText,["#lyrics25",2,chorus1Start+14],this,chorus1Start+14)
+        .call(typeText,["#lyrics25",2],chorus1Start+14)
         .to("#lyrics25",{display:"none",duration:0},chorus1Start+16)
 
         .to("#lyrics26",{display:"block",duration:0},chorus1Start+16)
-        .call(typeText,["#lyrics26",5.5,chorus1Start+16],this,chorus1Start+16)
+        .call(typeText,["#lyrics26",5.5],chorus1Start+16)
         .to("#lyrics26",{display:"none",duration:0},chorus1Start+21.5)
 
 
@@ -1202,23 +1207,23 @@ function writeLyrics(){
 
         .addLabel('chorus2')
         .to("#lyrics27",{display:"block",duration:0},chorus2Start+0)
-        .call(typeText,["#lyrics27",5,chorus2Start+0],this,chorus2Start+0)
+        .call(typeText,["#lyrics27",5],chorus2Start+0)
         .to("#lyrics27",{display:"none",duration:0},chorus2Start+5)
         
         .to("#lyrics23",{display:"block",duration:0},chorus2Start+5.2)
-        .call(typeText,["#lyrics23",5.3,chorus1Start+5.2],this,chorus2Start+5.2)
+        .call(typeText,["#lyrics23",5.3],chorus2Start+5.2)
         .to("#lyrics23",{display:"none",duration:0},chorus2Start+10.5)
         
         .to("#lyrics24",{display:"block",duration:0},chorus2Start+11)
-        .call(typeText,["#lyrics24",3,chorus1Start+11],this,chorus2Start+11)
+        .call(typeText,["#lyrics24",3],chorus2Start+11)
         .to("#lyrics24",{display:"none",duration:0},chorus2Start+14)
 
         .to("#lyrics25",{display:"block",duration:0},chorus2Start+14)
-        .call(typeText,["#lyrics25",2,chorus2Start+14],this,chorus2Start+14)
+        .call(typeText,["#lyrics25",2],chorus2Start+14)
         .to("#lyrics25",{display:"none",duration:0},chorus2Start+16)
 
         .to("#lyrics26",{display:"block",duration:0},chorus2Start+16)
-        .call(typeText,["#lyrics26",5.5,chorus2Start+16],this,chorus2Start+16)
+        .call(typeText,["#lyrics26",5.5],chorus2Start+16)
         .to("#lyrics26",{display:"none",duration:0},chorus2Start+21.5)
 
 
@@ -1238,7 +1243,8 @@ function writeLyrics(){
 }
 
 function traceAudioTime(){
-    console.log(audio.currentTime-85);
+    // [todo] - if need to see audio playback time
+    // console.log(audio.currentTime-85);
 }
 
 
