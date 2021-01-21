@@ -43,7 +43,7 @@
 
         // array of all the external js files we want to politely load
 
-        var arrExtJs = ['https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js','https://cdnjs.cloudflare.com/ajax/libs/gsap/3.4.2/gsap.min.js','https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js','js/splitText.min.js','js/main.js'];
+        var arrExtJs = ['https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js','https://cdnjs.cloudflare.com/ajax/libs/gsap/3.4.2/gsap.min.js','https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js','js/splittext.min.js','js/main.js'];
         var loadJsIndex = 0;
 
         /**
@@ -77,7 +77,7 @@
             }
             else
             {
-                init()
+                init();
             }
         }
     </script>
@@ -101,14 +101,17 @@
             -moz-box-sizing: border-box;
             -webkit-box-sizing: border-box;
             border:1px solid #666666;
+            height: 100%;
+            width: 100%;
+            min-width: 970px;
+            min-height: 470px;
         }
         #loadingImage{
             position:absolute;
             left:50%;
             top:50%;
             transform: translate(-50%,-50%);
-            height: 30px;
-            width: 30px;
+            color: #fff;
         }
     </style>
     <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
@@ -116,14 +119,13 @@
 </head>
 <body>
     <audio id="audio">
-        <!-- <source type="audio/mp3" mute src="http://scottapmiller.com/scottoftheriver/01_Stars_Are_My_Guide.mp3"> -->
-        <source type="audio/mp3" src="01_Stars_Are_My_Guide.mp3">
+        <source type="audio/mp3">
     </audio>
 
 
     <div id="loadingContent">
         <div id="loadingImage">
-            
+            loading
         </div>
     </div>
     <div id="wrap">
@@ -203,7 +205,7 @@
                 <div id="resumetxt" class="copy hidden">press <img id="introBtnS" src="images/introBtnS.png"> to continue</div>
                 
                 <div id="introTxt3" class="copy introTxt introTxtButt hidden">use <span id="introBtn"><img src="images/introBtn.png"></span> to move</div>
-                <div id="introTxt4" class="copy introTxt introTxtButt hidden">use <span id="introBtnK"><img src="images/introBtnK.png"></span> to jump</div>
+                <div id="introTxt4" class="copy introTxt introTxtButt hidden">use <span id="introBtnK"><img src="images/introBtnK.png"></span> to jump<br>use <span id="introBtnJ"><img src="images/introBtnJ.png"></span> to wheelie</div>
                 <div id="endtxt" class="copy hidden">
                     score<br>
                     <div id="scoretxt">81</div><br>
@@ -258,7 +260,6 @@
                     <button id="btnMoveBackwards" class="btnMove" />
                     <button id="btnMoveDown" class="btnMove" />
                 </div>
-                <button id="btnStart" class="mobileControl" />
                 <button id="btnJump" class="mobileControl" />
             </div>
          </div>

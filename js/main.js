@@ -8,7 +8,7 @@ html = document.documentElement;
 var pageHeight = Math.max( body.scrollHeight, body.offsetHeight, 
 html.clientHeight, html.scrollHeight, html.offsetHeight );
 
-var btnMoveUp, btnMoveForwards, btnMoveBackwards, btnMoveDown, btnJump, btnStart;
+var btnMoveUp, btnMoveForwards, btnMoveBackwards, btnMoveDown, btnJump;
 
 
 var tlintro = gsap.timeline(),
@@ -43,7 +43,6 @@ function init()
     btnMoveBackwards = document.getElementById("btnMoveBackwards");
     btnMoveDown = document.getElementById("btnMoveDown");
     btnJump = document.getElementById("btnJump");
-    btnStart = document.getElementById("btnStart");
     
     resizeWindow()
 
@@ -60,23 +59,30 @@ function init()
 function preloadAudio(){
     console.log("preloadAudio");
 
-    // audio.addEventListener('canplaythrough', loadedAudio, false);
-    // loadedAudio();
+    audio.addEventListener('canplaythrough', loadedAudio);
+    audio.addEventListener('error', failedtoLoadAudio);
 
-    // [todo] preloader for audio!
-    loadedAudio();
+    audio.src = "http://scottapmiller.com/scottoftheriver/01_Stars_Are_My_Guide.mp3";
+
+    audio.load(); 
+}
+
+function failedtoLoadAudio(e){
+    console.log("COULD NOT LOAD AUDIO");
 }
 
 function loadedAudio(){
+    audio.removeEventListener('canplaythrough', loadedAudio);
+    
+
     console.log("loaded Audio");
 
     // Start Ad
     document.getElementById("loadingContent").style.display="none";
     container.style.display = "block";
 
-    btnStart.addEventListener('touchend', startGame);
-    btnStart.addEventListener('mouseup', startGame);
-    document.body.addEventListener('keypress', startGame);
+    // add StartGame event listeners:
+    BindButtons_startGame();
 }
 
 var holdFrame = function(frame, time) {
@@ -84,34 +90,90 @@ var holdFrame = function(frame, time) {
     frameWaitTimer = window.setTimeout(function(){showFrame(frame);}, delay);
 }
 
-function bindButtons(){
-    document.body.addEventListener('keypress', keypress);
-    document.body.addEventListener('keyup', keyUp);
+
+function BindButtons_gameResume(){
+    console.log("BindButtons_gameResume");
+    
+    btnMoveDown.addEventListener('touchend', gameResume);
+    document.body.addEventListener('keypress', gameResume);
+}
+
+function unBindButtons_gameResume(){
+    console.log("unBindButtons_gameResume");
+
+    btnMoveDown.removeEventListener('touchend', gameResume);
+    document.body.removeEventListener('keypress', gameResume);
+}
+
+function BindButtons_startGame(){
+    console.log("BindButtons_startGame");
+
+    btnMoveDown.addEventListener('touchend', startGame);
+    document.body.addEventListener('keypress', startGame);
+}
+
+function unBindButtons_startGame(){
+    console.log("unBindButtons_startGame");
+
+    btnMoveDown.removeEventListener('touchend', startGame);
+    document.body.removeEventListener('keypress', startGame);
+}
 
 
-    btnMoveUp.addEventListener("touchstart", mobileBtnPressed);
-    btnMoveForwards.addEventListener("touchstart", mobileBtnPressed);
-    btnMoveBackwards.addEventListener("touchstart", mobileBtnPressed);
-    btnMoveDown.addEventListener("touchstart", mobileBtnPressed);
-    btnJump.addEventListener("touchstart", mobileBtnPressed);
+function BindButtons_gamePlay(){
+    console.log("BindButtons_gamePlay")
 
-    btnMoveUp.addEventListener("touchend", mobileBtnReleased);
-    btnMoveForwards.addEventListener("touchend", mobileBtnReleased);
-    btnMoveBackwards.addEventListener("touchend", mobileBtnReleased);
-    btnMoveDown.addEventListener("touchend", mobileBtnReleased);
-    btnJump.addEventListener("touchend", mobileBtnReleased);
+    // remove StartGame Event Listeners 
+    unBindButtons_startGame();
+    unBindButtons_gameResume();
+        
 
-    btnMoveUp.addEventListener("mousedown", mobileBtnPressed);
-    btnMoveForwards.addEventListener("mousedown", mobileBtnPressed);
-    btnMoveBackwards.addEventListener("mousedown", mobileBtnPressed);
-    btnMoveDown.addEventListener("mousedown", mobileBtnPressed);
-    btnJump.addEventListener("mousedown", mobileBtnPressed);
+    // add Key Press listeners for game controls:
 
-    btnMoveUp.addEventListener("mouseup", mobileBtnReleased);
-    btnMoveForwards.addEventListener("mouseup", mobileBtnReleased);
-    btnMoveBackwards.addEventListener("mouseup", mobileBtnReleased);
-    btnMoveDown.addEventListener("mouseup", mobileBtnReleased);
-    btnJump.addEventListener("mouseup", mobileBtnReleased);
+        // btns pressed:
+
+            document.body.addEventListener('keypress', keypress);
+
+            btnMoveUp.addEventListener("touchstart", mobileBtnPressed);
+            btnMoveForwards.addEventListener("touchstart", mobileBtnPressed);
+            btnMoveBackwards.addEventListener("touchstart", mobileBtnPressed);
+            btnMoveDown.addEventListener("touchstart", mobileBtnPressed);
+            btnJump.addEventListener("touchstart", mobileBtnPressed);
+
+        // btns released :
+
+            document.body.addEventListener('keyup', keyUp);
+
+            btnMoveUp.addEventListener("touchend", mobileBtnReleased);
+            btnMoveForwards.addEventListener("touchend", mobileBtnReleased);
+            btnMoveBackwards.addEventListener("touchend", mobileBtnReleased);
+            btnMoveDown.addEventListener("touchend", mobileBtnReleased);
+            btnJump.addEventListener("touchend", mobileBtnReleased);
+}
+
+function unBindButtons_gamePlay(){
+
+    // remove Key Press listeners for game controls:
+
+        // btns pressed:
+
+            document.body.removeEventListener('keypress', keypress);
+
+            btnMoveUp.removeEventListener("touchstart", mobileBtnPressed);
+            btnMoveForwards.removeEventListener("touchstart", mobileBtnPressed);
+            btnMoveBackwards.removeEventListener("touchstart", mobileBtnPressed);
+            btnMoveDown.removeEventListener("touchstart", mobileBtnPressed);
+            btnJump.removeEventListener("touchstart", mobileBtnPressed);
+
+        // btns released :
+
+            document.body.removeEventListener('keyup', keyUp);
+
+            btnMoveUp.removeEventListener("touchend", mobileBtnReleased);
+            btnMoveForwards.removeEventListener("touchend", mobileBtnReleased);
+            btnMoveBackwards.removeEventListener("touchend", mobileBtnReleased);
+            btnMoveDown.removeEventListener("touchend", mobileBtnReleased);
+            btnJump.removeEventListener("touchend", mobileBtnReleased);
 }
 
 function mobileBtnPressed(){
@@ -195,6 +257,9 @@ function keypress(e){
 
     
         if(e.code=="KeyJ") {
+            gsap.killTweensOf(backtoBounce);
+            $('#introBtnJ').addClass('pressedJ');
+
             wheelie();
         }
         if(e.code=="KeyK") {
@@ -206,7 +271,6 @@ function keypress(e){
         if(e.code=="KeyL") {
             nollie();
         }
-
 
         if(e.code=="KeyD") {
             forwards();
@@ -246,7 +310,7 @@ function keypress(e){
     }
 }
 function keyUp(){
-    $('#introBtn,#introBtnK').removeClass();
+    $('#introBtn,#introBtnK,#introBtnJ').removeClass();
 }
 
 function gamePause() {
@@ -254,11 +318,6 @@ function gamePause() {
         
     audio.pause();
 
-
-    btnStart.removeEventListener('touchend', startGame);
-    btnStart.removeEventListener('mouseup', startGame);
-    document.body.removeEventListener('keypress', startGame);
-    
     tlfg.pause();
     tlbg.pause();
     tlstarsBG.pause();
@@ -277,17 +336,18 @@ function gamePause() {
     jumpingtxt.innerHTML="pause";
     gsap.set(pausedtxt,{alpha:1});
 
-    document.body.addEventListener('keypress', gameResume);
-    btnStart.addEventListener('touchend', gameResume);
-    btnStart.addEventListener('mouseup', gameResume);
+
+    
+    unBindButtons_gamePlay();
+    unBindButtons_gameResume();
+
+    BindButtons_gameResume();
 }
 
 function gameResume() {
     console.log('resume');
 
-    document.body.removeEventListener('keypress', gameResume);
-    btnStart.removeEventListener('touchend', gameResume);
-    btnStart.removeEventListener('mouseup', gameResume);
+    
 
     // resuming after crash
     if(collided) {
@@ -332,8 +392,7 @@ function gameResume() {
     
     gsap.set(pausedtxt,{alpha:0});
 
-    document.body.addEventListener('keypress', keypress);
-    document.body.addEventListener('keyup', keyUp);
+    BindButtons_gamePlay();
 }
 
 
@@ -517,20 +576,20 @@ function backtoBounce(){
 /**
  * switch statement for animating ad
  */
-function startGame()
+function startGame(ev)
 {
     points=0;
 
+    // play the song
     audio.currentTime=85;
     audio.play();
     audio.addEventListener("timeupdate",traceAudioTime);
 
+
+    // prevent touch default:
+    ev.preventDefault();
+
     
-
-    btnStart.removeEventListener('touchend', startGame);
-    btnStart.removeEventListener('mouseup', startGame);
-    document.body.removeEventListener('keypress', startGame);
-
     // reset
     gsap.set([flame,gameover,"#rider-stopped"],{alpha:0});
     gsap.set(["#player","#rider-go"],{alpha:1});
@@ -542,7 +601,7 @@ function startGame()
 
 
     // setup all listeners for gaming:
-    bindButtons();
+    BindButtons_gamePlay();
     
     
 
@@ -558,6 +617,7 @@ function startGame()
 
     
     tlintro = gsap.timeline({onComplete:playObstaclesTL});
+
     tlintro.addLabel("FGs BGs", "<")
         .add(writeLyrics, "<")
         .add(playBGs,"<")
@@ -576,21 +636,13 @@ function startGame()
 
         .add(playFGs,"<")
     
-    // .addLabel("intro txt", "1")
-        // .set(introTxt1,{alpha:1},"1")
-        // .call(typeText,["introTxt1"],"1")
-        
-        // .set(introTxt1,{alpha:0},"4")
-        
-        // .call(typeText,["introTxt2"],"5")
-        // .set(introTxt2,{alpha:1},"5")
-        // .set(introTxt2,{alpha:0},"8")
+        // [todo] - intro off
 
-        .set(introTxt3,{alpha:1},"<1")
-        .set(introTxt3,{alpha:0},"<5")
+        // .set(introTxt3,{alpha:1},"<1")
+        // .set(introTxt3,{alpha:0},"+=4")
 
         .set(introTxt4,{alpha:1},"<.75")
-        .set(introTxt4,{alpha:0},"<2");
+        .set(introTxt4,{alpha:0},"+=4");
         
 }
 
@@ -698,7 +750,7 @@ function increaseSpeed(initspeed,maxspeed,thisTL){
 
 var obsSpeed = 1.5;
 var obsStartLeft = 1000;
-var obsEndLeft = -420;
+var obsEndLeft = -520;
 function playObstaclesTL(){
     // obstacles timeline! 
     gsap.killTweensOf(detectCollision);
@@ -720,25 +772,7 @@ function playObstaclesTL(){
         .set("#obstacle4", {left:obsStartLeft+"px"}, ">2")
         .to("#obstacle4", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
 
-        // bridge
-        .set("#obstacle4", {left:obsStartLeft+"px"}, ">2")
-        .to("#obstacle4", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
-
-        // bridge
-        .set("#obstacle4", {left:obsStartLeft+"px"}, ">2")
-        .to("#obstacle4", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
-
-        // bridge
-        .set("#obstacle4", {left:obsStartLeft+"px"}, ">2")
-        .to("#obstacle4", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
-
-        // bridge
-        .set("#obstacle4", {left:obsStartLeft+"px"}, ">2")
-        .to("#obstacle4", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
         
-
-
-
         // wall R
         .set("#obstacle3", {left:obsStartLeft+"px"}, ">")
         .to("#obstacle3", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">1")
@@ -768,6 +802,10 @@ function playObstaclesTL(){
         .set("#obstacle3", {left:obsStartLeft+"px"}, ">")
         .to("#obstacle3", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
 
+        // bridge
+        .set("#obstacle4", {left:obsStartLeft+"px"}, ">2")
+        .to("#obstacle4", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+
         // wall L
         .set("#obstacle2", {left:obsStartLeft+"px"}, ">2")
         .to("#obstacle2", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
@@ -781,6 +819,18 @@ function playObstaclesTL(){
         
         .set("#obstacle1", {alpha:1,left:obsStartLeft+"px"}, ">")
         .to("#obstacle1", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">1")
+
+        // bridge
+        .set("#obstacle4", {left:obsStartLeft+"px"}, ">2")
+        .to("#obstacle4", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+
+        // bridge
+        .set("#obstacle4", {left:obsStartLeft+"px"}, ">2")
+        .to("#obstacle4", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+
+        // bridge
+        .set("#obstacle4", {left:obsStartLeft+"px"}, ">2")
+        .to("#obstacle4", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
         
         .to("#tilt",10,{rotationZ:0,x:0,y:0},">")
 }
@@ -911,7 +961,7 @@ function detectCollision() {
 
         for(i=0; i < collide.length; i++){
             if(collide[i].includes("true")) {
-                console.log(collide);
+                // console.log(collide);
                 var obstacleHit = collide[i].split(':')[0];
                 playerCollided(obstacleHit);
             }
@@ -926,6 +976,7 @@ function detectCollision() {
 } 
 
 function playerCollided(whichObstacleHit) {
+
     if(!isJumping && whichObstacleHit!="obstacle4") {
         
         doObstacleHit();
@@ -977,9 +1028,7 @@ function playerCollided(whichObstacleHit) {
 
             // setup kkeypress to resume:
             gsap.set(resumetxt,{alpha:1,delay:1,onComplete:function(){
-                btnStart.addEventListener('touchend', gameResume);
-                btnStart.addEventListener('mouseup', gameResume);
-                document.body.addEventListener('keypress', gameResume);
+                BindButtons_gameResume();
             }});
         } 
         else if(whichObstacleHit=="obstacle2" || whichObstacleHit=="obstacle3") {
@@ -991,7 +1040,7 @@ function playerCollided(whichObstacleHit) {
             if(!isJumping){
                 // if we hit a bridge while not jumping (dont stop!)
                 // do nothing
-                console.log('went under bridge');
+                // console.log('went under bridge');
             } else {
                 // if we hit a bridge while jumping
                 isJumping=false;
@@ -1021,6 +1070,8 @@ function doObstacleHit() {
     tlstarsBG.pause();
     tl.pause();
     tlhair.pause();
+
+    unBindButtons_gamePlay();
 }
 
 function doRiderCrash(){
@@ -1050,9 +1101,7 @@ function doRiderCrash(){
 
     // setup kkeypress to resume:
     gsap.set(resumetxt,{alpha:1,delay:1,onComplete:function(){
-        btnStart.addEventListener('touchend', gameResume);
-        btnStart.addEventListener('mouseup', gameResume);
-        document.body.addEventListener('keypress', gameResume);
+        BindButtons_gameResume();
     }});
 }
 
@@ -1118,8 +1167,10 @@ function writeLyrics(){
 }
 
 function writeChorusLyrics(){
+    
+    // [todo] sync chorus lyrics:
 
-    gsap.set(lyricsChorustxt,{alpha:1});
+    // gsap.set(lyricsChorustxt,{alpha:1});
     var tlChorusLyrics = gsap.timeline({onComplete:tlChorusLyricsComplete});
     tlChorusLyrics.addLabel('chorus')
         .to("#lyrics22",{display:"block",duration:0},1)

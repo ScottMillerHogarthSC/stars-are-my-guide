@@ -18,7 +18,9 @@ body{
     /* below stops FireFox rendering copy too heavily */
     -moz-osx-font-smoothing: grayscale;
 
-    font-family: 'Press Start 2P';
+    font-family: 'Press Start 2P', 'Courier New', monospace;
+    /*font-weight: bold;*/
+
 }
 #wrap {
     background-color: #000;
@@ -327,7 +329,8 @@ div.bridge {
 }
 
 #introBtn,
-#introBtnK {
+#introBtnK,
+#introBtnJ {
     width: 80px;
     height: 52px;
     overflow: hidden;
@@ -335,19 +338,22 @@ div.bridge {
     position: relative;
 }
 #introBtn img,
-#introBtnK img {
+#introBtnK img,
+#introBtnJ img {
     position: absolute;
     top: 0;
     width: 80px;
 }
 #introBtnK.pressedK img { top: -52px; }
+#introBtnJ.pressedJ img { top: -52px; }
 #introBtn.pressedA img { top: -52px; }
 #introBtn.pressedS img { top: -104px; }
 #introBtn.pressedD img { top: -156px; }
 #introBtn.pressedW img { top: -208px; }
 
 
-
+#introBtnJ img,
+#introBtnJ,
 #introBtnK img,
 #introBtnK,#introBtnS {
     width: 26px;
@@ -429,7 +435,9 @@ div.bridge {
     background-color: transparent;
     background-repeat: no-repeat;
     border: none;
-    outline: none
+    outline: none;
+    cursor: pointer;
+
 }
 #btnsMove {
     bottom: 5%;
