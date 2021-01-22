@@ -87,7 +87,7 @@ body{
     position: absolute;
     left: 40px;
     height: 120px;
-    top: 270px;
+    top: 320px;
     transition: left 2s;
     width:150px;
     perspective: 250px;
@@ -160,15 +160,15 @@ body{
 @keyframes shadowBounce {
     0%{ 
         transform: translateY(0px) scale(1);
-        opacity: .3; 
+        opacity: .2; 
     }
     50%{ 
         transform: translateY(0px) scale(1.1); 
-        opacity: .5;
+        opacity: .4;
     }
     100%{ 
         transform: translateY(0px) scale(1); 
-        opacity: .3; 
+        opacity: .2; 
     }
 }
 #player.forwards {
@@ -232,13 +232,18 @@ div.hole {
     top: 292px;
     width: 360px;
 }
-img.bridge {
-    width: 600px;
-    margin-left: -140px;
+img.asteroid {
+    width: 180px;
+    animation: spin 1s infinite linear;
 }
-div.bridge {
-    top: 30px;
-    width: 390px;
+@keyframes spin {
+    0% {transform: translateY(-60px) rotate(360deg);}
+    100% {transform: translateY(-60px) rotate(0deg);}
+}
+div.asteroid {
+    top: 160px;
+    width: 180px;
+    height: 100%;
 }
 img.ramp {
     width: 791px;
@@ -392,8 +397,14 @@ div.ramp {
 #introBtnK,#introBtnS {
     width: 26px;
 }
-#introTxt3,#introTxt4 {
-    top: 155px;
+#introTxt0 {
+     top: 208px
+}
+#introTxt3 {
+    top: 207px;
+}
+#introTxt4 {
+    top: 220px;
 }
 
 #endtxt {

@@ -192,26 +192,6 @@ function unBindButtons_gamePlay(){
             btnMoveDown.removeEventListener("touchend", mobileBtnReleased);
             btnJump.removeEventListener("touchend", mobileBtnReleased);
             btnWheelie.removeEventListener("touchend", mobileBtnReleased);
-
-            
-    // bind the mobile buttons to do nothing! (except down as that is in use)
-            btnMoveUp.addEventListener("touchstart", mobileBtnDoNothing);
-            btnMoveForwards.addEventListener("touchstart", mobileBtnDoNothing);
-            btnMoveBackwards.addEventListener("touchstart", mobileBtnDoNothing);
-            btnJump.addEventListener("touchstart", mobileBtnPressed);
-            btnWheelie.addEventListener("touchstart", mobileBtnDoNothing);
-
-            btnMoveUp.addEventListener("touchend", mobileBtnDoNothing);
-            btnMoveForwards.addEventListener("touchend", mobileBtnDoNothing);
-            btnMoveBackwards.addEventListener("touchend", mobileBtnDoNothing);
-            btnJump.addEventListener("touchend", mobileBtnPressed);
-            btnWheelie.addEventListener("touchend", mobileBtnDoNothing);
-}
-
-function mobileBtnDoNothing(ev){
-    if(ev.cancelable) {
-        ev.preventDefault();
-    }
 }
 
 function mobileBtnPressed(ev){
@@ -251,7 +231,26 @@ function mobileBtnPressed(ev){
             downwards();
             $('#btnsMove').addClass('down');
             $('#introBtn').addClass('pressedS');
+
         }
+
+        // // pause 
+        // if(e.code=="KeyZ"){
+        //     gamePause();
+        //     pausedtxt.innerHTML="paused";
+
+        // }
+        // // mute (pause) 
+        // if(e.code=="KeyM"){
+        //     gamePause();
+        //     pausedtxt.innerHTML="muted";
+        // }
+
+        // // // end 
+        // // if(e.code=="KeyZ"){
+        // //     // playerCollided();
+        // // }
+
     }
 }
 function mobileBtnReleased(ev) {
@@ -298,39 +297,47 @@ function keypress(e){
 
             wheelie();
         }
-        else if(e.code=="KeyK") {
+        if(e.code=="KeyK") {
             gsap.killTweensOf(backtoBounce);
             $('#introBtnK').addClass('pressed');
             
             jump();
         }
-        else if(e.code=="KeyD") {
+        if(e.code=="KeyD") {
             forwards();
             $('#introBtn').addClass('pressedD');
         }
-        else if(e.code=="KeyA") {
+        if(e.code=="KeyA") {
             backwards();
             $('#introBtn').addClass('pressedA');
 
         }
-        else if(e.code=="KeyW") {
+        if(e.code=="KeyW") {
             upwards();
             $('#introBtn').addClass('pressedW');
         }
-        else if(e.code=="KeyS") {
+        if(e.code=="KeyS") {
             downwards();
             $('#introBtn').addClass('pressedS');
         }
+
+        // pause 
+        if(e.code=="KeyZ"){
+            gamePause();
+            pausedtxt.innerHTML="paused";
+
+        }
         // mute (pause) 
-        else if(e.code=="KeyM"){
+        if(e.code=="KeyM"){
             gamePause();
             pausedtxt.innerHTML="muted";
         }
-        // pause 
-        else{
-            gamePause();
-            pausedtxt.innerHTML="paused";
-        }
+
+        // // end 
+        // if(e.code=="KeyZ"){
+        //     // playerCollided();
+        // }
+
     }
 }
 function keyUp(){
@@ -369,12 +376,7 @@ function gamePause() {
     BindButtons_gameResume();
 }
 
-function gameResume(ev) {
-    if(ev.cancelable) {
-        ev.preventDefault();
-    }
-
-
+function gameResume() {
     console.log('resume');
 
     
@@ -525,11 +527,7 @@ function wheelie() {
         gsap.delayedCall(2.4,backtoBounce);
     } else {
         // tlramp.pause();
-        
-        // do a flip
 
-        points = points + 100;
-        
         gsap.to(rider,1.5,{rotation:-360,ease:Sine.easeInOut})
         gsap.to(rider,0,{rotation:0,delay:1.5})
     }
@@ -858,12 +856,12 @@ function playObstaclesTL(){
 
         // rock R
         .to("#obstacle5", 0, {left:obsStartLeft+"px"}, "-=3")
-        // .call(setWarningTxt,["up"],"+=1")
+        .call(setWarningTxt,["up"],"+=1")
         .to("#obstacle5", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
 
         // rock L
-        .to("#obstacle2", 0, {left:obsStartLeft+"px"}, "-=2")
-        // .call(setWarningTxt,["down"],"<")
+        .to("#obstacle2", 0, {left:obsStartLeft+"px"}, "-=3")
+        .call(setWarningTxt,["down"],"+=1")
         .to("#obstacle2", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
             
             
@@ -1113,68 +1111,83 @@ function playerCollided(whichObstacleHit) {
     rotateZAmount,
     rotateYAmount;
 
-    switch (whichObstacleHit){
+    if(!isJumping && whichObstacleHit!="obstacle4" && whichObstacleHit!="obstacle3") {
+        
+        doObstacleHit();
 
-        case "obstacle1":   // hole!
+        if(whichObstacleHit=="obstacle1" && !isJumping) {
+            
+            // hole
+
+            points=points-100;
+            pointstxt.innerHTML=points;
+
+
+
+            
+            // console.log(playerTop);
+            if(playerTop==320)
+            {
+                yAmount = 25;
+                rotateZAmount = 30;
+                rotateYAmount = 30;
+            } else if(playerTop<playerBotPos){
+                yAmount = 160;
+                rotateZAmount = 40;
+                rotateYAmount = 0;
+            } else {
+                yAmount = -5;
+                rotateZAmount = 40;
+                rotateYAmount = 20;
+            }
+
+            gsap.to(playerMovements,1,{x:240,y:yAmount,rotationZ:rotateZAmount,rotationY:rotateYAmount,scale:.4});
+            gsap.to(player,.5,{alpha:0,delay:.5});
+
+            gsap.to(shadow,.2,{alpha:0})
+            
+
+            jumpingtxt.innerHTML="@";
+
+            // say random phrase:
+            var whichPhrase = Math.floor(Math.random() * collidedTxts.length-1) + 1; 
+            speechtxt.innerHTML=collidedTxts[4];
+
+            gsap.set(speechbub,{alpha:1});
+            gsap.to(speechbub,0,{alpha:1,delay:0});
+
+
+            // setup kkeypress to resume:
+            gsap.set(resumetxt,{alpha:1,delay:1,onComplete:function(){
+                BindButtons_gameResume();
+            }});
+        } 
+        else if(whichObstacleHit=="obstacle2") {
+            // rock
+            doRiderCrash();
+        }
+    } else if(whichObstacleHit=="obstacle4") {
+
             if(!isJumping){
+                // if we hit a asteroid while not jumping (dont stop!)
+                // do nothing
+                // console.log('went under asteroid');
+            } else {
+                // if we hit a asteroid while jumping
+                isJumping=false;
                 doObstacleHit();
 
-                points=points-100;
-                pointstxt.innerHTML=points;
-                
-                
-                if(playerTop==320)
-                {
-                    yAmount = 25;
-                    rotateZAmount = 30;
-                    rotateYAmount = 30;
-                } else if(playerTop<playerBotPos){
-                    yAmount = 160;
-                    rotateZAmount = 40;
-                    rotateYAmount = 0;
-                } else {
-                    yAmount = -5;
-                    rotateZAmount = 40;
-                    rotateYAmount = 20;
-                }
-
-                gsap.to(playerMovements,1,{x:240,y:yAmount,rotationZ:rotateZAmount,rotationY:rotateYAmount,scale:.4});
-                gsap.to(player,.5,{alpha:0,delay:.5});
-
-                gsap.to(shadow,.2,{alpha:0})
-                
-
-                jumpingtxt.innerHTML="@";
-
-                // say random phrase:
-                var whichPhrase = Math.floor(Math.random() * collidedTxts.length-1) + 1; 
-                speechtxt.innerHTML=collidedTxts[4];
-
-                gsap.set(speechbub,{alpha:1});
-                gsap.to(speechbub,0,{alpha:1,delay:0});
-
-
-                // setup kkeypress to resume:
-                gsap.set(resumetxt,{alpha:1,delay:1,onComplete:function(){
-                    BindButtons_gameResume();
-                }});
-            } else {
-                // jumped hole
+                doRiderCrash();
             }
-            break;
+    }
+    else if(whichObstacleHit=="obstacle5") {
+        doObstacleHit();
 
+        doRiderCrash();
 
-        case "obstacle2": // rock-top (can be jumped)
-
-                if(!isJumping){
-                    doObstacleHit();
-                    doRiderCrash();
-                }
-            break;
-
-
-        case "obstacle3":   // ramp
-            console.log("hit ramp");
+    } 
+    else if(whichObstacleHit=="obstacle3") {
+        console.log("hit ramp");
 
             if(isJumping){
                 // hit a ramp while isJumping true
@@ -1219,35 +1232,7 @@ function playerCollided(whichObstacleHit) {
                         .to(shadow,2,{alpha:.4,scaleX:1,ease:Bounce.easeOut},"<")
                 }
             }
-            break;
-
-
-        case "obstacle4": // asteroid
-
-            if(!isJumping){
-                // if we hit a asteroid while not jumping (dont stop!)
-                // do nothing
-                // console.log('went under asteroid');
-            } else {
-                // if we hit a asteroid while jumping
-                isJumping=false;
-                doObstacleHit();
-
-                doRiderCrash();
-            }
-    
-        break;
-
-
-        case "obstacle5":   // rock bottom (cannot be jumped)
-            if(isJumping){
-                isJumping=false;
-            }
-            doObstacleHit();
-            doRiderCrash();
-
-        break;
-    } 
+    }
 }
 
 function tlRampComplete(){
@@ -1442,39 +1427,11 @@ function writeLyrics(){
 }
 
 
-var doneChorusTint = false,
-    doneChorusTintBack = false,
-    doneLightning = false,
+var doneLightning = false,
     doneLightning2 = false,
     doneSlowdown = false;
 function traceAudioTime(){
-
     
-    // make BG red for Chorus 1
-    if(audio.currentTime-85>chorus1Start && !doneChorusTint) {
-        doneChorusTint=true;
-        gsap.to([".bg"],
-            {   duration: 4,
-                webkitFilter: "hue-rotate(-220deg)",
-                filter: "hue-rotate(-220deg)"
-            }
-        );
-    }
-    
-    // make BG normal aftee Chorus 1
-    if(audio.currentTime-85>verse2Start && !doneChorusTintBack) {
-        doneChorusTintBack=true;
-        gsap.to([".bg"],
-            {   duration: 4,
-                webkitFilter: "hue-rotate(0deg)",
-                filter: "hue-rotate(0deg)"
-            }
-        );
-    }
-
-    
-
-    // flash lightning at heavy drop and go fast!!
     if(audio.currentTime-85>124.9 && !doneLightning) {
         doneLightning=true;
         gsap.fromTo(".bgToGo", 
@@ -1491,13 +1448,12 @@ function traceAudioTime(){
         gsap.to([tl,tlfg,tlbg,tlstarsBG], 1, {timeScale:1.5, ease:Quad.easeIn})
     }
 
-    // slow back down for final chorus
     if(audio.currentTime-85>chorus2Start && !doneSlowdown) {
         doneSlowdown=true;
         gsap.to([tl,tlfg,tlbg,tlstarsBG], 1, {timeScale:1.1, ease:Quad.easeOut})
     }
 
-    // more lightning at outro start and super fast to end:
+
     if(audio.currentTime-85>outroStart && !doneLightning2) {
         doneLightning2=true;
         gsap.fromTo(".bgToGo", 
@@ -1513,13 +1469,6 @@ function traceAudioTime(){
         );
         gsap.to([tl,tlfg,tlbg,tlstarsBG], 1, {timeScale:1.6, ease:Quad.easeIn})
 
-    }
-
-    // if the song is over!
-    if(audio.currentTime==audio.duration){
-        if(!endingPlayed){
-            playEnding();
-        }
     }
     // [todo] - if need to see audio playback time
     // console.log(audio.currentTime-85);
