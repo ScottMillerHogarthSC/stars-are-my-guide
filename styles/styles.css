@@ -30,8 +30,6 @@ body{
 }
 #container {
     background-color: #000;
-    perspective: 500px;
-    perspective-origin: left top;
     overflow:hidden;
     width: 970px;
     height: 475px;
@@ -81,6 +79,8 @@ body{
     height: 470px; 
     top: 0;
     left: 0;
+    perspective: 500px;
+    perspective-origin: left top;
 }
 
 #player{
@@ -281,12 +281,16 @@ div.ramp {
 
 
 /*/// */
+#copyWrap {
+    perspective: 100px;
+    perspective-origin: 870px center;
+}
 .copy {
     position: absolute;
     color: #fff;
     
     left: 50%;
-    top: 110px;
+    top: 170px;
     transform: translate(-50%,-50%) scale(2);
     user-select: none;
 }
@@ -411,9 +415,9 @@ div.ramp {
 #lyricstxt{
     width: 970px;
     display: block;
-    transform: scale(1);
+    transform: scale(1.2);
     left: 0;
-    top: 8px;
+    top: 60px;
     color: rgb(245 20 245);
 }
 .lyrics{

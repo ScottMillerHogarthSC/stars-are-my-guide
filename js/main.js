@@ -1,4 +1,5 @@
 var gameSpeed = 1;
+var audioStart = 0;
 
 var container,jumpingtxt,speechtxt,audio,oww,pointstxt,points=0,
     _currentLoop=0,
@@ -387,6 +388,8 @@ function gameResume() {
         gsap.set([speechbub,flame,resumetxt],{alpha:0});
         gsap.set(player,{x:0,y:0,rotationZ:0,rotationY:0,scale:1,alpha:1});
 
+        gsap.to(player,0.1,{alpha:0,yoyo:true,repeat:9})
+
 
 
         gsap.delayedCall(1,detectCollision);
@@ -480,39 +483,49 @@ function notJumping(){
 }
 
 var wheelieCount=0;
-var wheeliie
 function wheelie() {
-    wheelieCount++;
 
+    
+    
+    wheelieCount++;
+    
     $('#rider').removeClass('riderBounce');
     $('#shadow').removeClass('shadowBounce');
-
-    jumpingtxt.innerHTML="&#47;&#47;";
-    gsap.delayedCall(.7,function(){
-        jumpingtxt.innerHTML="go";
-    });
-
-    if(tl.isActive() && wheelieCount % 2 === 0)
-    {
-        speechtxt.innerHTML="right on!!";    
-        gsap.set(speechbub,{alpha:1});
+    
+    if(!isRamping) {
+        jumpingtxt.innerHTML="&#47;&#47;";
         gsap.delayedCall(.7,function(){
-            speechtxt.innerHTML="";
-            gsap.to(speechbub,0,{alpha:0});
-        })
-    }
+            jumpingtxt.innerHTML="go";
+        });
 
-    points++;
-    
-    gsap.to("#rider-go",1,{rotationZ:-30})
-    gsap.to("#rider-jets",1,{x:2,y:24,skewY:13})
-    
-    gsap.to(shadow,1,{x:-10,scaleX:.7})
-    gsap.to(shadow,1.5,{x:0,scaleX:1,delay:1,ease:Bounce.easeOut})
-    
-    gsap.to("#rider-go",1.5,{rotationZ:0,delay:1,ease:Bounce.easeOut});
-    gsap.to("#rider-jets",1.5,{x:0,y:0,skewY:0,delay:1,ease:Bounce.easeOut})
-    gsap.delayedCall(2.4,backtoBounce);
+        if(tl.isActive() && wheelieCount % 2 === 0)
+        {
+            speechtxt.innerHTML="right on!!";    
+            gsap.set(speechbub,{alpha:1});
+            gsap.delayedCall(.7,function(){
+                speechtxt.innerHTML="";
+                gsap.to(speechbub,0,{alpha:0});
+            })
+        }
+
+        points++;
+        
+        gsap.to("#rider-go",1,{rotationZ:-30})
+        gsap.to("#rider-jets",1,{x:2,y:24,skewY:13})
+
+        
+        gsap.to(shadow,1,{x:-10,scaleX:.7})
+        gsap.to(shadow,1.5,{x:0,scaleX:1,delay:1,ease:Bounce.easeOut})
+        
+        gsap.to("#rider-go",1.5,{rotationZ:0,delay:1,ease:Bounce.easeOut});
+        gsap.to("#rider-jets",1.5,{x:0,y:0,skewY:0,delay:1,ease:Bounce.easeOut})
+        gsap.delayedCall(2.4,backtoBounce);
+    } else {
+        // tlramp.pause();
+
+        gsap.to(rider,1.5,{rotation:-360,ease:Sine.easeInOut})
+        gsap.to(rider,0,{rotation:0,delay:1.5})
+    }
 }
 
 var backwardsCount = 0;
@@ -607,7 +620,7 @@ function startGame(ev)
     points=0;
 
     // play the song
-    audio.currentTime=85; 
+    audio.currentTime=85+audioStart;
     
     audio.play();
     audio.addEventListener("timeupdate",traceAudioTime);
@@ -772,14 +785,42 @@ function playObstaclesTL(){
     tl = gsap.timeline({onComplete:timeLineComplete});
     tl.addLabel("stage1", "<")
         .to("#player",0, {alpha:1}, "<")
-
-
         
-     // wall R
+// wall R
         .to("#obstacle5", 0, {left:obsStartLeft+"px"}, ">")
         .call(setWarningTxt,["up"],"<")
         .to("#obstacle5", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
 
+
+        // hole
+        .to("#obstacle1", 0, {left:obsStartLeft+"px"}, ">2")
+        .call(setWarningTxt,["hole"],"<")
+        .to("#obstacle1", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+
+        
+    // ramps
+        
+        // ramp
+        .to(".ramp", 0, {left:obsStartLeft+"px"}, ">2")
+        .call(setWarningTxt,["ramp"],"<")
+        .to(".ramp", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+        // ramp
+        .to(".ramp", 0, {left:obsStartLeft+"px"}, ">2")
+        .call(setWarningTxt,["ramp"],"<")
+        .to(".ramp", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+        // ramp
+        .to(".ramp", 0, {left:obsStartLeft+"px"}, ">2")
+        .call(setWarningTxt,["ramp"],"<")
+        .to(".ramp", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+        // ramp
+        .to(".ramp", 0, {left:obsStartLeft+"px"}, ">2")
+        .call(setWarningTxt,["ramp"],"<")
+        .to(".ramp", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+
+
+
+        
+     
 
 
         // wall L
@@ -806,25 +847,6 @@ function playObstaclesTL(){
         
 
 
-
-// ramps
-        
-        // ramp
-        .to(".ramp", 0, {left:obsStartLeft+"px"}, ">2")
-        .call(setWarningTxt,["ramp"],"<")
-        .to(".ramp", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
-        // ramp
-        .to(".ramp", 0, {left:obsStartLeft+"px"}, ">2")
-        .call(setWarningTxt,["ramp"],"<")
-        .to(".ramp", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
-        // ramp
-        .to(".ramp", 0, {left:obsStartLeft+"px"}, ">2")
-        .call(setWarningTxt,["ramp"],"<")
-        .to(".ramp", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
-        // ramp
-        .to(".ramp", 0, {left:obsStartLeft+"px"}, ">2")
-        .call(setWarningTxt,["ramp"],"<")
-        .to(".ramp", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
 
 
 
@@ -961,7 +983,7 @@ function timeLineComplete() {
 
 var collided = false;
 var isSongToEnding = false;
-var songEndTime = 293;
+var songEndTime = 315;
 // var songEndTime = 90; //[for testing]
 var endingPlayed = false;
 function fgTimeLineComplete() {
@@ -1158,7 +1180,7 @@ function playerCollided(whichObstacleHit) {
                 BindButtons_gameResume();
             }});
         } 
-        else if(whichObstacleHit=="obstacle2" || whichObstacleHit=="obstacle5") {
+        else if(whichObstacleHit=="obstacle2") {
             // wall
             doRiderCrash();
         }
@@ -1175,7 +1197,14 @@ function playerCollided(whichObstacleHit) {
 
                 doRiderCrash();
             }
-    } else if(whichObstacleHit=="obstacle3") {
+    }
+    else if(whichObstacleHit=="obstacle5") {
+        doObstacleHit();
+        
+        doRiderCrash();
+
+    } 
+    else if(whichObstacleHit=="obstacle3") {
         console.log("hit ramp");
 
             if(isJumping){
@@ -1285,14 +1314,17 @@ function doRiderCrash(){
     }});
 }
 
+
+var chorus1Start = 22,
+    verse2Start = 42.35,
+    soloStart = 157,
+    chorus2Start = 178,
+    outroStart = 209.5;
+
 function writeLyrics(){
     gsap.set(lyricstxt,{alpha:1});
 
-    var chorus1Start = 22;
-    var verse2Start = 42.35;
-    var soloStart = 157;
-    var chorus2Start = 178;
-    var outroStart = 209.5;
+    
 
 
     tlLyrics.addLabel('verse1')
@@ -1413,61 +1445,57 @@ function writeLyrics(){
 }
 
 function setWarningTxt(txt){
-    // var warningtxttl = gsap.timeline();
-    // warningtxtDowntl.addLabel('warningtxtDowntl')
-    //     // .to(warningtxt,0,{scale:6, rotattionZ:90, rotationX:20, rotationY:50,x:0})
-    //     // .to(warningtxt,0,{alpha:1})
-    //     // .to(warningtxt,1,{x:100,ease:Bounce.easeIn})
-    //     // .to(warningtxt,0,{alpha:0,delay:1});
-    var warningtxtDowntl = gsap.timeline();
+    var warningtxtTl = gsap.timeline();
     switch(txt) {
         case "down":
-            warningtxt.innerHTML=">>";
-            warningtxtDowntl.addLabel('warningtxtDown')
-                // .to("#warningtxt",0,{rotationZ:-50,rotationY:10,scaleX:5},"<")
-                // .to("#warningtxt",{alpha:1},"<")
-                // .to("#warningtxt",.3,{y:-50,ease:Power1.easeIn,repeat:3},"<")
-                // .to("#warningtxt",0,{alpha:0,rotationZ:0,rotationY:0,scaleX:2,y:0},"+=1");
+            warningtxt.innerHTML="<<";
+            warningtxtTl.addLabel('warningtxtDown')
+                .to("#warningtxt",0,{rotationZ:-90,rotationY:150,z:0,scaleX:4,scaleY:5},"<")
+                .to("#warningtxt",{alpha:1},"<")
+                .to("#warningtxt",.3,{z:10,ease:Linear.easeNone,repeat:3},"<")
+                .to("#warningtxt",0,{alpha:0,rotationZ:0,rotationY:0,z:0,scaleX:2,scaleY:2},">");
         break;
         case "up":
-            warningtxt.innerHTML="<<";
-            warningtxtDowntl.addLabel('warningtxtUp')
-                // .to("#warningtxt",0,{rotation:45,scaleY:5},"<")
-                // .to("#warningtxt",{alpha:1},"<")
-                // .to("#warningtxt",.3,{y:-50,ease:Power1.easeIn,repeat:3},"<")
-                // .to("#warningtxt",0,{alpha:0,rotation:0,scaleY:2,y:0},"+=1");
+            warningtxt.innerHTML=">>";
+            warningtxtTl.addLabel('warningtxtUp')
+                .to("#warningtxt",0,{rotationZ:-90,rotationY:150,z:0,scaleX:4,scaleY:5},"<")
+                .to("#warningtxt",{alpha:1},"<")
+                .to("#warningtxt",.3,{z:-10,ease:Linear.easeNone,repeat:3},"<")
+                .to("#warningtxt",0,{alpha:0,rotationZ:0,rotationY:0,z:0,scaleX:2,scaleY:2},">");
         break;
         case "bridge":
-            warningtxt.innerHTML=">>";
-            warningtxtDowntl.addLabel('warningtxtBridge')
-                .to("#warningtxt",0,{rotation:90,scaleY:5},"<")
+            warningtxt.innerHTML="--";
+            warningtxtTl.addLabel('warningtxtBridge')
+                .to("#warningtxt",0,{rotation:0,scaleY:5},"<")
                 .to("#warningtxt",{alpha:1},"<")
-                .to("#warningtxt",.3,{y:50,ease:Power1.easeIn,repeat:3},"<")
-                .to("#warningtxt",0,{alpha:0},"+=1");
+                .to("#warningtxt",0,{alpha:0,y:0,rotation:0,scaleY:2},"+=1");
         break;
         case "hole":
-            warningtxt.innerHTML=">>";
-            warningtxtDowntl.addLabel('warningtxtHole')
-                .to("#warningtxt",0,{rotation:-90,scaleY:5},"<")
+            warningtxt.innerHTML="<div>@</div>";
+            warningtxtTl.addLabel('warningtxtHole')
+                .to("#warningtxt",0,{rotationZ:90,rotationY:41,scaleX:3,scaleY:4},"<")
+                .to("#warningtxt div",2,{rotation:720,ease:Linear.easeNone},"<")
                 .to("#warningtxt",{alpha:1},"<")
-                .to("#warningtxt",.3,{y:-50,ease:Power1.easeIn,repeat:3},"<")
-                .to("#warningtxt",0,{alpha:0,rotation:0,scaleY:2,y:0},"+=1");
+                .to("#warningtxt",1,{alpha:0},".5")
+                .to("#warningtxt",0,{y:0,rotationZ:0,rotationY:0,scaleX:2,scaleY:2},">")
+                .to("#warningtxt div",0,{rotation:0},">");
         break;
         case "ramp":
             warningtxt.innerHTML=">>>>";
-            warningtxtDowntl.addLabel('warningtxtRamp')
+            warningtxtTl.addLabel('warningtxtRamp')
                 .to("#warningtxt",{alpha:1},"<")
                 .to("#warningtxt",.3,{x:50,ease:Power1.easeIn,repeat:3},"<")
-                .to("#warningtxt",.3,{alpha:0},"+=.7");
+                .to("#warningtxt",0,{alpha:0,x:0},">");
         break;
     }
     
 }
 
 var doneLightning = false;
+var doneSlowdown = false;
 function traceAudioTime(){
     
-    if(audio.currentTime-85>65 && !doneLightning) {
+    if(audio.currentTime-85>124.9 && !doneLightning) {
         doneLightning=true;
         gsap.fromTo(".bgToGo", 
             { webkitFilter: "brightness(1)", filter: "brightness(1)" },
@@ -1475,12 +1503,18 @@ function traceAudioTime(){
                 webkitFilter: "brightness(6)",
                 filter: "brightness(6)",
                 yoyo: true,
-                repeat: 11,
+                repeat: 29,
                 repeatDelay: 0.02,
                 ease: "none"
             }
         );
-        gsap.to([tl,tlfg,tlbg,tlstarsBG], 1, {timeScale:1.5, ease:Quad.easeOut})
+        gsap.to([tl,tlfg,tlbg,tlstarsBG], 1, {timeScale:1.5, ease:Quad.easeIn})
+
+    }
+
+    if(audio.currentTime-85>chorus2Start && !doneSlowdown) {
+        doneSlowdown=true;
+        gsap.to([tl,tlfg,tlbg,tlstarsBG], 1, {timeScale:1.1, ease:Quad.easeOut})
 
     }
     // [todo] - if need to see audio playback time
