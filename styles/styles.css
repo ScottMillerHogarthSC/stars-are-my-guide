@@ -205,24 +205,24 @@ body{
     position: absolute;
 }
 
-img.wallL {
-    width: 60px;
-    height: 60px;
-    transform: translateY(95px) rotate(78deg) scaleY(-1);
+img.rockL {
+    width: 160px;
+    height: auto;
+    transform: translateY(80px);
 }
-div.wallL {
-    top: 185px;
+div.rockL {
+    top: 180px;
+    width: 160px;
 }
 
-img.wall {
-    width: 60px;
-    height: 60px;
-    transform: translateY(-30px);
-    position: absolute;
+img.rockR {
+    height: auto;
+    transform: translateY(-80px);
 }
-div.wall {
-    top: 426px;
-    height: 60px;
+div.rockR {
+    top: 406px;
+    height: auto;
+    width: 200px;
 }
 img.hole {
     width: 484px;
@@ -241,15 +241,20 @@ div.bridge {
     width: 390px;
 }
 img.ramp {
-    width: 484px;
+    width: 791px;
     margin-left: -60px;
 }
 div.ramp {
-    top: 270px;
+    top: 148px;
     width: 360px;
 }
 .obstacle, #player{
     /*background-color: rgba(255,0,0,0.2);*/
+}
+#warningtxt {
+    top: 230px;
+    left: 850px;
+
 }
 
 

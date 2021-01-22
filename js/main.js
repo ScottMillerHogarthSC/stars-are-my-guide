@@ -1,3 +1,5 @@
+var gameSpeed = 1;
+
 var container,jumpingtxt,speechtxt,audio,oww,pointstxt,points=0,
     _currentLoop=0,
     _totalLoops=1,
@@ -290,13 +292,13 @@ function keypress(e){
     
         if(e.code=="KeyJ") {
             gsap.killTweensOf(backtoBounce);
-            $('#introBtnJ').addClass('pressedJ');
+            $('#introBtnJ').addClass('pressed');
 
             wheelie();
         }
         if(e.code=="KeyK") {
             gsap.killTweensOf(backtoBounce);
-            $('#introBtnK').addClass('pressedK');
+            $('#introBtnK').addClass('pressed');
             
             jump();
         }
@@ -478,6 +480,7 @@ function notJumping(){
 }
 
 var wheelieCount=0;
+var wheeliie
 function wheelie() {
     wheelieCount++;
 
@@ -661,12 +664,12 @@ function startGame(ev)
         .add(playFGs,"<")
     
         
-            // [todo] turn back on intro
-        .to(introTxt3,0,{alpha:1},"<1")
-        .to(introTxt3,0,{alpha:0},"+=4")
+        //     // [todo] turn back on intro
+        // .to(introTxt3,0,{alpha:1},"<1")
+        // .to(introTxt3,0,{alpha:0},"+=4")
 
-        .to(introTxt4,0,{alpha:1},"<.75")
-        .to(introTxt4,0,{alpha:0},"+=4");
+        // .to(introTxt4,0,{alpha:1},"<.75")
+        // .to(introTxt4,0,{alpha:0},"+=4");
         
 }
 
@@ -685,7 +688,7 @@ function typeText(whichEle, thisLength){
 
 
 var fgWidth = 1800;
-var fgSpeed = 2;
+var fgSpeed = gameSpeed*2;
 function playFGs() {
 
     tlfg.addLabel('fg loop', '<')
@@ -700,7 +703,7 @@ function playFGs() {
 
 
 var bgWidth = 1800,
-    bgSpeed = 10;
+    bgSpeed = gameSpeed*10;
 function playBGs() {
     tlbg.addLabel('bgLoop', '<')
         .to([bgToGo1],0,{alpha:1,x:0})
@@ -715,7 +718,7 @@ function playBGs() {
 
 
 var starsBGWidth = 1300,
-    starsBGSpeed = 5;
+    starsBGSpeed = gameSpeed*5;
 function playStarsBG() {
 
     tlstarsBG.addLabel('starsBGLoop', '<')
@@ -757,10 +760,10 @@ function increaseSpeed(initspeed,maxspeed,thisTL){
         thisTL.timeScale(initspeed/maxspeed);
     }
 }
-
-var obsSpeed = 1.5;
-var obsStartLeft = 1000;
-var obsEndLeft = -520;
+// [todo] workout ratio between fgspeed and objSpeed
+var obsSpeed = gameSpeed*4;
+var obsStartLeft = 1800;
+var obsEndLeft = -1800;
 function playObstaclesTL(){
     // obstacles timeline! 
     gsap.killTweensOf(detectCollision);
@@ -770,86 +773,166 @@ function playObstaclesTL(){
     tl.addLabel("stage1", "<")
         .to("#player",0, {alpha:1}, "<")
 
-        // hole
-        .to(".hole", 0, {left:obsStartLeft+"px"}, ">2")
-        .to(".hole", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
-
-        // bridge
-        .to("#obstacle4", 0, {left:obsStartLeft+"px"}, ">2")
-        .to("#obstacle4", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
-
-        // bridge
-        .to("#obstacle4", 0, {left:obsStartLeft+"px"}, ">2")
-        .to("#obstacle4", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
 
         
-        // wall R
+     // wall R
         .to("#obstacle5", 0, {left:obsStartLeft+"px"}, ">")
-        .to("#obstacle5", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">1")
+        .call(setWarningTxt,["up"],"<")
+        .to("#obstacle5", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
 
-        // wall R
-        .to("#obstacle5", 0, {left:obsStartLeft+"px"}, ">")
-        .to("#obstacle5", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">1")
+
 
         // wall L
         .to("#obstacle2", 0, {left:obsStartLeft+"px"}, ">2")
-        .to("#obstacle2", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">1")
+        .call(setWarningTxt,["down"],"<")
+        .to("#obstacle2", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+
+        // wall Rck
+        .to("#obstacle5", 0, {left:obsStartLeft+"px"}, ">")
+        .call(setWarningTxt,["up"],"<")
+        .to("#obstacle5", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+
+        // wall L
+        .to("#obstacle2", 0, {left:obsStartLeft+"px"}, ">2")
+        .call(setWarningTxt,["down"],"<")
+        .to("#obstacle2", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+        
+        
+        // wall R
+        .to("#obstacle5", 0, {left:obsStartLeft+"px"}, ">")
+        .call(setWarningTxt,["up"],"<")
+        .to("#obstacle5", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+
+        
+
+
+
+// ramps
+        
+        // ramp
+        .to(".ramp", 0, {left:obsStartLeft+"px"}, ">2")
+        .call(setWarningTxt,["ramp"],"<")
+        .to(".ramp", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+        // ramp
+        .to(".ramp", 0, {left:obsStartLeft+"px"}, ">2")
+        .call(setWarningTxt,["ramp"],"<")
+        .to(".ramp", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+        // ramp
+        .to(".ramp", 0, {left:obsStartLeft+"px"}, ">2")
+        .call(setWarningTxt,["ramp"],"<")
+        .to(".ramp", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+        // ramp
+        .to(".ramp", 0, {left:obsStartLeft+"px"}, ">2")
+        .call(setWarningTxt,["ramp"],"<")
+        .to(".ramp", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+
+
+
+
+        // wall R
+        .to("#obstacle5", 0, {left:obsStartLeft+"px"}, ">")
+        .call(setWarningTxt,["up"],"<")
+        .to("#obstacle5", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+
+        // wall L
+        .to("#obstacle2", 0, {left:obsStartLeft+"px"}, ">2")
+        .call(setWarningTxt,["down"],"<")
+        .to("#obstacle2", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
 
         // wall L
         .to("#obstacle2", 0, {left:obsStartLeft+"px"}, ">")
-        .to("#obstacle2", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">1")
+        .call(setWarningTxt,["down"],"<")
+        .to("#obstacle2", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+
+        
+        
+        
+
+        // bridge
+        .to("#obstacle4", 0, {left:obsStartLeft+"px"}, ">2")
+        .call(setWarningTxt,["bridge"],"<")
+        .to("#obstacle4", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+
+        // bridge
+        .to("#obstacle4", 0, {left:obsStartLeft+"px"}, ">2")
+        .call(setWarningTxt,["bridge"],"<")
+        .to("#obstacle4", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+
+        
+        // wall R
+        .to("#obstacle5", 0, {left:obsStartLeft+"px"}, ">")
+        .call(setWarningTxt,["up"],"<")
+        .to("#obstacle5", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+
+        // wall R
+        .to("#obstacle5", 0, {left:obsStartLeft+"px"}, ">")
+        .call(setWarningTxt,["up"],"<")
+        .to("#obstacle5", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+
+        // wall L
+        .to("#obstacle2", 0, {left:obsStartLeft+"px"}, ">2")
+        .call(setWarningTxt,["down"],"<")
+        .to("#obstacle2", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+
+        // wall L
+        .to("#obstacle2", 0, {left:obsStartLeft+"px"}, ">")
+        .call(setWarningTxt,["down"],"<")
+        .to("#obstacle2", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
         
         // hole
         .to("#obstacle1", 0, {left:obsStartLeft+"px"}, ">2")
+        .call(setWarningTxt,["hole"],"<")
         .to("#obstacle1", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
 
         // ramp
         .to(".ramp", 0, {left:obsStartLeft+"px"}, ">2")
+        .call(setWarningTxt,["ramp"],"<")
         .to(".ramp", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
 
         
         // wall R
         .to("#obstacle5", 0, {left:obsStartLeft+"px"}, ">3")
+        .call(setWarningTxt,["up"],"<")
         .to("#obstacle5", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
 
         // wall R
         .to("#obstacle5", 0, {left:obsStartLeft+"px"}, ">")
+        .call(setWarningTxt,["up"],"<")
         .to("#obstacle5", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
 
         // bridge
         .to("#obstacle4", 0, {left:obsStartLeft+"px"}, ">2")
+        .call(setWarningTxt,["bridge"],"<")
         .to("#obstacle4", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
 
         // wall L
         .to("#obstacle2", 0, {left:obsStartLeft+"px"}, ">2")
+        .call(setWarningTxt,["down"],"<")
         .to("#obstacle2", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
 
         // wall L
         .to("#obstacle2", 0, {left:obsStartLeft+"px"}, ">")
+        .call(setWarningTxt,["down"],"<")
         .to("#obstacle2", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
             
             
         .to("#tilt",10,{rotationZ:5,x:0,y:10},">")
-        
+            
+        // hole
         .to("#obstacle1", 0, {alpha:1,left:obsStartLeft+"px"}, ">")
+        .call(setWarningTxt,["hole"],"<")
         .to("#obstacle1", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">1")
 
         // bridge
         .to("#obstacle4", 0, {left:obsStartLeft+"px"}, ">2")
-        .to("#obstacle4", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
-
-        // bridge
-        .to("#obstacle4", 0, {left:obsStartLeft+"px"}, ">2")
-        .to("#obstacle4", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
-
-        // bridge
-        .to("#obstacle4", 0, {left:obsStartLeft+"px"}, ">2")
+        .call(setWarningTxt,["bridge"],"<")
         .to("#obstacle4", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
         
         .to("#tilt",10,{rotationZ:0,x:0,y:0},">")
 
         // ramp
         .to(".ramp", 0, {left:obsStartLeft+"px"}, ">2")
+        .call(setWarningTxt,["ramp"],"<")
         .to(".ramp", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
 
         
@@ -862,6 +945,10 @@ function timeLineComplete() {
     // console.log(audio.currentTime);
     if (reps < numberOfLoops) {
         if(!collided && !isSongToEnding)
+
+            // if(reps)
+            // gameSpeed++
+            
             tl.restart();
     } else {
         // stop playing
@@ -1032,18 +1119,20 @@ function playerCollided(whichObstacleHit) {
             pointstxt.innerHTML=points;
 
 
+
+            
             // console.log(playerTop);
-            if(playerTop<=500)
+            if(playerTop==270)
             {
-                yAmount = 90;
+                yAmount = 70;
                 rotateZAmount = 40;
-                rotateYAmount = 0;
-            } else if(playerTop>=300 && playerTop<500){
+                rotateYAmount = 20;
+            } else if(playerTop<=340){
                 yAmount = 45;
                 rotateZAmount = 40;
                 rotateYAmount = 0;
             } else {
-                yAmount = -20;
+                yAmount = 135;
                 rotateZAmount = 40;
                 rotateYAmount = 20;
             }
@@ -1091,7 +1180,12 @@ function playerCollided(whichObstacleHit) {
 
             if(isJumping){
                 // hit a ramp while isJumping true
-                // [todo] !
+                // [todo] 
+                isJumping=false;
+                doObstacleHit();
+
+                doRiderCrash();
+
             } else {
                 if(!isRamping){
                     isRamping=true;
@@ -1318,7 +1412,77 @@ function writeLyrics(){
 
 }
 
+function setWarningTxt(txt){
+    // var warningtxttl = gsap.timeline();
+    // warningtxtDowntl.addLabel('warningtxtDowntl')
+    //     // .to(warningtxt,0,{scale:6, rotattionZ:90, rotationX:20, rotationY:50,x:0})
+    //     // .to(warningtxt,0,{alpha:1})
+    //     // .to(warningtxt,1,{x:100,ease:Bounce.easeIn})
+    //     // .to(warningtxt,0,{alpha:0,delay:1});
+    var warningtxtDowntl = gsap.timeline();
+    switch(txt) {
+        case "down":
+            warningtxt.innerHTML=">>";
+            warningtxtDowntl.addLabel('warningtxtDown')
+                // .to("#warningtxt",0,{rotationZ:-50,rotationY:10,scaleX:5},"<")
+                // .to("#warningtxt",{alpha:1},"<")
+                // .to("#warningtxt",.3,{y:-50,ease:Power1.easeIn,repeat:3},"<")
+                // .to("#warningtxt",0,{alpha:0,rotationZ:0,rotationY:0,scaleX:2,y:0},"+=1");
+        break;
+        case "up":
+            warningtxt.innerHTML="<<";
+            warningtxtDowntl.addLabel('warningtxtUp')
+                // .to("#warningtxt",0,{rotation:45,scaleY:5},"<")
+                // .to("#warningtxt",{alpha:1},"<")
+                // .to("#warningtxt",.3,{y:-50,ease:Power1.easeIn,repeat:3},"<")
+                // .to("#warningtxt",0,{alpha:0,rotation:0,scaleY:2,y:0},"+=1");
+        break;
+        case "bridge":
+            warningtxt.innerHTML=">>";
+            warningtxtDowntl.addLabel('warningtxtBridge')
+                .to("#warningtxt",0,{rotation:90,scaleY:5},"<")
+                .to("#warningtxt",{alpha:1},"<")
+                .to("#warningtxt",.3,{y:50,ease:Power1.easeIn,repeat:3},"<")
+                .to("#warningtxt",0,{alpha:0},"+=1");
+        break;
+        case "hole":
+            warningtxt.innerHTML=">>";
+            warningtxtDowntl.addLabel('warningtxtHole')
+                .to("#warningtxt",0,{rotation:-90,scaleY:5},"<")
+                .to("#warningtxt",{alpha:1},"<")
+                .to("#warningtxt",.3,{y:-50,ease:Power1.easeIn,repeat:3},"<")
+                .to("#warningtxt",0,{alpha:0,rotation:0,scaleY:2,y:0},"+=1");
+        break;
+        case "ramp":
+            warningtxt.innerHTML=">>>>";
+            warningtxtDowntl.addLabel('warningtxtRamp')
+                .to("#warningtxt",{alpha:1},"<")
+                .to("#warningtxt",.3,{x:50,ease:Power1.easeIn,repeat:3},"<")
+                .to("#warningtxt",.3,{alpha:0},"+=.7");
+        break;
+    }
+    
+}
+
+var doneLightning = false;
 function traceAudioTime(){
+    
+    if(audio.currentTime-85>65 && !doneLightning) {
+        doneLightning=true;
+        gsap.fromTo(".bgToGo", 
+            { webkitFilter: "brightness(1)", filter: "brightness(1)" },
+            {   duration: .01,
+                webkitFilter: "brightness(6)",
+                filter: "brightness(6)",
+                yoyo: true,
+                repeat: 11,
+                repeatDelay: 0.02,
+                ease: "none"
+            }
+        );
+        gsap.to([tl,tlfg,tlbg,tlstarsBG], 1, {timeScale:1.5, ease:Quad.easeOut})
+
+    }
     // [todo] - if need to see audio playback time
     // console.log(audio.currentTime-85);
 }
