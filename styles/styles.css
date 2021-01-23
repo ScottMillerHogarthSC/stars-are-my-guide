@@ -53,7 +53,7 @@ body{
     transform: translateX(1300px);
 }
 .fg{
-    width: 1800px;
+    width: 1801px;
     left: 0px;
     top: 20px;
     opacity: 1;
@@ -153,6 +153,11 @@ body{
 .rider-go {
     opacity: 1;
 }
+.rider-scream {
+    width: 100%;
+    position: absolute;
+    opacity: 0;
+}
 .shadowBounce {
      animation: shadowBounce 1s infinite linear;
      transform-origin: center 90%;
@@ -188,6 +193,7 @@ body{
     top: 40px;
     left: 23px;
     transform: scaleY(1.2) scaleX(1.9);
+    filter: hue-rotate(190deg);
 }
 #car-jets2 {
     top: -3px;
@@ -205,32 +211,42 @@ body{
     position: absolute;
 }
 
+
+
+div.rockL {
+    top: 180px;
+    width: 160px;
+}
 img.rockL {
     width: 160px;
     height: auto;
     transform: translateY(80px);
 }
-div.rockL {
-    top: 180px;
-    width: 160px;
-}
 
-img.rockR {
-    height: auto;
-    transform: translateY(-80px);
-}
+
 div.rockR {
     top: 406px;
     height: auto;
     width: 200px;
 }
+img.rockR {
+    height: auto;
+    transform: translateY(-80px);
+}
+
+div.hole {
+    top: 292px;
+    width: 360px;
+}
 img.hole {
     width: 484px;
     margin-left: -60px;
 }
-div.hole {
-    top: 292px;
-    width: 360px;
+
+div.asteroid {
+    top: 160px;
+    width: 180px;
+    height: 100%;
 }
 img.asteroid {
     width: 180px;
@@ -240,26 +256,31 @@ img.asteroid {
     0% {transform: translateY(-60px) rotate(360deg);}
     100% {transform: translateY(-60px) rotate(0deg);}
 }
-div.asteroid {
-    top: 160px;
-    width: 180px;
-    height: 100%;
+img.asteroid-shadow {
+    top: -100px;
+    left: -20px;
+    opacity: 0.3;
+    position: absolute;
+    width: 220px;
+    height: 400px;
+}
+
+
+div.ramp {
+    top: 148px;
+    width: 360px;
 }
 img.ramp {
     width: 791px;
     margin-left: -60px;
 }
-div.ramp {
-    top: 148px;
-    width: 360px;
-}
+
 .obstacle, #player{
     /*background-color: rgba(255,0,0,0.2);*/
 }
 #warningtxt {
     top: 230px;
     left: 850px;
-
 }
 
 
@@ -361,8 +382,8 @@ div.ramp {
 #pausedtxt {
     transform: scale(3.5) translate(-50%, -50%);
     transform-origin: left top;
-    background-color: rgba(84,36,84,.9);
-    border: dashed #fff 2px;
+    /*background-color: rgba(84,36,84,.9);*/
+    /*border: dashed #fff 2px;*/
     padding: 1%;
     z-index: 1;
     color: #fed9ef;
@@ -397,13 +418,22 @@ div.ramp {
 #introBtnK,#introBtnS {
     width: 26px;
 }
-#introTxt0 {
-     top: 208px
+#instructionsTxt0 {
+     top: 208px;
 }
-#introTxt3 {
+#instructionsTxt0.flashing {
+    animation: flash 1s infinite linear;
+}
+@keyframes flash {
+    0%{opacity:.4}
+    50%{opacity:1}
+    100%{opacity:.4}
+}
+
+#instructionsTxt3 {
     top: 207px;
 }
-#introTxt4 {
+#instructionsTxt4 {
     top: 220px;
 }
 
@@ -422,6 +452,19 @@ div.ramp {
     font-size: 2em;
     outline: none;
     width: 100px;
+}
+#highscorestxt {
+    text-align: center;
+    line-height: 1.2em;
+    top: 200px;
+}
+#highscorestxt span{
+    animation: colorRotateRed 1s infinite;
+}
+@keyframes colorRotateRed {
+    0% { color: red; }
+    50% { color: #fff; }
+    100% { color: red; }
 }
 #lyricstxt{
     width: 970px;

@@ -1,5 +1,5 @@
 var gameSpeed = 1;
-var audioStart = 0;
+var introSpeed = 1;
 
 var container,jumpingtxt,speechtxt,audio,oww,pointstxt,points=0,
     _currentLoop=0,
@@ -13,15 +13,16 @@ html.clientHeight, html.scrollHeight, html.offsetHeight );
 
 var btnMoveUp, btnMoveForwards, btnMoveBackwards, btnMoveDown, btnJump;
 
-
-var tlintro = gsap.timeline(),
+var tlIntroScreen = gsap.timeline(),
+    tlintro = gsap.timeline(),
     tl = gsap.timeline(),
     tlfg = gsap.timeline(),
     tlbg = gsap.timeline(),
     tlstarsBG = gsap.timeline(),
     tlhair = gsap.timeline(),
     tlramp = gsap.timeline(),
-    tlLyrics = gsap.timeline();
+    tlLyrics = gsap.timeline(),
+    tlScream=gsap.timeline();
 
 
 function init()
@@ -35,7 +36,6 @@ function init()
     pointstxt = document.getElementById("pointstxt");
 
     btnReplay = document.getElementById("btnReplay");
-    obsxt0 = document.getElementById("introTxt0");
     cta = document.getElementById("cta");
     
     bg = document.getElementsByClassName("bg");
@@ -90,17 +90,90 @@ function loadedAudio(){
 
     console.log("loaded Audio");
 
-    // Start Ad
+    
     document.getElementById("loadingContent").style.display="none";
+    
     container.style.display = "block";
 
-    // add StartGame event listeners:
-    BindButtons_startGame();
+    container.addEventListener('click', playIntroScreen);
+    document.body.addEventListener('keypress', playIntroScreen);
+
 }
 
-var holdFrame = function(frame, time) {
-    var delay = time*1000;
-    frameWaitTimer = window.setTimeout(function(){showFrame(frame);}, delay);
+var introPlaying = false;
+function playIntroScreen() {
+
+    container.removeEventListener('click', playIntroScreen);
+    document.body.removeEventListener('keypress', playIntroScreen);
+    container.className="";
+
+    // play the song
+    gsap.fromTo(audio,1,{volume:0},{volume:1,ease:Power1.easeIn});
+    audio.currentTime=50;
+    audio.volume = 1;
+    audio.play();
+    introPlaying=true;
+
+    audio.addEventListener("timeupdate",traceAudioTime);
+    tlIntroScreen = gsap.timeline({onComplete:introPlayed})
+    
+    
+    BindButtons_startGame();
+
+    tlIntroScreen.addLabel('introScreen')
+
+        // move game screen down:
+        .to(tilt,0,{alpha:1,y:400})
+
+
+        // hide 'play' button
+        .to(introPlay,0,{alpha:0})
+
+        // setup intro BGs
+        .to([introStars],0,{y:0,alpha:1})
+        .to([introBG],0,{y:0,alpha:0})
+        .to(introStars,30,{y:"-80%",alpha:.4,z:0.01,ease:Power1.easeInOut})
+        .to(introStars,10,{alpha:.4,ease:Linear.easeNone},20)
+        .to(introBG,30,{y:"-45%",alpha:1,z:0.01,ease:Power1.easeInOut},0)
+        
+        // intro copy:
+        .to(introLogo,3,{alpha:1,ease:Linear.easeNone},3)
+        .to(introTxt01,3,{alpha:1,ease:Linear.easeNone},"<2")
+        .to([introTxt01,introLogo],.5,{alpha:0,ease:Linear.easeNone},">")
+        
+        .to(introTxt02,3,{alpha:1,ease:Linear.easeNone},">")
+        .to(introTxt02a,0,{alpha:0,ease:Linear.easeNone},"<")
+        .call(typeText,["#introTxt02a",2],"<1")
+        .to(introTxt02a,3,{alpha:1,ease:Linear.easeNone},"<")
+        .to(introTxt02b,3,{alpha:1,ease:Linear.easeNone},"<1")
+        .to([introTxt02],.5,{alpha:0,ease:Linear.easeNone},">")
+        
+        .to(introTxt03,3,{alpha:1,ease:Linear.easeNone},">")
+        .to(introTxt03a,0,{alpha:0,ease:Linear.easeNone},"<")
+        .call(typeText,["#introTxt03a",2],"<1")
+        .to(introTxt03a,3,{alpha:1,ease:Linear.easeNone},"<")
+        .to([introTxt03],.5,{alpha:0,ease:Linear.easeNone},">")
+
+        .to([introTxt04],3,{alpha:1,ease:Linear.easeNone},">")
+        .to([introLogo2],3,{alpha:1,ease:Linear.easeNone},"<1")
+        .to([introTxt04,introLogo2],.5,{alpha:0,ease:Linear.easeNone},">")
+
+        .to(introTxt05,3,{alpha:1,ease:Linear.easeNone},">")
+
+        .to(introScreen,3,{alpha:0,ease:Linear.easeNone},">-3")
+        
+
+        .to([tilt],3,{y:0,ease:Power1.easeOut},">-3")
+        .to(instructionsTxt0,3,{alpha:1},">")
+        .to(instructionsTxt0,{className:"instructionsTxtButt flashing hidden copy"},">")
+;
+}
+
+function introPlayed() {
+
+    // gsap.to("#introScreen",0,{display:"none"})
+    // add StartGame event listeners:
+    // BindButtons_startGame();   
 }
 
 
@@ -383,7 +456,7 @@ function gameResume(ev) {
     if(collided) {
         collided=false;
 
-        gsap.set([speechbub,flame,resumetxt],{alpha:0});
+        gsap.set([speechbub,flame,".rider-scream",resumetxt],{alpha:0});
 
 
         // reset from "fallen down hole":
@@ -421,8 +494,11 @@ function gameResume(ev) {
     $('#rider').addClass('riderFly');
     $('#shadow').addClass('shadowBounce');
 
-    gsap.set(["#rider-stopped"],{alpha:0});
-    gsap.set(["#rider-go"],{alpha:1});
+    tlScream.pause();
+    tlScream.seek(0);
+
+    gsap.set("#rider-stopped",{alpha:0});
+    gsap.set(["#rider-go,.rider-go"],{alpha:1});
 
     
     jumpingtxt.innerHTML="go";
@@ -486,6 +562,7 @@ function notJumping(){
 }
 
 var wheelieCount=0;
+var isFlipping=false;
 function wheelie() {
 
     
@@ -524,14 +601,14 @@ function wheelie() {
         gsap.to("#rider-jets",1.5,{x:0,y:0,skewY:0,delay:1,ease:Bounce.easeOut})
         gsap.delayedCall(2.4,backtoBounce);
     } else {
-        // tlramp.pause();
-        
-        // do a flip
-
-        points = points + 100;
-        
-        gsap.to(rider,1.5,{rotation:-360,ease:Sine.easeInOut})
-        gsap.to(rider,0,{rotation:0,delay:1.5})
+        if(!isFlipping)
+        {
+            isFlipping=true;
+            points = points + 100;
+                
+            gsap.to(rider,1.5,{rotation:-360,ease:Sine.easeInOut})
+            gsap.to(rider,0,{rotation:0,delay:1.5,onComplete:function(){isFlipping=false;}})
+        }
     }
 }
 
@@ -624,14 +701,23 @@ function backtoBounce(){
 /**
  * switch statement for animating ad
  */
-function startGame(ev)
+function startGame(ev,didAutoPlay)
 {
+    tlIntroScreen.pause();
+
+    gsap.to(introScreen,0,{display:"none"});
+    gsap.to(introTxt05,0,{alpha:0});
+    gsap.to(tilt,0,{y:0})
+
     points=0;
 
-    // play the song
-    audio.currentTime=85+audioStart;
+    introPlaying=false;
+
+    if(!didAutoPlay){
+        audio.currentTime=85;
+    }
     
-    audio.play();
+    
     audio.addEventListener("timeupdate",traceAudioTime);
 
 
@@ -643,9 +729,9 @@ function startGame(ev)
     
     // reset
     gsap.set([flame,gameover,"#rider-stopped"],{alpha:0});
-    gsap.set(["#player","#rider-go"],{alpha:1});
+    gsap.set([player,"#rider-go",pointstxt,jumpingtxt],{alpha:1});
 
-    $("#introTxt0").hide();
+    $("#instructionsTxt0").hide();
     
     backtoBounce();
         
@@ -687,11 +773,11 @@ function startGame(ev)
     
         
             // [todo] turn back on intro
-        // .to(introTxt3,0,{alpha:1},"<1")
-        // .to(introTxt3,0,{alpha:0},"+=4")
+        .to(instructionsTxt3,0,{alpha:1},"<1")
+        .to(instructionsTxt3,0,{alpha:0},"+=4")
 
-        // .to(introTxt4,0,{alpha:1},"<.75")
-        // .to(introTxt4,0,{alpha:0},"+=4");
+        .to(instructionsTxt4,0,{alpha:1},"<.75")
+        .to(instructionsTxt4,0,{alpha:0},"+=4");
         
 }
 
@@ -700,7 +786,7 @@ function typeText(whichEle, thisLength){
     var mySplitText = new SplitText(whichEle, {type:"words,chars"}),
         numChars = mySplitText.chars.length,
         characterTime = (thisLength/(numChars+6));
-        
+        gsap.set(whichEle,{alpha:1})
         gsap.set(mySplitText.chars, {alpha:0});
         for(var i = 0; i < numChars; i++){
             gsap.to(mySplitText.chars[i], 0, {alpha:1, delay:(i * characterTime),ease:Linear.easeNone});
@@ -796,8 +882,6 @@ function playObstaclesTL(){
         .to("#player",0, {alpha:1}, "<")
     
 
-        
-
         // rock L
         .to("#obstacle2", 0, {left:obsStartLeft+"px"}, ">")
         .call(setWarningTxt,["down"],"<")
@@ -877,7 +961,7 @@ function playObstaclesTL(){
         .to("#tilt",10,{rotationZ:0,x:0,y:0},">")
 
         // ramp
-        .to(".ramp", 0, {left:obsStartLeft+"px"}, ">2")
+        .to(".ramp", 0, {left:obsStartLeft+"px"}, ">")
         .call(setWarningTxt,["ramp"],"<")
         .to(".ramp", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
 
@@ -899,7 +983,7 @@ function playObstaclesTL(){
 }
 
 var reps = 0;
-var numberOfLoops = 20;
+var numberOfLoops = 100;
 var collided = false;
 function timeLineComplete() {
     // console.log(audio.currentTime);
@@ -991,7 +1075,10 @@ function playEnding(){
     gsap.killTweensOf(detectCollision);
     gsap.killTweensOf(backtoBounce);
     gsap.killTweensOf(notJumping);
-    
+
+    gsap.to(".obstacle",0,{alpha:0});
+    tl.pause();
+
     gsap.set([pointstxt,jumpingtxt],{alpha:0});
 
     
@@ -1035,6 +1122,8 @@ function tlEndingComplete(){
 
     document.getElementById('initialstxt').focus();
 
+    document.getElementById('initialstxt').addEventListener('keypress',highScoreEntered);
+
     tlintro.pause();
     tl.pause();
     tlfg.pause();
@@ -1043,6 +1132,54 @@ function tlEndingComplete(){
     tlhair.pause();
     // tlLyrics.pause();
 }
+
+
+var highScores = [
+    ["sco","7662"],
+    ["srd","6437"],
+    ["guy","4376"],
+    ["jon","4211"]
+];
+
+
+function highScoreEntered(e) {
+
+    var scoretxt = document.getElementById("scoretxt");
+    var initialstxt = document.getElementById("initialstxt");
+    
+    if(e.keyCode=="13") {
+
+        var placedScore = false;
+        var yourScore = Number(scoretxt.innerHTML);
+        var yourNameScore = initialstxt.value;
+        
+        
+        var highScoreList = "highest scores:<br><br>";
+        for(i=0; i<highScores.length; i++){    
+            if(yourScore > Number(highScores[i][1]) && !placedScore){
+                highScores.splice(i,0,["<span>"+yourNameScore,yourScore.toString()+"</span>"]);
+                placedScore=true;
+            }
+        }
+        console.log(highScores);
+        
+        for(i=0; i<highScores.length; i++){
+            highScoreList+= highScores[i][0]+"........."+highScores[i][1]+"<br>";
+        }
+
+        gsap.set(endtxt,{display:"none", alpha:0})
+
+        $("#highscorestxt").html(highScoreList);
+        
+        gsap.to("#highscorestxt",0,{alpha:1});
+
+    }
+}
+
+
+
+
+
 
 var overlaps = (function () {
     function getPositions( elem ) {
@@ -1256,6 +1393,7 @@ function tlRampComplete(){
     $('#shadow').addClass('shadowBounce');
 }
 
+var audioIncreaseAmount=1;
 function doObstacleHit() {
     collided=true;
         
@@ -1265,7 +1403,19 @@ function doObstacleHit() {
     gsap.killTweensOf(player);
     gsap.killTweensOf(playerMovements);
 
-    audio.volume = 0.3;
+    // volume increases each crash
+    
+    if(crashCount<20){
+        if(0.3+(audioIncreaseAmount/20)<1){
+            audio.volume=0.3+(audioIncreaseAmount/20);
+            audioIncreaseAmount++;
+        } else {
+            audio.volume=1;
+        }
+    }
+    // console.log("crashCount:"+crashCount,"volume:"+audio.volume);
+    
+
 
     $('#rider').removeClass('riderBounce');
     $('#shadow').removeClass('shadowBounce');
@@ -1276,10 +1426,24 @@ function doObstacleHit() {
     tl.pause();
     tlhair.pause();
 
+    
+    tlScream.addLabel('scream')
+        .to(".rider-scream",0,{alpha:1},0)
+        .to(".rider-go,.hair-go",0,{alpha:0},0)
+
+        .to(".rider-scream",0,{alpha:0},"1.5")
+        .to("#rider-stopped",0,{alpha:1},"1.5")
+        .addLabel('screamDone');
+
+    tlScream.play();
+
     unBindButtons_gamePlay();
 }
 
+var crashCount=0;
 function doRiderCrash(){
+    crashCount++;
+
     points=points-100;
     pointstxt.innerHTML=points;
 
@@ -1320,9 +1484,6 @@ var chorus1Start = 22,
 
 function writeLyrics(){
     gsap.set(lyricstxt,{alpha:1});
-
-    
-
 
     tlLyrics.addLabel('verse1')
         .to("#lyrics1",{display:"block",duration:0},1.25)
@@ -1447,8 +1608,12 @@ var doneChorusTint = false,
     doneLightning = false,
     doneLightning2 = false,
     doneSlowdown = false;
-function traceAudioTime(){
 
+function traceAudioTime(){
+    if(audio.currentTime>=84 && introPlaying){
+        introPlaying=false;
+        startGame(false,true);
+    }
     
     // make BG red for Chorus 1
     if(audio.currentTime-85>chorus1Start && !doneChorusTint) {

@@ -22,6 +22,11 @@
             extCSS1.setAttribute("rel", "stylesheet");
             extCSS1.setAttribute("type", "text/css");
             extCSS1.setAttribute("href", "styles/responsive.css");
+
+            var extCSS2 = document.createElement("link");
+            extCSS2.setAttribute("rel", "stylesheet");
+            extCSS2.setAttribute("type", "text/css");
+            extCSS2.setAttribute("href", "styles/intro.css");
                 extCSS.onload = function()
                 {
                     cssLoadedHandler();
@@ -29,6 +34,7 @@
 
             document.getElementsByTagName("head")[0].appendChild(extCSS);
             document.getElementsByTagName("head")[0].appendChild(extCSS1);
+            document.getElementsByTagName("head")[0].appendChild(extCSS2);
         }
 
         /**
@@ -133,7 +139,7 @@
         </div>
     </div>
     <div id="wrap">
-        <div id="container">
+        <div id="container" class="clickable">
             
             <img src="images/nebula_bg.png" class="bg bgToGo" id="bgToGo1">
             <img src="images/eclipse_bg.png" class="bg bgToGo" id="bgToGo2">
@@ -142,8 +148,22 @@
             <img src="images/stars_1.png" class="bg bgStars" id="bgStars1">
             <img src="images/stars_2.png" class="bg bgStars" id="bgStars2">
             <img src="images/stars_1.png" class="bg bgStars" id="bgStars3">
+
+            <div id="introScreen">
+                <div class="copy" id="introPlay">play ></div>
+                <div id="introBG" class="hidden"></div>
+                <div id="introStars"></div>
+                <img id="introLogo" src="images/primitai-logo.png" class="intrologo hidden" />
+                <div id="introTxt01" class="copy hidden">presents</div>
+                <div id="introTxt02" class="copy hidden">a<br><span id="introTxt02a">@scottoftheriver</span><br><span id="introTxt02b" class="hidden">production</div>
+                
+                <div id="introTxt03" class="copy hidden">graphics by<br><span id="introTxt03a">nina kearsey</span></div>    
+                
+                <div id="introTxt04" class="copy hidden">licensed by</div>
+                <img id="introLogo2" src="images/roar-logo.png" class="intrologo hidden" />
+            </div>
             
-            <div id="tilt">
+            <div id="tilt" class="hidden">
                 <img src="images/fg-intro.png" class="fg" id="fg-intro">
                 
                 <div id="fgs">
@@ -167,7 +187,7 @@
                     <div id="player" class="forwards">
                         <div id="playerMovements">
                             <img src="images/shadow.png" class="player shadow" id="shadow">
-                            <img src="images/car-shadow.png" class="player hidden" id="car-shadow">
+                              <img src="images/car-shadow.png" class="player hidden" id="car-shadow">
                             <div id="rider">
                                 <img src="images/carBack.png" class="player car hidden" id="carBack">
                                 <div id="car-jets2" class="car car-jets player"></div>
@@ -176,6 +196,7 @@
                                 
                                 <div id="rider-go" class="player hidden">
                                     <img src="images/rider-go.png" class="rider-go">
+                                    <img src="images/rider-scream.png" class="rider-scream">
                                     <img src="images/hair-go1.png" class="hair-go" id="hair-go1">
                                     <img src="images/hair-go2.png" class="hair-go" id="hair-go2">
                                     <img src="images/hair-go3.png" class="hair-go" id="hair-go3">
@@ -200,6 +221,7 @@
                                         
                     <div id="obstacle4" class="hidden asteroid obstacle">
                         <img src="images/obstacle_asteroid.png" class="asteroid">
+                        <img src="images/car-shadow.png" class="asteroid-shadow" id="asteroid-shadow">
                     </div>
                     <div id="obstacle5" class="hidden rockR obstacle">
                         <img src="images/obstacle_rock2.png" class="rockR">
@@ -210,22 +232,30 @@
             
             
             
+
+
+
+
+
+
+
             <div id="copyWrap">
-                <div id="introTxt0" class="introTxtButt copy">press <img id="introBtnS" src="images/introBtnS.png"> to start</div>
+                <div id="instructionsTxt0" class="instructionsTxtButt hidden copy">press <img id="introBtnS" src="images/introBtnS.png"> to start</div>
 
                 <div id="gameover" class="copy hidden">game over</div>
                 <div id="warningtxt" class="copy hidden"></div>
                 <div id="pausedtxt" class="copy hidden">paused</div>
                 <div id="resumetxt" class="copy hidden">press <img id="introBtnS" src="images/introBtnS.png"> to continue</div>
                 
-                <div id="introTxt3" class="copy introTxt introTxtButt hidden">use <span id="introBtn"><img src="images/introBtn.png"></span> to move</div>
-                <div id="introTxt4" class="copy introTxt introTxtButt hidden">use <span id="introBtnK"><img src="images/introBtnK.png"></span> to jump<br>use <span id="introBtnJ"><img src="images/introBtnJ.png"></span> to wheelie</div>
+                <div id="instructionsTxt3" class="copy instructionsTxt instructionsTxtButt hidden">use <span id="introBtn"><img src="images/introBtn.png"></span> to move</div>
+                <div id="instructionsTxt4" class="copy instructionsTxt instructionsTxtButt hidden">use <span id="introBtnK"><img src="images/introBtnK.png"></span> to jump<br>use <span id="introBtnJ"><img src="images/introBtnJ.png"></span> to wheelie</div>
                 <div id="endtxt" class="copy hidden">
                     score<br>
-                    <div id="scoretxt">81</div><br>
+                    <div id="scoretxt">1000</div><br>
                     enter initials<br>
                     <input id="initialstxt" name="initialstxt" type="text" maxlength="3" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
                 </div>
+                <div id="highscorestxt" class="copy hidden"></div>
 
 
                 <div id="lyricstxt" class="copy hidden">
@@ -262,10 +292,11 @@
                     <div id="lyrics20" class="lyrics">To fight, defy,</div>
                     <div id="lyrics21" class="lyrics">I’ll set the galaxy ablaze</div>
                 </div>
+                <div id="introTxt05" class="copy hidden">stars are my guide</div>
             </div>
             
-            <div id="jumpingtxt" class="jumpingtxt">...</div>
-            <div id="pointstxt" class="pointstxt">0</div>
+            <div id="jumpingtxt" class="jumpingtxt hidden">...</div>
+            <div id="pointstxt" class="pointstxt hidden">0</div>
 
             <div id="mobileControls">
                 <div id="btnsMove" class="mobileControl">
@@ -277,6 +308,11 @@
                 <button id="btnJump" class="mobileControl" />
                 <button id="btnWheelie" class="mobileControl" />
             </div>
+
+
+
+
+
          </div>
     </div>
     <audio id="oww" preload="auto">

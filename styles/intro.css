@@ -1,0 +1,73 @@
+@charset "UTF-8";
+/* CSS Document */
+
+#introScreen {
+    width: 970px;
+    height: 475px;
+    background-color: black;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+#introStars,#introBG{ 
+    width: 970px;
+    height: 2350px;
+    background-image: url(../images/stars_1.png);
+    background-size: 1300px 470px; 
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+#introBG{
+    background-image: url(../images/introBG.jpg);
+    background-size: 1800px 940px; 
+    height: 940px;
+}
+.intrologo {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);   
+}
+#introPlay {
+    top: 50%;
+}
+#introTxt01 {
+    top:380px;
+}
+#introTxt02,#introTxt03 {
+    text-align: center;
+    top: 220px;
+    line-height: 3em;
+}
+#introTxt02a {
+    animation: colorRotateRed 1s infinite;
+}
+#introTxt03 {
+    font-size: .8em;
+}
+#introTxt03a{
+    animation: colorRotatePink 1s 1s infinite;
+}
+@keyframes colorRotatePink {
+    0% { color: rgba(84,36,84,1); }
+    50% { color: #fff; }
+    100% { color: rgba(84,36,84,1); }
+}
+#introLogo2 {
+    height: 290px;
+    top: 110px;
+}
+#introTxt04 {
+    top: 120px;
+    font-size: 0.8em;
+}
+#introTxt05 {
+    font-size: 1.4em;
+    color: #fed9ef;
+    text-align:center;
+    top: 110px;
+}
+.clickable {
+    cursor: pointer;
+}
