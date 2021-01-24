@@ -520,8 +520,8 @@ function startGame(ev,didAutoPlay)
     introPlaying=false;
 
     if(!didAutoPlay){
-        // audio.currentTime=85; // [todo]
-        audio.currentTime=285;
+        audio.currentTime=85; // [todo]
+        // audio.currentTime=285;
     }
     
     
@@ -1276,6 +1276,10 @@ function highScoreEntered(e) {
                 highScores.splice(i,0,["<span>"+yourNameScore,yourScore.toString()+"</span>"]);
                 placedScore=true;
             }
+        }
+
+        if(!placedScore) {
+            highScores.push(["<span>"+yourNameScore,yourScore.toString()+"</span>"]);   
         }
         // console.log(highScores);
         
