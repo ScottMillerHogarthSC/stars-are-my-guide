@@ -169,7 +169,7 @@ body{
     position: absolute;
 }
 .rider-go {
-    opacity: 1;
+    /*opacity: 1;*/
     background-image: url("../images/rider-go-new.png");
     background-size: 100%;
 }
@@ -451,11 +451,13 @@ img.ramp {
 #introBtnJ img,
 #introBtnJ,
 #introBtnK img,
-#introBtnK,#introBtnS {
+#introBtnK,
+#introBtnS,
+#introBtnOptions {
     width: 26px;
 }
 #instructionsTxt0 {
-     top: 208px;
+     top: 170px;
 }
 #instructionsTxt0.flashing {
     animation: flash 1s infinite linear;
@@ -465,7 +467,10 @@ img.ramp {
     50%{opacity:1}
     100%{opacity:.4}
 }
-
+#instructions_optionsTxt {
+    top: 255px;
+    transform: translate(-50%,-50%) scale(1.4);
+}
 #instructionsTxt3 {
     top: 207px;
 }
@@ -536,6 +541,52 @@ img.ramp {
     display: inline-block;
     background-image: url(../images/music-note-chorus.png);
 }
+
+
+#optionsScreen {
+    background-image: url(../images/optionsScreen.png);
+    width: 970px;
+    height: 475px;
+    position: absolute;
+}
+#optionsScreen #optionsTitle {
+    left: 495px;
+    top: 62px;
+    transform: scale(1.25);
+}
+.optionsBike {
+    width:50%;
+    height: 80px;
+    position: absolute;
+    left: 220px;
+    top: 110px;
+    cursor: pointer;
+    background-image: url(../images/bike.png);
+    background-size: 164px 150px;
+    background-position: left center;
+    background-repeat: no-repeat;
+    z-index: 1;
+    text-indent: 184px;
+    font-size: 1.05em;
+    line-height: 80px;
+    text-align: center;
+    color: white;
+    transition: 1s background-color;
+}
+.optionsBike:hover {
+    background-color: rgba(255,0,0,0.3); 
+}
+#optionsBike1 {
+    top: 210px;
+    background-image: url(../images/bike1.png);
+}
+#optionsBike2 {
+    top: 310px;
+    background-image: url(../images/bike2.png);
+}
+
+
+
 
 
 

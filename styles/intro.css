@@ -63,10 +63,10 @@
     font-size: 0.8em;
 }
 #introTxt05 {
-    font-size: 1.4em;
+    font-size: 1.55em;
     color: #fed9ef;
-    text-align:center;
-    top: 110px;
+    text-align: center;
+    top: 85px;
 }
 .clickable {
     cursor: pointer;
