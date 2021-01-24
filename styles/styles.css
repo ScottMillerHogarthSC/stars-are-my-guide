@@ -33,7 +33,8 @@ body{
     overflow:hidden;
     width: 970px;
     height: 475px;
-    position: absolute;;
+    position: absolute;
+    user-select: none;
 }
 .hidden {
     opacity: 0;
@@ -47,10 +48,23 @@ body{
 }
 .bgStars {
     width: 1300px;
+    height: 475px;
     opacity: .3;
+    background-size: contain;
 }
 #bgStars2,#bgStars3{
     transform: translateX(1300px);
+}
+#bgStars1,#bgStars3{
+    background-image: url(../images/stars_1.png);
+}
+#bgStars2{
+    background-image: url(../images/stars_2.png);
+}
+#bgStars1.fast,
+#bgStars2.fast,
+#bgStars3.fast{
+    background-image: url(../images/stars_1-fast.png);
 }
 .fg{
     width: 1801px;
@@ -134,6 +148,10 @@ body{
     background-repeat: no-repeat;
     opacity: 0;
 }
+#rider-jets {
+    top: 2px;
+    left:-5px;
+}
 @keyframes jetsGo {
     0%{ 
         background-position-y: 0px; 
@@ -145,13 +163,25 @@ body{
 #rider-go {
     width: 164px;
 }
-.hair-go,.rider-go {
-    width: 100%;
-    opacity: 0;
+.hair-go,.rider-go,#bike-go {
+    width:164px;
+    height: 150px;
     position: absolute;
 }
 .rider-go {
     opacity: 1;
+    background-image: url("../images/rider-go-new.png");
+    background-size: 100%;
+}
+#bike-go {
+    background-image: url("../images/bike.png");
+    background-size: 100%;
+}
+#bike-go.bike1 {
+    background-image: url("../images/bike1.png");
+}
+#bike-go.bike2 {
+    background-image: url("../images/bike2.png");
 }
 .rider-scream {
     width: 100%;
@@ -387,6 +417,12 @@ img.ramp {
     padding: 1%;
     z-index: 1;
     color: #fed9ef;
+    animation: pausedPulse 3s infinite;
+}
+@keyframes pausedPulse {
+    0% { text-shadow: 0px 0px 10px #fff; }
+    50% { text-shadow: 0px 0px 22px #fff; }
+    100% { text-shadow: 0px 0px 10px #fff; }
 }
 
 #introBtn,
@@ -514,6 +550,8 @@ img.ramp {
     padding: 0;
     opacity: .5;
     filter: invert(1);
+    user-select: none;
+
 }
 .mobileControl,.btnMove  {
     position: absolute;

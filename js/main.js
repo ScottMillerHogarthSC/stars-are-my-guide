@@ -117,7 +117,7 @@ function playIntroScreen() {
     audio.addEventListener("timeupdate",traceAudioTime);
     tlIntroScreen = gsap.timeline({onComplete:introPlayed})
     
-    
+    // btnMoveDown.addEventListener('touchend', startGame);
     BindButtons_startGame();
 
     tlIntroScreen.addLabel('introScreen')
@@ -540,6 +540,10 @@ function jump() {
         $('#rider').removeClass('riderBounce');
         $('#shadow').removeClass('shadowBounce');
 
+        gsap.to("#rider-jets",0.2,{scaleX:1.4,scaleY:1.1,x:10,y:-2,filter:"hue-rotate(190deg)"});
+        gsap.to("#rider-jets",0.2,{scaleX:1,scaleY:1,x:0,y:0,filter:"hue-rotate(0deg)",delay:1});
+
+
         gsap.to([rider],1,{y:-110})
         gsap.to([speechbub],1,{y:-167})
         
@@ -591,14 +595,14 @@ function wheelie() {
         points++;
         
         gsap.to("#rider-go",1,{rotationZ:-30})
-        gsap.to("#rider-jets",1,{x:2,y:24,skewY:13})
+        gsap.to("#rider-jets",1,{y:24,skewY:13})
 
         
         gsap.to(shadow,1,{x:-10,scaleX:.7})
         gsap.to(shadow,1.5,{x:0,scaleX:1,delay:1,ease:Bounce.easeOut})
         
         gsap.to("#rider-go",1.5,{rotationZ:0,delay:1,ease:Bounce.easeOut});
-        gsap.to("#rider-jets",1.5,{x:0,y:0,skewY:0,delay:1,ease:Bounce.easeOut})
+        gsap.to("#rider-jets",1.5,{y:0,skewY:0,delay:1,ease:Bounce.easeOut})
         gsap.delayedCall(2.4,backtoBounce);
     } else {
         if(!isFlipping)
@@ -689,7 +693,7 @@ function backtoBounce(){
     if(isJumping){
         isJumping=false;
     }
-
+    gsap.to("#rider-jets",0,{scaleX:1,scaleY:1,x:0,y:0});
 
     $('#rider').addClass('riderBounce');
     $('#shadow').addClass('shadowBounce');
@@ -1624,6 +1628,13 @@ function traceAudioTime(){
                 filter: "hue-rotate(-220deg)"
             }
         );
+        gsap.to([".fg"],
+            {   duration: .1,
+                webkitFilter: "hue-rotate(150deg) invert(1)",
+                filter: "hue-rotate(150deg) invert(1)",
+                repeat:5,
+            }
+        );
     }
     
     // make BG normal aftee Chorus 1
@@ -1633,6 +1644,13 @@ function traceAudioTime(){
             {   duration: 4,
                 webkitFilter: "hue-rotate(0deg)",
                 filter: "hue-rotate(0deg)"
+            }
+        );
+        gsap.to([".fg"],
+            {   duration: .1,
+                webkitFilter: "hue-rotate(0deg) invert(0)",
+                filter: "hue-rotate(0deg) invert(0)",
+                repeat:5,
             }
         );
     }
@@ -1653,13 +1671,22 @@ function traceAudioTime(){
                 ease: "none"
             }
         );
-        gsap.to([tl,tlfg,tlbg,tlstarsBG], 1, {timeScale:1.5, ease:Quad.easeIn})
+        gsap.to([tl,tlfg,tlbg], 1, {timeScale:1.5, ease:Quad.easeIn})
+        gsap.to([tlstarsBG], 1, {timeScale:3, ease:Quad.easeIn})
+
+        // [todo] hyperspace
+        gsap.to(".bgStars",0,{className:"bg bgStars fast"})
+        gsap.to(".bgToGo",1,{alpha:0})
     }
 
     // slow back down for final chorus
     if(audio.currentTime-85>chorus2Start && !doneSlowdown) {
         doneSlowdown=true;
         gsap.to([tl,tlfg,tlbg,tlstarsBG], 1, {timeScale:1.1, ease:Quad.easeOut})
+        gsap.to([tlstarsBG], 1, {timeScale:1, ease:Quad.easeOut})
+        gsap.to(".bgStars",0,{className:"bg bgStars"})
+        gsap.to(".bgToGo",1,{alpha:1})
+
     }
 
     // more lightning at outro start and super fast to end:
