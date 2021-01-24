@@ -507,6 +507,29 @@ img.ramp {
     50% { color: #fff; }
     100% { color: red; }
 }
+#replayBtn,#shareBtn {
+    font-size: 1em;
+    top: 380px;
+    animation: replayBounce 1s infinite steps(1);
+    color: #db51a3;
+    z-index: 1;
+    cursor: pointer;
+    transition: color 1s;
+}
+#shareBtn{
+    animation: none;
+    top: 446px;   
+}
+#replayBtn:hover,#shareBtn:hover,
+#replayBtn:active,#shareBtn:active {
+    color: red;
+}
+@keyframes replayBounce {
+    0% { font-size:1em; }
+    30% { font-size:1.1em; }
+    100% { font-size:1em }
+}
+
 #lyricstxt{
     width: 970px;
     display: block;
@@ -602,7 +625,9 @@ img.ramp {
     opacity: .5;
     filter: invert(1);
     user-select: none;
-
+}
+#mobileControls.optionsShowing{
+    display: none;
 }
 .mobileControl,.btnMove  {
     position: absolute;
@@ -640,7 +665,7 @@ img.ramp {
 #btnsMove.forwards{
     background-position-y: -312px;
 }
-.btnMove,#btnJump,#btnWheelie{
+.btnMove,#btnJump,#btnWheelie, #btnOption{
     width: 50px;
     height: 50px;
     position: absolute;
@@ -668,7 +693,8 @@ img.ramp {
     left: 55px;
 }
 #btnWheelie,
-#btnJump {
+#btnJump,
+#btnOption {
     bottom: 20px;
     right: 20px; 
     height: 55px;   
@@ -678,6 +704,12 @@ img.ramp {
 #btnWheelie {
     right: 80px;
     background-image: url(../images/introBtnJ.png);   
+}
+#btnOption {
+    right: 485px;
+    background-image: url(../images/introBtnO.png);
+    background-size: 100% auto;
+    background-position: center -43px;
 }
 #btnWheelie.pressed,
 #btnJump.pressed {

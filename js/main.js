@@ -1,17 +1,13 @@
 var gameSpeed = 1;
 var introSpeed = 1;
 
-var container,jumpingtxt,speechtxt,audio,oww,pointstxt,points=0,
-    _currentLoop=0,
-    _totalLoops=1,
-    _useReplayBtn=true,
-    _endframeReached=false;
+var container,jumpingtxt,speechtxt,audio,oww,pointstxt,points=0;
 var body = document.body,
 html = document.documentElement;
 var pageHeight = Math.max( body.scrollHeight, body.offsetHeight, 
 html.clientHeight, html.scrollHeight, html.offsetHeight );
 
-var btnMoveUp, btnMoveForwards, btnMoveBackwards, btnMoveDown, btnJump;
+var btnMoveUp, btnMoveForwards, btnMoveBackwards, btnMoveDown, btnJump, btnOption, replayBtn, shareBtn;
 
 var tlIntroScreen = gsap.timeline(),
     tlintro = gsap.timeline(),
@@ -22,7 +18,9 @@ var tlIntroScreen = gsap.timeline(),
     tlhair = gsap.timeline(),
     tlramp = gsap.timeline(),
     tlLyrics = gsap.timeline(),
-    tlScream=gsap.timeline();
+    tlScream=gsap.timeline(),
+    tlEnding = gsap.timeline();
+
 
 
 function init()
@@ -35,7 +33,8 @@ function init()
     speechtxt = document.getElementById("speechtxt");
     pointstxt = document.getElementById("pointstxt");
 
-    btnReplay = document.getElementById("btnReplay");
+    replayBtn = document.getElementById("replayBtn");
+    shareBtn = document.getElementById("shareBtn");
     cta = document.getElementById("cta");
     
     bg = document.getElementsByClassName("bg");
@@ -47,6 +46,7 @@ function init()
     btnMoveBackwards = document.getElementById("btnMoveBackwards");
     btnMoveDown = document.getElementById("btnMoveDown");
     btnJump = document.getElementById("btnJump");
+    btnOption = document.getElementById("btnOption");
     
     resizeWindow()
 
@@ -96,6 +96,7 @@ function loadedAudio(){
     
     container.style.display = "block";
 
+    container.addEventListener('touchend', playIntroScreen);
     container.addEventListener('click', playIntroScreen);
     document.body.addEventListener('keypress', playIntroScreen);
 
@@ -104,11 +105,15 @@ function loadedAudio(){
 var introPlaying = false;
 function playIntroScreen() {
 
+    container.removeEventListener('touchend', playIntroScreen);
     container.removeEventListener('click', playIntroScreen);
     document.body.removeEventListener('keypress', playIntroScreen);
 
-    container.addEventListener('click', introPlayed);
-    document.body.addEventListener('keypress', introPlayed);
+     gsap.delayedCall(1,function(){
+        container.addEventListener('touchend', introPlayed);
+        container.addEventListener('click', introPlayed);
+        document.body.addEventListener('keypress', introPlayed);
+    });
 
     container.className="";
 
@@ -127,7 +132,7 @@ function playIntroScreen() {
     tlIntroScreen.addLabel('introScreen')
 
         // move game screen down:
-        .to(tilt,0,{alpha:1,y:400})
+        .to("#tilt",0,{alpha:1,y:400})
 
 
         // hide 'play' button
@@ -167,7 +172,7 @@ function playIntroScreen() {
         .to(introScreen,3,{alpha:0,ease:Linear.easeNone},">-3")
         
 
-        .to([tilt],3,{y:0,ease:Power1.easeOut},">-3")
+        .to(["#tilt"],3,{y:0,ease:Power1.easeOut},">-3")
         .to([instructionsTxt0,instructions_optionsTxt],3,{alpha:1},">")
         .to([instructions_optionsTxt],3,{alpha:.5},">")
         .to([instructionsTxt0],{className:"instructionsTxtButt flashing hidden copy"},">")
@@ -177,7 +182,7 @@ function playIntroScreen() {
 function introPlayed() {
 
     gsap.to([instructionsTxt0],0,{alpha:1})
-    gsap.to([instructions_optionsTxt],0,{alpha:.5})
+    gsap.to([instructions_optionsTxt],0,{alpha:.5,display:"block"})
     gsap.to([instructionsTxt0],{className:"instructionsTxtButt flashing hidden copy",delay:0});
 
     gsap.to("#introScreen",0,{display:"none"});
@@ -185,12 +190,14 @@ function introPlayed() {
     tlIntroScreen.pause();
 
     gsap.to(introTxt05,0,{alpha:1});
-    gsap.to(tilt,0,{y:0})
+    gsap.to("#tilt",0,{y:0,alpha:1})
 
+    container.removeEventListener('touchend', introPlayed);
     container.removeEventListener('click', introPlayed);
     document.body.removeEventListener('keypress', introPlayed);
 
     // add StartGame event listeners:
+    console.log("introPlayed calls BindButtons_startGame")
     BindButtons_startGame();   
 }
 
@@ -210,16 +217,26 @@ function unBindButtons_gameResume(){
 }
 
 function BindButtons_startGame(){
-    console.log("unBindButtons_gameResume");
-
+    // console.log("BindButtons_startGame");
 
     btnMoveDown.addEventListener('touchend', startGame);
+
+
+
+    btnOption.addEventListener('touchend', showOptions);;
     document.body.addEventListener('keypress', introScreenBtnPressed);
 }
 
-function introScreenBtnPressed(e){
-    
 
+
+
+
+var instructions_optionsTxt = document.getElementById('instructions_optionsTxt'),
+    optionsBike = document.getElementById('optionsBike'),
+    optionsBike1 = document.getElementById('optionsBike1'),
+    optionsBike2 = document.getElementById('optionsBike2');
+
+function introScreenBtnPressed(e){
     if(e.code=="KeyS") {
         document.body.removeEventListener('keypress', introScreenBtnPressed);
         
@@ -227,26 +244,50 @@ function introScreenBtnPressed(e){
 
     } else if(e.code=="KeyO"){
 
-        document.body.removeEventListener('keypress', introScreenBtnPressed);
+        document.body.addEventListener('keypress', introScreenBtnPressed);
 
+        showOptions();
 
-        // show options screen: 
-        gsap.to(introTxt05,0,{alpha:0});
-        gsap.to(optionsScreen,0,{alpha:1});
+    } else {
 
-        document.getElementById('optionsBike').addEventListener('click',function(){ optionsBike_clicked()});
-        document.getElementById('optionsBike1').addEventListener('click',function(){ optionsBike_clicked(1)});
-        document.getElementById('optionsBike2').addEventListener('click',function(){ optionsBike_clicked(2)});
     }
 }
 
-function optionsBike_clicked(bikeNo){
+
+
+
+function showOptions(){
+    btnOption.removeEventListener('touchend',showOptions);
+    unBindButtons_startGame();
+
+    $('#mobileControls').addClass("optionsShowing");
+
+
+    // show options screen: 
+    gsap.to(introTxt05,0,{alpha:0});
+    gsap.to(optionsScreen,0,{alpha:1});
+
+    optionsBike.addEventListener('click',function(){ optionsBike_chosen()});
+    optionsBike1.addEventListener('click',function(){ optionsBike_chosen(1)});
+    optionsBike2.addEventListener('click',function(){ optionsBike_chosen(2)});
+
+    optionsBike.addEventListener('touchend',function(){ optionsBike_chosen()});
+    optionsBike1.addEventListener('touchend',function(){ optionsBike_chosen(1)});
+    optionsBike2.addEventListener('touchend',function(){ optionsBike_chosen(2)});  
+}
+
+
+
+function optionsBike_chosen(bikeNo){
     if(bikeNo==undefined) {bikeNo=""}
     gsap.to("#bike-go",0,{className: "bike"+bikeNo})
     gsap.to(introTxt05,0,{alpha:1});
     gsap.to(optionsScreen,0,{alpha:0});
 
-    document.body.addEventListener('keypress', introScreenBtnPressed);
+    $('#mobileControls').removeClass("optionsShowing");
+
+    BindButtons_startGame();
+
 }
 
 function unBindButtons_startGame(){
@@ -461,6 +502,94 @@ function keyUp(){
     $('#introBtn,#introBtnK,#introBtnJ').removeClass();
 }
 
+
+/*///////////////////////  ////////////////////////////////*/
+/*/////////////////////// START GAME ////////////////////////////////*/
+/*///////////////////////  ////////////////////////////////*/
+/*///////////////////////  ////////////////////////////////*/
+function startGame(ev,didAutoPlay)
+{
+    tlIntroScreen.pause();
+
+    gsap.to([introScreen,btnOption],0,{display:"none"});
+    gsap.to([introTxt05,optionsScreen],0,{alpha:0});
+    gsap.to("#tilt",0,{y:0})
+
+    points=0;
+
+    introPlaying=false;
+
+    if(!didAutoPlay){
+        // audio.currentTime=85; // [todo]
+        audio.currentTime=285;
+    }
+    
+    
+    audio.addEventListener("timeupdate",traceAudioTime);
+
+
+    // prevent touch default:
+    if(ev.cancelable) {
+        ev.preventDefault();
+    }
+
+    
+    // reset
+    gsap.set([flame,gameover,"#rider-stopped"],{alpha:0});
+    gsap.set([player,"#rider-go",pointstxt,jumpingtxt],{alpha:1});
+
+    $("#instructionsTxt0,#instructions_optionsTxt").hide();
+    
+    backtoBounce();
+        
+
+
+    // setup all listeners for gaming:
+    BindButtons_gamePlay();
+    
+    
+
+    tlbg = gsap.timeline({repeat:-1});
+    tlstarsBG = gsap.timeline({repeat:-1});
+    // tlhair = gsap.timeline({repeat:-1});
+    tlhair = gsap.timeline({onComplete:playHairTl});
+    tlfg = gsap.timeline({onComplete:fgTimeLineComplete});
+
+    gsap.fromTo(tlstarsBG,4,{timeScale:0},{timeScale:1,ease:Power1.easeIn});
+    gsap.fromTo(tlbg,4,{timeScale:0},{timeScale:1,ease:Power1.easeIn});
+
+    
+    tlintro = gsap.timeline({onComplete:playObstaclesTL});
+
+    tlintro.addLabel("FGs BGs", "<")
+        .add(writeLyrics, "<")
+        .add(playBGs,"<")
+        .add(playStarsBG,"<")
+        .add(playHairTl,"<")
+        
+        .to("#fg-intro",0, {alpha:1},"<")
+        
+        // reset obs
+        .to(".obstacle", 0, {alpha:1,left:obsStartLeft}, "<")
+
+        .to("#fg-intro",5,{x:"-100%",ease:Power1.easeIn},"<")
+        .to("#fgs",{alpha:1},"-=1.25")
+        .to(fgToGo1,0,{alpha:1,x:fgWidth},"-=1.25")
+        .to(fgToGo1,(fgSpeed/2),{x:0,ease:Linear.easeNone},">")
+
+        .add(playFGs,"<")
+    
+        
+            // [todo] turn back on intro
+        .to(instructionsTxt3,0,{alpha:1},"<1")
+        .to(instructionsTxt3,0,{alpha:0},"+=4")
+
+        .to(instructionsTxt4,0,{alpha:1},"<.75")
+        .to(instructionsTxt4,0,{alpha:0},"+=4");
+        
+}
+
+
 function gamePause() {
     gsap.killTweensOf(detectCollision);
     gsap.killTweensOf(backtoBounce);
@@ -569,89 +698,6 @@ function gameResume(ev) {
     gsap.set(pausedtxt,{alpha:0});
 
     BindButtons_gamePlay();
-}
-
-
-
-function startGame(ev,didAutoPlay)
-{
-    tlIntroScreen.pause();
-
-    gsap.to(introScreen,0,{display:"none"});
-    gsap.to([introTxt05,optionsScreen],0,{alpha:0});
-    gsap.to(tilt,0,{y:0})
-
-    points=0;
-
-    introPlaying=false;
-
-    if(!didAutoPlay){
-        audio.currentTime=85;
-    }
-    
-    
-    audio.addEventListener("timeupdate",traceAudioTime);
-
-
-    // prevent touch default:
-    if(ev.cancelable) {
-        ev.preventDefault();
-    }
-
-    
-    // reset
-    gsap.set([flame,gameover,"#rider-stopped"],{alpha:0});
-    gsap.set([player,"#rider-go",pointstxt,jumpingtxt],{alpha:1});
-
-    $("#instructionsTxt0,#instructions_optionsTxt").hide();
-    
-    backtoBounce();
-        
-
-
-    // setup all listeners for gaming:
-    BindButtons_gamePlay();
-    
-    
-
-    tlbg = gsap.timeline({repeat:-1});
-    tlstarsBG = gsap.timeline({repeat:-1});
-    // tlhair = gsap.timeline({repeat:-1});
-    tlhair = gsap.timeline({onComplete:playHairTl});
-    tlfg = gsap.timeline({onComplete:fgTimeLineComplete});
-
-    gsap.fromTo(tlstarsBG,4,{timeScale:0},{timeScale:1,ease:Power1.easeIn});
-    gsap.fromTo(tlbg,4,{timeScale:0},{timeScale:1,ease:Power1.easeIn});
-
-    
-    tlintro = gsap.timeline({onComplete:playObstaclesTL});
-
-    tlintro.addLabel("FGs BGs", "<")
-        .add(writeLyrics, "<")
-        .add(playBGs,"<")
-        .add(playStarsBG,"<")
-        .add(playHairTl,"<")
-        
-        .to("#fg-intro",0, {alpha:1},"<")
-        
-        // reset obs
-        .to(".obstacle", 0, {alpha:1,left:obsStartLeft}, "<")
-
-        .to("#fg-intro",5,{x:"-100%",ease:Power1.easeIn},"<")
-        .to("#fgs",{alpha:1},"-=1.25")
-        .to(fgToGo1,0,{alpha:1,x:fgWidth},"-=1.25")
-        .to(fgToGo1,(fgSpeed/2),{x:0,ease:Linear.easeNone},">")
-
-        .add(playFGs,"<")
-    
-        
-            // [todo] turn back on intro
-        .to(instructionsTxt3,0,{alpha:1},"<1")
-        .to(instructionsTxt3,0,{alpha:0},"+=4")
-
-        .to(instructionsTxt4,0,{alpha:1},"<.75")
-        .to(instructionsTxt4,0,{alpha:0},"+=4");
-        
 }
 
 
@@ -1148,8 +1194,9 @@ function playEnding(){
 
     
     $('#shadow').removeClass('shadowBounce');
+    
+        tlEnding = gsap.timeline({onComplete:tlEndingComplete});
 
-    var tlEnding = gsap.timeline({onComplete:tlEndingComplete});
         tlEnding.addLabel("ending", "<")
         .to("#car-shadow",0,{alpha:.4,x:900},"<")
         .to(".car",0,{alpha:1,x:900},"<")
@@ -1195,8 +1242,13 @@ function tlEndingComplete(){
     // tlbg.pause();     /// -- keep stars moving after end
     // tlstarsBG.pause();
     tlhair.pause();
-    // tlLyrics.pause();
+    tlLyrics.pause();
+
+    unBindButtons_gamePlay();
 }
+
+
+
 
 
 var highScores = [
@@ -1206,12 +1258,11 @@ var highScores = [
     ["guy","5211"]
 ];
 
+var scoretxt = document.getElementById("scoretxt");
+var initialstxt = document.getElementById("initialstxt");
 
 function highScoreEntered(e) {
 
-    var scoretxt = document.getElementById("scoretxt");
-    var initialstxt = document.getElementById("initialstxt");
-    
     if(e.keyCode=="13") {
 
         var placedScore = false;
@@ -1226,7 +1277,7 @@ function highScoreEntered(e) {
                 placedScore=true;
             }
         }
-        console.log(highScores);
+        // console.log(highScores);
         
         for(i=0; i<highScores.length; i++){
             highScoreList+= highScores[i][0]+"........."+highScores[i][1]+"<br>";
@@ -1237,7 +1288,16 @@ function highScoreEntered(e) {
 
         $("#highscorestxt").html(highScoreListLower);
         
-        gsap.to("#highscorestxt",0,{alpha:1});
+        gsap.to(["#highscorestxt","#replayBtn","#shareBtn"],0,{alpha:1});
+
+
+        // replay button
+        replayBtn.addEventListener("click", replayGame);
+        replayBtn.addEventListener("touchend", replayGame);
+
+        // share button
+        shareBtn.addEventListener("click", share);
+        shareBtn.addEventListener("touchend", share);
 
     }
 }
@@ -1271,6 +1331,10 @@ var overlaps = (function () {
 })();
 
 
+/*///////////////////////  ////////////////////////////////*/
+/*/////////////////////// COLLISION DETECTION ////////////////////////////////*/
+/*///////////////////////  ////////////////////////////////*/
+/*///////////////////////  ////////////////////////////////*/
 var collide;
 var collideAll;
 var area = $( '#area' )[0],
@@ -1451,6 +1515,11 @@ function tlRampComplete(){
     $('#shadow').addClass('shadowBounce');
 }
 
+
+/*///////////////////////  ////////////////////////////////*/
+/*/////////////////////// OBSTACLE HIT ////////////////////////////////*/
+/*///////////////////////  ////////////////////////////////*/
+/*///////////////////////  ////////////////////////////////*/
 var audioIncreaseAmount=1;
 function doObstacleHit() {
     collided=true;
@@ -1547,6 +1616,12 @@ function doRiderCrash(){
 }
 
 
+
+
+/*///////////////////////  ////////////////////////////////*/
+/*/////////////////////// WRITE LYRICS ////////////////////////////////*/
+/*///////////////////////  ////////////////////////////////*/
+/*///////////////////////  ////////////////////////////////*/
 var chorus1Start = 22,
     verse2Start = 42.35,
     soloStart = 157,
@@ -1674,6 +1749,12 @@ function writeLyrics(){
 }
 
 
+
+
+/*///////////////////////  ////////////////////////////////*/
+/*/////////////////////// TRIGGERS FROM AUDIO ////////////////////////////////*/
+/*///////////////////////  ////////////////////////////////*/
+/*///////////////////////  ////////////////////////////////*/
 var doneChorusTint = false,
     doneChorusTintBack = false,
     doneLightning = false,
@@ -1785,6 +1866,11 @@ function traceAudioTime(){
 }
 
 
+
+/*///////////////////////  ////////////////////////////////*/
+/*/////////////////////// FULL WIDTH ////////////////////////////////*/
+/*///////////////////////  ////////////////////////////////*/
+/*///////////////////////  ////////////////////////////////*/
 function getWindowSize(){
     windowheight = window.innerHeight;
     windowwidth = window.innerWidth;
@@ -1797,8 +1883,69 @@ function getWindowSize(){
 
 function resizeWindow(){
     getWindowSize();
-    console.log(windowwidth);
+    // console.log(windowwidth);
     gsap.set([wrap],{height:windowheight});
     gsap.set([wrap],{width:windowwidth});
     
+}
+
+
+/*///////////////////////  ////////////////////////////////*/
+/*/////////////////////// REPLAY BUTTON ////////////////////////////////*/
+/*///////////////////////  ////////////////////////////////*/
+/*///////////////////////  ////////////////////////////////*/
+function replayGame() {
+    replayBtn.removeEventListener("click", replayGame);
+    replayBtn.removeEventListener("touchend", replayGame);
+
+    window.location=window.location.href;
+    // gsap.to([replayBtn,highscorestxt],0,{alpha:0});
+
+    // gsap.to([".car","#car-shadow"],0,{alpha:0});
+    // gsap.to(player,0,{alpha:1});
+    // gsap.to("#tilt",0,{alpha:1,y:0,overwrite:true});
+    // gsap.to(instructionsTxt0,0,{display:"block"});
+    // gsap.to(playerMovements,0,{transform:"none"});
+
+    // introPlayed();
+
+    // points=0;
+
+    // tl.seek(0);
+    // tlEnding.seek(0);
+    // tlIntroScreen.seek(0);
+    // tlintro.seek(0);
+    // tl.seek(0);
+    // tlfg.seek(0);
+    // tlbg.seek(0);
+    // tlstarsBG.seek(0);
+    // tlhair.seek(0);
+    // tlramp.seek(0);
+    // tlLyrics.seek(0);
+    // tlScream.seek(0);
+
+    // tlEnding.pause();
+    // tlIntroScreen.pause();
+    // tlintro.pause();
+    // tl.pause();
+    // tlfg.pause();
+    // tlbg.pause();
+    // tlstarsBG.pause();
+    // tlhair.pause();
+    // tlramp.pause();
+    // tlLyrics.pause();
+    // tlScream.pause();
+}
+
+
+/*///////////////////////  ////////////////////////////////*/
+/*/////////////////////// SHARE  ////////////////////////////////*/
+/*///////////////////////  ////////////////////////////////*/
+/*///////////////////////  ////////////////////////////////*/
+function share() {
+    shareBtn.removeEventListener("click", share);
+    shareBtn.removeEventListener("touchend", share);
+    window.location="mailto:everyone.i.know@tell.your.friends.com?&subject=amazing game by this band called primitai&body=this game made by this band called primitai is absolutely brilliant, i scored "+scoretxt.innerHTML+" points: http://www.primitai.com";
+    window.open="http://www.primitai.com";
+
 }
