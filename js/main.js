@@ -849,8 +849,8 @@ function forwards() {
 
     $('#player').addClass('forwards');
 
-    gsap.to("#rider-jets",0,{scaleX:1.25,x:7})
-    gsap.to("#rider-jets",0,{scaleX:1,x:0,delay:.2})
+    gsap.to("#rider-jets",0,{scaleX:1.25,x:7,filter:"hue-rotate(61deg)"})
+    gsap.to("#rider-jets",0,{scaleX:1,x:0,filter:"hue-rotate(0deg)",delay:.2})
     
     jumpingtxt.innerHTML="drive";
 
