@@ -515,6 +515,7 @@ img.ramp {
     z-index: 1;
     cursor: pointer;
     transition: color 1s;
+    display: none;
 }
 #shareBtn{
     animation: none;
@@ -571,6 +572,7 @@ img.ramp {
     width: 970px;
     height: 475px;
     position: absolute;
+    display: none;
 }
 #optionsScreen #optionsTitle {
     left: 495px;

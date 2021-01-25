@@ -223,7 +223,7 @@ function BindButtons_startGame(){
 
 
 
-    btnOption.addEventListener('touchend', showOptions);;
+    btnOption.addEventListener('touchend', showOptions);
     document.body.addEventListener('keypress', introScreenBtnPressed);
 }
 
@@ -238,6 +238,7 @@ var instructions_optionsTxt = document.getElementById('instructions_optionsTxt')
 
 function introScreenBtnPressed(e){
     if(e.code=="KeyS") {
+        btnOption.removeEventListener('touchend', showOptions);
         document.body.removeEventListener('keypress', introScreenBtnPressed);
         
         startGame(e);
@@ -265,7 +266,7 @@ function showOptions(){
 
     // show options screen: 
     gsap.to(introTxt05,0,{alpha:0});
-    gsap.to(optionsScreen,0,{alpha:1});
+    gsap.to(optionsScreen,0,{alpha:1,display:"block"});
 
     optionsBike.addEventListener('click',function(){ optionsBike_chosen()});
     optionsBike1.addEventListener('click',function(){ optionsBike_chosen(1)});
@@ -282,7 +283,7 @@ function optionsBike_chosen(bikeNo){
     if(bikeNo==undefined) {bikeNo=""}
     gsap.to("#bike-go",0,{className: "bike"+bikeNo})
     gsap.to(introTxt05,0,{alpha:1});
-    gsap.to(optionsScreen,0,{alpha:0});
+    gsap.to(optionsScreen,0,{alpha:0,display:"none"});
 
     $('#mobileControls').removeClass("optionsShowing");
 
@@ -816,10 +817,15 @@ function backwards() {
 
     $('#player').removeClass('forwards');   
 
+    gsap.to("#rider-jets",0,{scaleX:.75,x:-7})
+    gsap.to("#rider-jets",0,{scaleX:1,x:0,delay:.2})
+
     jumpingtxt.innerHTML="brakes";
     gsap.delayedCall(.7,function(){
         jumpingtxt.innerHTML="go";
     });
+
+
 
     if(tl.isActive() && backwardsCount % 5 === 0)
     {
@@ -842,6 +848,9 @@ function forwards() {
     forwardsCount++;
 
     $('#player').addClass('forwards');
+
+    gsap.to("#rider-jets",0,{scaleX:1.25,x:7})
+    gsap.to("#rider-jets",0,{scaleX:1,x:0,delay:.2})
     
     jumpingtxt.innerHTML="drive";
 
@@ -1293,6 +1302,7 @@ function highScoreEntered(e) {
         $("#highscorestxt").html(highScoreListLower);
         
         gsap.to(["#highscorestxt","#replayBtn","#shareBtn"],0,{alpha:1});
+        gsap.to(["#replayBtn","#shareBtn"],0,{display:"block"});
 
 
         // replay button
