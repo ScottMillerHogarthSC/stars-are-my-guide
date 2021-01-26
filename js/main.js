@@ -61,18 +61,20 @@ function init()
     gsap.set([flame,gameover],{autoAlpha:0});
 
 
-    if (audio.canPlayType('audio/mpeg')) {
+    if (audio.canPlayType('audio/ogg')) {
+        console.log("canPlayType ogg");
+
+        audio.setAttribute('src','http://scottapmiller.com/scottoftheriver/01_stars_are_my_guide.ogg');
+
+    } else if (audio.canPlayType('audio/mpeg')) {
         console.log("canPlayType mp3");
 
         audio.setAttribute('src','http://scottapmiller.com/scottoftheriver/01_stars_are_my_guide.mp3');
     } 
-    else if (audio.canPlayType('audio/ogg')) {
-        console.log("canPlayType ogg");
-
-        audio.setAttribute('src','http://scottapmiller.com/scottoftheriver/01_stars_are_my_guide.ogg');
-    } else {
+     else {
         console.log("browser doesnt support audio");
     }
+
 
     if (audio.readyState > 3) {
     	loadedAudio();
@@ -84,7 +86,7 @@ function init()
 function preloadAudio(){
     console.log("preloadAudio");
 
-    audio.addEventListener('canplay', loadedAudio);
+    audio.addEventListener('canplaythrough', loadedAudio);
     audio.addEventListener('error', failedtoLoadAudio);
 
     audio.load(); 
@@ -124,6 +126,7 @@ function loadedAudio(){
 var introPlaying = false;
 function playIntroScreen() {
 
+
     container.removeEventListener('touchend', playIntroScreen);
     container.removeEventListener('click', playIntroScreen);
     document.body.removeEventListener('keypress', playIntroScreen);
@@ -137,6 +140,11 @@ function playIntroScreen() {
     });
 
     container.className="";
+
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audioCtx = new AudioContext();
+
+    
 
     // play the song
     gsap.fromTo(audio,1,{volume:0},{volume:1,ease:Power1.easeIn});
@@ -162,9 +170,9 @@ function playIntroScreen() {
         // setup intro BGs
         .to([introStars],0,{y:0,autoAlpha:1})
         .to([introBG],0,{y:0,autoAlpha:0})
-        .to(introStars,30,{y:"-1880px",autoAlpha:.4,z:0.01,ease:Power1.easeInOut})
+        .to(introStars,30,{y:"-1880px",autoAlpha:.4,rotationZ:0.01,ease:Power1.easeInOut})
         .to(introStars,10,{autoAlpha:.4,ease:Linear.easeNone},20)
-        .to(introBG,30,{y:"-423px",autoAlpha:1,z:0.01,ease:Power1.easeInOut},0)
+        .to(introBG,30,{y:"-423px",autoAlpha:1,rotationZ:0.01,ease:Power1.easeInOut},0)
         
         // intro copy:
         .to(introLogo,3,{autoAlpha:1,ease:Linear.easeNone},3)
@@ -548,15 +556,13 @@ function startGame(ev,didAutoPlay)
     introPlaying=false;
 
     if(!didAutoPlay){
-        audio.currentTime=85; 
+        audio.currentTime=84.00; 
+        console.log(audio.currentTime);
         // [todo]
         // audio.currentTime=285;
     }
     
     
-    audio.addEventListener("timeupdate",traceAudioTime);
-
-
     // prevent touch default:
     if(ev.cancelable) {
         ev.preventDefault();
@@ -952,8 +958,8 @@ function playFGs() {
         .to([fgToGo1],0,{x:0,z:0,},"<")
         .to([fgToGo2],0,{x:fgWidth,z:0},"<")
         
-        .to([fgToGo1],fgSpeed,{x:-fgWidth,z:0.01,ease:Linear.easeNone},">")
-        .to([fgToGo2],fgSpeed,{x:0,z:0.01,ease:Linear.easeNone},"<");
+        .to([fgToGo1],fgSpeed,{x:-fgWidth,rotationZ:0.01,ease:Linear.easeNone},">")
+        .to([fgToGo2],fgSpeed,{x:0,rotationZ:0.01,ease:Linear.easeNone},"<");
 }
 
 
@@ -965,10 +971,10 @@ function playBGs() {
         .to([bgToGo2],0,{x:bgWidth,z:0})
         .to([bgToGo3],0,{x:bgWidth,z:0})
         
-        .to(bgToGo1,bgSpeed,{x:-bgWidth,z:0.01,ease:Linear.easeNone},">")
-        .to(bgToGo2,bgSpeed,{x:0,z:0.01,ease:Linear.easeNone},"-="+bgSpeed)
-        .to(bgToGo2,bgSpeed,{x:-bgWidth,z:0.01,ease:Linear.easeNone},">")
-        .to(bgToGo3,bgSpeed,{x:0,z:0.01,ease:Linear.easeNone},"-="+bgSpeed)
+        .to(bgToGo1,bgSpeed,{x:-bgWidth,rotationZ:0.01,ease:Linear.easeNone},">")
+        .to(bgToGo2,bgSpeed,{x:0,rotationZ:0.01,ease:Linear.easeNone},"-="+bgSpeed)
+        .to(bgToGo2,bgSpeed,{x:-bgWidth,rotationZ:0.01,ease:Linear.easeNone},">")
+        .to(bgToGo3,bgSpeed,{x:0,rotationZ:0.01,ease:Linear.easeNone},"-="+bgSpeed)
 }
 
 
@@ -981,10 +987,10 @@ function playStarsBG() {
         .to([bgStars2],0,{autoAlpha:.3,x:starsBGWidth,z:0})
         .to([bgStars3],0,{autoAlpha:.3,x:starsBGWidth,z:0})
         
-        .to(bgStars1,starsBGSpeed,{x:-starsBGWidth,z:0.01,ease:Linear.easeNone},">")
-        .to(bgStars2,starsBGSpeed,{x:0,z:0.01,ease:Linear.easeNone},"-="+starsBGSpeed+"")
-        .to(bgStars2,starsBGSpeed,{x:-starsBGWidth,z:0.01,ease:Linear.easeNone},">")
-        .to(bgStars3,starsBGSpeed,{x:0,z:0.01,ease:Linear.easeNone},"-="+starsBGSpeed);
+        .to(bgStars1,starsBGSpeed,{x:-starsBGWidth,rotationZ:0.01,ease:Linear.easeNone},">")
+        .to(bgStars2,starsBGSpeed,{x:0,rotationZ:0.01,ease:Linear.easeNone},"-="+starsBGSpeed+"")
+        .to(bgStars2,starsBGSpeed,{x:-starsBGWidth,rotationZ:0.01,ease:Linear.easeNone},">")
+        .to(bgStars3,starsBGSpeed,{x:0,rotationZ:0.01,ease:Linear.easeNone},"-="+starsBGSpeed);
 }
 
 
@@ -1019,8 +1025,9 @@ function playObstaclesTL(){
     tl = gsap.timeline({onComplete:timeLineComplete});
     tl.addLabel("stage1", "<")
         .to("#player",0, {autoAlpha:1}, "<")
-    
+        
 
+      
         // rock L
         .to("#obstacle2", 0, {left:obsStartLeft+"px"}, ">")
         .call(setWarningTxt,["down"],"<")
@@ -1057,7 +1064,7 @@ function playObstaclesTL(){
         // asteroid
         .to("#obstacle4", 0, {left:obsStartLeft+"px"}, "-=2")
         .call(setWarningTxt,["asteroid"],"<")
-        .to("#obstacle4", obsSpeed, {left:(obsEndLeft*2),ease:Linear.easeNone},">")
+        .to("#obstacle4", obsSpeed, {left:(obsEndLeft*1.5),ease:Linear.easeNone},">")
 
 
         // hole
@@ -1125,6 +1132,10 @@ function playObstaclesTL(){
         .call(setWarningTxt,["up"],"<")
         .to("#obstacle5", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
 
+        .to("#obstacle4", 0, {left:obsStartLeft+"px"}, "-=2")
+        .call(setWarningTxt,["asteroid"],"<")
+        .to("#obstacle4", obsSpeed, {left:(obsEndLeft*1.5),ease:Linear.easeNone},">")
+
     
         // ramp
         .to(".ramp", 0, {left:obsStartLeft+"px"}, ">2")
@@ -1150,7 +1161,7 @@ function playObstaclesTL(){
         // asteroid
         .to("#obstacle4", 0, {left:obsStartLeft+"px"}, "-=2")
         .call(setWarningTxt,["asteroid"],"<")
-        .to("#obstacle4", obsSpeed, {left:(obsEndLeft*2),ease:Linear.easeNone},">")
+        .to("#obstacle4", obsSpeed, {left:(obsEndLeft*1.5),ease:Linear.easeNone},">")
 
         
         // ramp
@@ -1848,6 +1859,7 @@ var doneChorusTint = false,
 function traceAudioTime(){
     // 84
     if(audio.currentTime>=84 && !lyricsAreGo){
+        lyricsAreGo=true;
         writeLyrics();
     }
 
@@ -1862,67 +1874,54 @@ function traceAudioTime(){
     }
     
     // make BG red for Chorus 1
-    if(audio.currentTime-85>chorus1Start && !doneChorusTint && isChrome) {
+    if(audio.currentTime-84>chorus1Start && !doneChorusTint && isChrome) {
         doneChorusTint=true;
-        gsap.to([".bg"],
-            {   duration: 4,
-                filter: "hue-rotate(-220deg)"
-            }
-        );
-        gsap.to([".fg",".obstacle"],
-            {   duration: .1,
-                filter: "hue-rotate(150deg) invert(1)",
-                repeat:5,
-            }
-        );
+        // gsap.to([".bg"],
+        //     {   duration: 4,
+        //         filter: "hue-rotate(-220deg)"
+        //     }
+        // );
+        // gsap.to([".fg",".obstacle"],
+        //     {   duration: .1,
+        //         filter: "hue-rotate(150deg) invert(1)",
+        //         repeat:5,
+        //     }
+        // );
     }
     
     // make BG normal aftee Chorus 1
-    if(audio.currentTime-85>verse2Start && !doneChorusTintBack && isChrome) {
+    if(audio.currentTime-84>verse2Start && !doneChorusTintBack && isChrome) {
         doneChorusTintBack=true;
-        gsap.to([".bg"],
-            {   duration: 4,
-                filter: "hue-rotate(0deg)"
-            }
-        );
-        gsap.to([".fg",".obstacle"],
-            {   duration: .1,
-                filter: "hue-rotate(0deg) invert(0)",
-                repeat:5,
-            }
-        );
+        // gsap.to([".bg"],
+        //     {   duration: 4,
+        //         filter: "hue-rotate(0deg)"
+        //     }
+        // );
+        // gsap.to([".fg",".obstacle"],
+        //     {   duration: .1,
+        //         filter: "hue-rotate(0deg) invert(0)",
+        //         repeat:5,
+        //     }
+        // );
     }
 
     
 
     // flash lightning at heavy drop and go fast!!
-    if(audio.currentTime-85>124.9 && !doneLightning) {
+    if(audio.currentTime-84>124.9 && !doneLightning) {
         doneLightning=true;
 
 
-        if(isChrome) {
-	        gsap.fromTo(".bgToGo", 
-	            { filter: "brightness(1)" },
-	            {   duration: .01,
-	                filter: "brightness(6)",
-	                yoyo: true,
-	                repeat: 29,
-	                repeatDelay: 0.02,
-	                ease: "none"
-	            }
-	        );
-		} else {
-			gsap.fromTo("#lightning", 
-	            { autoAlpha: 0 },
-	            {   duration: .01,
-	                autoAlpha: .6,
-	                yoyo: true,
-	                repeat: 29,
-	                repeatDelay: 0.02,
-	                ease: "none"
-	            }
-	        );
-		}
+        gsap.fromTo("#lightning", 
+            { autoAlpha: 0 },
+            {   duration: .01,
+                autoAlpha: .6,
+                yoyo: true,
+                repeat: 29,
+                repeatDelay: 0.02,
+                ease: "none"
+            }
+        );
         gsap.to([tl,tlfg,tlbg], 1, {timeScale:1.5, ease:Quad.easeIn})
         gsap.to([tlstarsBG], 1, {timeScale:3, ease:Quad.easeIn})
 
@@ -1932,7 +1931,7 @@ function traceAudioTime(){
     }
 
     // slow back down for final chorus
-    if(audio.currentTime-85>chorus2Start && !doneSlowdown) {
+    if(audio.currentTime-84>chorus2Start && !doneSlowdown) {
         doneSlowdown=true;
         gsap.to([tl,tlfg,tlbg,tlstarsBG], 1, {timeScale:1.1, ease:Quad.easeOut})
         gsap.to([tlstarsBG], 1, {timeScale:1, ease:Quad.easeOut})
@@ -1942,32 +1941,19 @@ function traceAudioTime(){
     }
 
     // more lightning at outro start and super fast to end:
-    if(audio.currentTime-85>outroStart && !doneLightning2) {
+    if(audio.currentTime-84>outroStart && !doneLightning2) {
         doneLightning2=true;
 
-        if(isChrome){
-            gsap.fromTo(".bgToGo", 
-                { filter: "brightness(1)" },
-                {   duration: .01,
-                    filter: "brightness(6)",
-                    yoyo: true,
-                    repeat: 29,
-                    repeatDelay: 0.02,
-                    ease: "none"
-                }
-            );
-        } else {
-        	gsap.fromTo("#lightning", 
-	            { autoAlpha: 0 },
-	            {   duration: .01,
-	                autoAlpha: .6,
-	                yoyo: true,
-	                repeat: 29,
-	                repeatDelay: 0.02,
-	                ease: "none"
-	            }
-	        );
-        }
+        gsap.fromTo("#lightning", 
+            { autoAlpha: 0 },
+            {   duration: .01,
+                autoAlpha: .6,
+                yoyo: true,
+                repeat: 29,
+                repeatDelay: 0.02,
+                ease: "none"
+            }
+        );
         gsap.to([tl,tlfg,tlbg,tlstarsBG], 1, {timeScale:1.6, ease:Quad.easeIn})
 
     }
@@ -1979,7 +1965,7 @@ function traceAudioTime(){
         }
     }
     // [todo] - if need to see audio playback time
-    // console.log(audio.currentTime-85);
+    // console.log(audio.currentTime-84);
 }
 
 

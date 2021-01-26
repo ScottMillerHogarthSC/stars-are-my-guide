@@ -105,6 +105,7 @@ body{
     top: 0;
     left: 0;
     perspective: 500px;
+    -moz-perspective: 2000px;
     perspective-origin: left top;
 }
 
