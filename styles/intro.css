@@ -68,10 +68,21 @@
     text-align: center;
     top: 85px;*/
 
-    top: 96px;
+    /*top: 96px;
     position: absolute;
     left: 5%;
-    width: 90%;
+    width: 90%; */
+
+    top: 90px;
+    position: absolute;
+    left: 10%;
+    width: 80%;
+    
+    animation: hueRotate 2s 0s infinite;
+}
+@keyframes hueRotate {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
 }
 #introTxt05a{
     position: absolute;

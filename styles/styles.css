@@ -469,7 +469,7 @@ img.ramp {
     width: 26px;
 }
 #instructionsTxt0 {
-     top: 170px;
+     top: 180px;
 }
 #instructionsTxt0.flashing {
     animation: flash 1s infinite linear;
