@@ -167,7 +167,7 @@ function playIntroScreen() {
         .to([introLogo2],3,{alpha:1,ease:Linear.easeNone},"<1")
         .to([introTxt04,introLogo2],.5,{alpha:0,ease:Linear.easeNone},">")
 
-        .to(introTxt05,3,{alpha:1,ease:Linear.easeNone},">")
+        .to([introTxt05,introTxt05a],3,{alpha:1,ease:Linear.easeNone},">")
 
         .to(introScreen,3,{alpha:0,ease:Linear.easeNone},">-3")
         
@@ -189,7 +189,7 @@ function introPlayed() {
 
     tlIntroScreen.pause();
 
-    gsap.to(introTxt05,0,{alpha:1});
+    gsap.to([introTxt05,introTxt05a],0,{alpha:1});
     gsap.to("#tilt",0,{y:0,alpha:1})
 
     container.removeEventListener('touchend', introPlayed);
@@ -217,13 +217,13 @@ function unBindButtons_gameResume(){
 }
 
 function BindButtons_startGame(){
-    // console.log("BindButtons_startGame");
+    console.log("BindButtons_startGame");
 
+     // mobile
     btnMoveDown.addEventListener('touchend', startGame);
-
-
-
     btnOption.addEventListener('touchend', showOptions);
+
+	 //keyboard
     document.body.addEventListener('keypress', introScreenBtnPressed);
 }
 
@@ -265,7 +265,7 @@ function showOptions(){
 
 
     // show options screen: 
-    gsap.to(introTxt05,0,{alpha:0});
+    gsap.to([introTxt05,introTxt05a],0,{alpha:0});
     gsap.to(optionsScreen,0,{alpha:1,display:"block"});
 
     optionsBike.addEventListener('click',function(){ optionsBike_chosen()});
@@ -282,7 +282,7 @@ function showOptions(){
 function optionsBike_chosen(bikeNo){
     if(bikeNo==undefined) {bikeNo=""}
     gsap.to("#bike-go",0,{className: "bike"+bikeNo})
-    gsap.to(introTxt05,0,{alpha:1});
+    gsap.to([introTxt05,introTxt05as],0,{alpha:1});
     gsap.to(optionsScreen,0,{alpha:0,display:"none"});
 
     $('#mobileControls').removeClass("optionsShowing");
@@ -292,7 +292,7 @@ function optionsBike_chosen(bikeNo){
 }
 
 function unBindButtons_startGame(){
-    // console.log("unBindButtons_startGame");
+    console.log("unBindButtons_startGame");
 
     btnMoveDown.removeEventListener('touchend', startGame);
     document.body.removeEventListener('keypress', startGame);
@@ -300,7 +300,7 @@ function unBindButtons_startGame(){
 
 
 function BindButtons_gamePlay(){
-    // console.log("BindButtons_gamePlay")
+    console.log("BindButtons_gamePlay")
 
     // remove StartGame Event Listeners 
     unBindButtons_startGame();
@@ -504,16 +504,23 @@ function keyUp(){
 }
 
 
+var gameStarted = false;
 /*///////////////////////  ////////////////////////////////*/
 /*/////////////////////// START GAME ////////////////////////////////*/
 /*///////////////////////  ////////////////////////////////*/
 /*///////////////////////  ////////////////////////////////*/
 function startGame(ev,didAutoPlay)
 {
+	if(!gameStarted){
+		gameStarted=true;
+
+	// setup all listeners for gaming:
+    BindButtons_gamePlay();
+
     tlIntroScreen.pause();
 
     gsap.to([introScreen,btnOption],0,{display:"none"});
-    gsap.to([introTxt05,optionsScreen],0,{alpha:0});
+    gsap.to([introTxt05,introTxt05a,optionsScreen],0,{alpha:0});
     gsap.to("#tilt",0,{y:0})
 
     points=0;
@@ -545,8 +552,7 @@ function startGame(ev,didAutoPlay)
         
 
 
-    // setup all listeners for gaming:
-    BindButtons_gamePlay();
+    
     
     
 
@@ -587,7 +593,7 @@ function startGame(ev,didAutoPlay)
 
         .to(instructionsTxt4,0,{alpha:1},"<.75")
         .to(instructionsTxt4,0,{alpha:0},"+=4");
-        
+ 	}       
 }
 
 
@@ -1190,13 +1196,14 @@ function fgTimeLineComplete() {
 
 function playEnding(){
     endingPlayed=true;
+
     
     // play ending!!
     gsap.killTweensOf(detectCollision);
     gsap.killTweensOf(backtoBounce);
     gsap.killTweensOf(notJumping);
 
-    gsap.to(".obstacle",0,{alpha:0});
+    gsap.to([".obstacle",pausedtxt],0,{alpha:0});
     tl.pause();
 
     gsap.set([pointstxt,jumpingtxt],{alpha:0});
@@ -1778,6 +1785,10 @@ var doneChorusTint = false,
 function traceAudioTime(){
     if(audio.currentTime>=84 && introPlaying){
         introPlaying=false;
+
+        // got to the point in the song:
+        // do auto play
+        unBindButtons_startGame();
         startGame(false,true);
     }
     

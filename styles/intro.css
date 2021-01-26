@@ -63,10 +63,22 @@
     font-size: 0.8em;
 }
 #introTxt05 {
-    font-size: 1.55em;
+    /*font-size: 1.55em;
     color: #fed9ef;
     text-align: center;
-    top: 85px;
+    top: 85px;*/
+
+    top: 96px;
+    position: absolute;
+    left: 5%;
+    width: 90%;
+}
+#introTxt05a{
+    position: absolute;
+    left: 50%;
+    top: 3px;
+    transform: translateX(-50%);
+    width: 170px;
 }
 .clickable {
     cursor: pointer;
