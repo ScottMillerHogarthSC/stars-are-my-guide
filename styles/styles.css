@@ -87,6 +87,13 @@ body{
 #fgs {
     opacity: 0
 }
+#lightning {
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    position: absolute;
+    opacity: 0;
+}
 #area {
     position: absolute;
     width: 100%;

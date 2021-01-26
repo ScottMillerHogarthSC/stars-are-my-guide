@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title></title>
+    <title>Primitai - Stars are my Guide</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     
-    <script type="text/javascript">
-        var clickTag = "https://www.youtube.com/playlist?list=PL1qVXFGbQD4eZJgBHsKRtMqal_qtsBW1D"; 
-    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function(){
             loadAssets();
@@ -98,7 +95,8 @@
             outline:0;
             padding:0;
             margin:0;
-
+            width:100%;
+            height: 100%;
         }
         #container {
             display: none;
@@ -115,7 +113,11 @@
             width: 100%;
             min-width: 970px;
             min-height: 470px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
         }
+
         #loadingImage{
             position:absolute;
             left:50%;
@@ -128,13 +130,13 @@
 </head>
 <body>
     <audio id="audio">
-        <source type="audio/mp3">
+        <source type="audio/mp3" src="http://scottapmiller.com/scottoftheriver/01_stars_are_my_guide.mp3">
     </audio>
 
 
     <div id="loadingContent">
         <div id="loadingImage">
-            loading
+            loading...  please wait.
         </div>
     </div>
     <div id="wrap">
@@ -147,6 +149,8 @@
             <div class="bg bgStars" id="bgStars1"></div>
             <div class="bg bgStars" id="bgStars2"></div>
             <div class="bg bgStars" id="bgStars3"></div>
+            
+            <div class="lightning" id="lightning"></div>
 
             <div id="introScreen">
                 <div class="copy" id="introPlay">play ></div>
@@ -163,6 +167,7 @@
             </div>
             
             <div id="tilt" class="hidden">
+
                 <img src="images/fg-intro.png" class="fg" id="fg-intro">
                 
                 <div id="fgs">
@@ -297,7 +302,7 @@
                     <div id="lyrics21" class="lyrics">I’ll set the galaxy ablaze</div>
                 </div>
 
-                
+
                 <img src="images/title.png" id="introTxt05" class="hidden">
                 <img src="images/primitai-intro-logo.png" id="introTxt05a" class="hidden">
 
