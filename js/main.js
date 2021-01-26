@@ -86,7 +86,7 @@ function init()
 function preloadAudio(){
     console.log("preloadAudio");
 
-    audio.addEventListener('canplaythrough', loadedAudio);
+    audio.addEventListener('canplay', loadedAudio);
     audio.addEventListener('error', failedtoLoadAudio);
 
     audio.load(); 
