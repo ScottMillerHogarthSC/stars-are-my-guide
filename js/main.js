@@ -1350,6 +1350,9 @@ function tlEndingComplete(){
 
     document.getElementById('initialstxt').focus();
 
+    unBindButtons_gamePlay();
+    unBindButtons_gameResume();
+
     document.getElementById('initialstxt').addEventListener('keypress',highScoreEntered);
 
     tlintro.pause();
@@ -1360,7 +1363,7 @@ function tlEndingComplete(){
     tlhair.pause();
     tlLyrics.pause();
 
-    unBindButtons_gamePlay();
+    
 }
 
 
