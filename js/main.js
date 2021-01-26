@@ -86,7 +86,7 @@ function init()
 function preloadAudio(){
     console.log("preloadAudio");
 
-    audio.addEventListener('canplaythrough', loadedAudio);
+    audio.addEventListener('canplay', loadedAudio);
     audio.addEventListener('error', failedtoLoadAudio);
 
     audio.load(); 
@@ -96,31 +96,35 @@ function failedtoLoadAudio(e){
     console.log("COULD NOT LOAD AUDIO");
 }
 
+var audioLoaded = false;
 function loadedAudio(){
-    audio.removeEventListener('canplay', loadedAudio);
-    audio.addEventListener('error', failedtoLoadAudio);
-
-
-    $(document).on('show.visibility', function() {
-        if(tlbg.isActive() || introPlaying){
-            audio.play();    
-        }
-    });
-    $(document).on('hide.visibility', function() {
-        audio.pause();
-    });
-
-    console.log("loaded Audio");
-
+    if(!audioLoaded){
+        audioLoaded = true;
     
-    document.getElementById("loadingContent").style.display="none";
+        audio.removeEventListener('canplay', loadedAudio);
+        audio.addEventListener('error', failedtoLoadAudio);
     
-    container.style.display = "block";
-
-    container.addEventListener('touchend', playIntroScreen);
-    container.addEventListener('click', playIntroScreen);
-    document.body.addEventListener('keypress', playIntroScreen);
-
+    
+        $(document).on('show.visibility', function() {
+            if(tlbg.isActive() || introPlaying){
+                audio.play();    
+            }
+        });
+        $(document).on('hide.visibility', function() {
+            audio.pause();
+        });
+    
+        console.log("loaded Audio");
+    
+        
+        document.getElementById("loadingContent").style.display="none";
+        
+        container.style.display = "block";
+    
+        container.addEventListener('touchend', playIntroScreen);
+        container.addEventListener('click', playIntroScreen);
+        document.body.addEventListener('keypress', playIntroScreen);
+    }
 }
 
 var introPlaying = false;
@@ -482,38 +486,60 @@ function mobileBtnReleased(ev) {
     
 }
 
+var keyDown = "";
 function keypress(e){
     if(!collided && !isSongToEnding){
-
-    
         if(e.code=="KeyJ") {
-            gsap.killTweensOf(backtoBounce);
-            $('#introBtnJ').addClass('pressed');
+            if(keyDown!="J"){
+                gsap.killTweensOf(backtoBounce);
+            
+                wheelie();
 
-            wheelie();
+                keyDown = "J";
+                $('#introBtnJ').addClass('pressed');
+            }
         }
         else if(e.code=="KeyK") {
-            gsap.killTweensOf(backtoBounce);
-            $('#introBtnK').addClass('pressed');
-            
-            jump();
+            if(keyDown!="K"){
+                gsap.killTweensOf(backtoBounce);
+
+                jump();
+
+                keyDown = "K";
+                $('#introBtnK').addClass('pressed');
+            }
         }
         else if(e.code=="KeyD") {
-            forwards();
-            $('#introBtn').addClass('pressedD');
-        }
-        else if(e.code=="KeyA") {
-            backwards();
-            $('#introBtn').addClass('pressedA');
+            if(keyDown!="D"){
+                forwards();
 
+                keyDown = "D";
+                $('#introBtn').addClass('pressedD');
+            }
+        }
+        else if(e.code=="KeyA") {            
+            if(keyDown!="A"){
+                backwards();
+
+                keyDown = "A";
+                $('#introBtn').addClass('pressedA');
+            }
         }
         else if(e.code=="KeyW") {
-            upwards();
-            $('#introBtn').addClass('pressedW');
+            if(keyDown!="W"){
+                upwards();
+                $('#introBtn').addClass('pressedW');
+
+                keyDown="W";
+            }
         }
         else if(e.code=="KeyS") {
-            downwards();
-            $('#introBtn').addClass('pressedS');
+            if(keyDown!="S"){
+                downwards();
+                $('#introBtn').addClass('pressedS');
+
+                keyDown="S";
+            }
         }
         // mute (pause) 
         else if(e.code=="KeyM"){
@@ -528,6 +554,8 @@ function keypress(e){
     }
 }
 function keyUp(){
+    keyDown = "";
+
     $('#introBtn,#introBtnK,#introBtnJ').removeClass();
 }
 
@@ -792,8 +820,6 @@ var wheelieCount=0;
 var isFlipping=false;
 function wheelie() {
 
-    
-    
     wheelieCount++;
     
     $('#rider').removeClass('riderBounce');
