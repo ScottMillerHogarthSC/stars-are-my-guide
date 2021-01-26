@@ -61,8 +61,20 @@ function init()
     gsap.set([flame,gameover],{autoAlpha:0});
 
 
-    // audio.src = "http://scottapmiller.com/scottoftheriver/01_stars_are_my_guide.mp3";
-    if (audio.readyState >= 3) {
+    if (audio.canPlayType('audio/mpeg')) {
+        console.log("canPlayType mp3");
+
+        audio.setAttribute('src','http://scottapmiller.com/scottoftheriver/01_stars_are_my_guide.mp3');
+    } 
+    else if (audio.canPlayType('audio/ogg')) {
+        console.log("canPlayType ogg");
+
+        audio.setAttribute('src','http://scottapmiller.com/scottoftheriver/01_stars_are_my_guide.ogg');
+    } else {
+        console.log("browser doesnt support audio");
+    }
+
+    if (audio.readyState > 3) {
     	loadedAudio();
     } else {
     	preloadAudio();	
@@ -72,7 +84,7 @@ function init()
 function preloadAudio(){
     console.log("preloadAudio");
 
-    audio.addEventListener('canplaythrough', loadedAudio);
+    audio.addEventListener('canplay', loadedAudio);
     audio.addEventListener('error', failedtoLoadAudio);
 
     audio.load(); 
@@ -83,7 +95,7 @@ function failedtoLoadAudio(e){
 }
 
 function loadedAudio(){
-    audio.removeEventListener('canplaythrough', loadedAudio);
+    audio.removeEventListener('canplay', loadedAudio);
     audio.addEventListener('error', failedtoLoadAudio);
 
 
@@ -141,7 +153,7 @@ function playIntroScreen() {
     tlIntroScreen.addLabel('introScreen')
 
         // move game screen down:
-        .to("#tilt",0,{autoAlpha:1,y:400})
+        .to("#tilt",0,{autoAlpha:1})
 
 
         // hide 'play' button
@@ -150,9 +162,9 @@ function playIntroScreen() {
         // setup intro BGs
         .to([introStars],0,{y:0,autoAlpha:1})
         .to([introBG],0,{y:0,autoAlpha:0})
-        .to(introStars,30,{y:"-80%",autoAlpha:.4,z:0.01,ease:Power1.easeInOut})
+        .to(introStars,30,{y:"-1880px",autoAlpha:.4,z:0.01,ease:Power1.easeInOut})
         .to(introStars,10,{autoAlpha:.4,ease:Linear.easeNone},20)
-        .to(introBG,30,{y:"-45%",autoAlpha:1,z:0.01,ease:Power1.easeInOut},0)
+        .to(introBG,30,{y:"-423px",autoAlpha:1,z:0.01,ease:Power1.easeInOut},0)
         
         // intro copy:
         .to(introLogo,3,{autoAlpha:1,ease:Linear.easeNone},3)
@@ -184,8 +196,7 @@ function playIntroScreen() {
         .to(["#tilt"],3,{y:0,ease:Power1.easeOut},">-3")
         .to([instructionsTxt0,instructions_optionsTxt],3,{autoAlpha:1},">")
         .to([instructions_optionsTxt],3,{autoAlpha:.5},">")
-        .to([instructionsTxt0],{className:"instructionsTxtButt flashing hidden copy"},">")
-;
+        .to([instructionsTxt0],{className:"instructionsTxtButt flashing hidden copy"},">");
 }
 
 function introPlayed() {
@@ -580,7 +591,6 @@ function startGame(ev,didAutoPlay)
     tlintro = gsap.timeline({onComplete:playObstaclesTL});
 
     tlintro.addLabel("FGs BGs", "<")
-        .add(writeLyrics, "<")
         .add(playBGs,"<")
         .add(playStarsBG,"<")
         .add(playHairTl,"<")
@@ -1833,9 +1843,15 @@ var doneChorusTint = false,
     doneChorusTintBack = false,
     doneLightning = false,
     doneLightning2 = false,
-    doneSlowdown = false;
-
+    doneSlowdown = false,
+    lyricsAreGo = false;
 function traceAudioTime(){
+    // 84
+    if(audio.currentTime>=84 && !lyricsAreGo){
+        writeLyrics();
+    }
+
+
     if(audio.currentTime>=84 && introPlaying){
         introPlaying=false;
 

@@ -66,6 +66,10 @@ body{
 #bgStars3.fast{
     background-image: url(../images/stars_1-fast.png);
 }
+
+#tilt {
+    transform: translateY(400px);
+}
 .fg{
     width: 1801px;
     left: 0px;
