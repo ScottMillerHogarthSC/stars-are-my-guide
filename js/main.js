@@ -3,6 +3,34 @@ var introSpeed = 1;
 var cheat = "";
 var isCheat = false;
 
+
+// turn on any cheats
+if(window.location.search!=""){
+    cheat = window.location.search.split("?")[1];
+
+    switch (cheat){
+        case "rampMode":
+            isCheat = true;
+            cheatstxt.innerHTML=cheat;
+            cheatstxt.style.display="block";        
+            break;
+        
+        case "clearMode":
+            isCheat = true;        
+            cheatstxt.innerHTML=cheat;
+            cheatstxt.style.display="block";        
+            break;
+
+        case "fastMode":
+            isCheat = true;        
+            cheatstxt.innerHTML=cheat;
+            cheatstxt.style.display="block";
+            gameSpeed = .5;
+            introSpeed = 10;
+            break;
+    }
+}
+
 var container,jumpingtxt,speechtxt,audio,oww,pointstxt,points=0;
 var body = document.body,
 html = document.documentElement;
@@ -15,6 +43,7 @@ var btnMoveUp, btnMoveForwards, btnMoveBackwards, btnMoveDown, btnJump, btnOptio
 
 var tlIntroScreen = gsap.timeline(),
     tlintro = gsap.timeline(),
+    tlInstructions = gsap.timeline(),
     tl = gsap.timeline(),
     tlfg = gsap.timeline(),
     tlbg = gsap.timeline(),
@@ -57,33 +86,6 @@ function init()
     resizeWindow()
 
     $( window ).resize(resizeWindow);
-    
-    // turn on any cheats
-    if(window.location.search!=""){
-        var cheat = window.location.search.split("?")[1];
-
-        switch (cheat){
-            case "rampMode":
-                isCheat = true;
-                cheatstxt.innerHTML=cheat;
-                cheatstxt.style.display="block";        
-                break;
-            
-            case "clearMode":
-                isCheat = true;        
-                cheatstxt.innerHTML=cheat;
-                cheatstxt.style.display="block";        
-                break;
-
-            case "fastMode":
-                isCheat = true;        
-                cheatstxt.innerHTML=cheat;
-                cheatstxt.style.display="block";
-                gameSpeed = 3;
-                introSpeed = 3;
-                break;
-        }
-    }
 
 
 
@@ -199,7 +201,7 @@ function playIntroScreen() {
     audio.addEventListener("timeupdate",traceAudioTime);
     tlIntroScreen = gsap.timeline({onComplete:introPlayed})
     
-    tlIntroScreen.timeScale(1);
+    tlIntroScreen.timeScale(introSpeed);
 
     tlIntroScreen.addLabel('introScreen')
 
@@ -710,7 +712,7 @@ function startGame(ev,didAutoPlay)
     gsap.fromTo(tlbg,4,{timeScale:0},{timeScale:1,ease:Power1.easeIn});
 
     
-    tlintro = gsap.timeline({onComplete:playObstaclesTL});
+    tlintro = gsap.timeline({onComplete:showIntructions});
 
     tlintro.addLabel("FGs BGs", "<")
         .add(playBGs,"<")
@@ -728,20 +730,21 @@ function startGame(ev,didAutoPlay)
         .to(fgToGo1,(fgSpeed/2),{x:0,ease:Linear.easeNone},">")
 
         .add(playFGs,"<")
-    
-        .add(showIntructions,"<");
  	}       
 }
 
 function showIntructions(){
     if(!isCheat){
-        var tlInstructions = gsap.timeline();
-        tlInstructions
-            .to(instructionsTxt3,0,{autoAlpha:1},"<1")
+        tlInstructions.addLabel('play instructions')
+            .to(instructionsTxt3,0,{autoAlpha:1},"0")
             .to(instructionsTxt3,0,{autoAlpha:0},"+=4")
 
             .to(instructionsTxt4,0,{autoAlpha:1},"<.75")
-            .to(instructionsTxt4,0,{autoAlpha:0},"+=4");
+            .to(instructionsTxt4,0,{autoAlpha:0},"+=4")
+            .add(playObstaclesTL,">");
+
+    } else {
+        playObstaclesTL();
     }
 }
 
@@ -758,6 +761,7 @@ function gamePause() {
     tlbg.pause();
     tlstarsBG.pause();
     tlintro.pause();
+    tlInstructions.pause();
     tl.pause();
     tlLyrics.pause();
     tlramp.pause()
@@ -828,6 +832,7 @@ function gameResume(ev) {
 
     
     tlintro.resume();
+    tlInstructions.resume();
     tl.resume();
     tlbg.resume();  
     tlstarsBG.resume();
@@ -876,13 +881,13 @@ function jump() {
         jumpingtxt.innerHTML="jump";
 
 
-        if(jumpCount % 4 === 0){
+        if(tl.isActive() && jumpCount % 4 === 0){
             
             speechtxt.innerHTML="primitaaaii";    
             gsap.set(speechbub,{autoAlpha:1});
             gsap.to(speechbub,0,{autoAlpha:0,delay:1.5});
 
-        } else if (jumpCount % 15 === 0) {
+        } else if (tl.isActive() && jumpCount % 15 === 0) {
 
             // every 9 jumps do a stand-up scream
         
@@ -1188,7 +1193,7 @@ function playObstaclesTL(){
 
     tl = gsap.timeline({onComplete:timeLineComplete});
 
-    if(cheat==""){
+    if(!isCheat){
 
     tl.addLabel("stage1", "<")
         .to("#player",0, {autoAlpha:1}, "<")
@@ -1359,8 +1364,40 @@ function playObstaclesTL(){
 
     } else if(cheat=="clearMode"){
         tl.addLabel("clear", "<");
+
         
-    }   
+    } else if(cheat=="fastMode"){
+        
+        tl.addLabel("fastMode", "<")
+
+        // rock L
+        .to("#obstacle2", 0, {left:obsStartLeft+"px"}, ">")
+        .call(setWarningTxt,["down"],"<")
+        .to("#obstacle2", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+
+
+        // rock R
+        .to("#obstacle5", 0, {left:obsStartLeft+"px"}, ">")
+        .call(setWarningTxt,["up"],"<")
+        .to("#obstacle5", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+
+    
+        // ramp
+        .to(".ramp", 0, {left:obsStartLeft+"px"}, ">")
+        .call(setWarningTxt,["ramp"],"<")
+        .to(".ramp", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+
+
+        // hole
+        .to("#obstacle1", 0, {left:obsStartLeft+"px"}, ">3")
+        .call(setWarningTxt,["hole"],"<")
+        .to("#obstacle1", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+
+        // asteroid
+        .to("#obstacle4", 0, {left:obsStartLeft+"px"}, ">")
+        .call(setWarningTxt,["asteroid"],"<")
+        .to("#obstacle4", obsSpeed, {left:(obsEndLeft),ease:Linear.easeNone},">")
+    }
 }
 
 var reps = 0;
