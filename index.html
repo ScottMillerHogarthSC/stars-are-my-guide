@@ -121,7 +121,7 @@
             color: #fff;
         }
     </style>
-    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
+    <!-- <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/> -->
 </head>
 <body>
     <audio id="audio">
@@ -156,7 +156,7 @@
                 <div id="introTxt01" class="copy hidden">presents</div>
                 <div id="introTxt02" class="copy hidden">a<br><span id="introTxt02a">@scottoftheriver</span><br><span id="introTxt02b" class="hidden">production</div>
                 
-                <div id="introTxt03" class="copy hidden">graphics by<br><span id="introTxt03a">nina kearsey</span></div>    
+                <div id="introTxt03" class="copy hidden">graphics by<br><span id="introTxt03a">@ronninaosullivan</span></div>    
                 
                 <div id="introTxt04" class="copy hidden">licensed by</div>
                 <img id="introLogo2" src="images/roar-logo.png" class="intrologo hidden" />
@@ -184,7 +184,7 @@
                         <img src="images/obstacle_ramp.png" class="ramp">
                     </div>
 
-                    <div id="player" class="forwards">
+                    <div id="player" class="forwards forwards2">
                         <div id="playerMovements">
                             <img src="images/shadow.png" class="player shadow" id="shadow">
                               <img src="images/car-shadow.png" class="player hidden" id="car-shadow">
@@ -198,6 +198,7 @@
                                 <div id="rider-go" class="player hidden">    
                                     <div class="rider-go"></div>
                                     <img src="images/rider-scream.png" class="rider-scream">
+                                    <img src="images/rider-scream2.png" class="rider-scream2">
                                     <img src="images/hair-go1.png" class="hair-go" id="hair-go1">
                                     <img src="images/hair-go2.png" class="hair-go" id="hair-go2">
                                     <img src="images/hair-go3.png" class="hair-go" id="hair-go3">
@@ -259,8 +260,13 @@
                     <input id="initialstxt" name="initialstxt" type="text" maxlength="3" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
                 </div>
                 <div id="highscorestxt" class="copy hidden"></div>
-                <div id="replayBtn" class="copy hidden">play again</div>
-                <div id="shareBtn" class="copy hidden">share</div>
+
+                <div id="endScreenBtns">
+                    <a id="replayBtn" href="http://scottapmiller.com/stars-are-my-guide" title="play the game again" class="copy">play again</a>
+                    <a id="shareBtn" title="email a friend about this game" class="copy">share</a>
+                    <a id="listenBtn" href="listen" target="_blank" title="find Primitai on your favourite streaming services" class="copy">hear more<br>primitai</a>
+                    <a id="dotcomBtn" href="http://www.primitai.com" target="_blank" title="visit the primitai official website" class="copy">visit<br>primitai.com</a>
+                </div>
 
 
                 <div id="lyricstxt" class="copy hidden">

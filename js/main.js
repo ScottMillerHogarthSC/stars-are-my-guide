@@ -21,12 +21,14 @@ var tlIntroScreen = gsap.timeline(),
     tlramp = gsap.timeline(),
     tlLyrics = gsap.timeline(),
     tlScream=gsap.timeline(),
-    tlEnding = gsap.timeline();
+    tlEnding = gsap.timeline(),
+    primScreamTL = gsap.timeline();
 
 
 
 function init()
 {
+
     console.log("init");
 
     // main content
@@ -53,6 +55,7 @@ function init()
     resizeWindow()
 
     $( window ).resize(resizeWindow);
+    
 
 
 
@@ -64,12 +67,14 @@ function init()
     if (audio.canPlayType('audio/ogg')) {
         console.log("canPlayType ogg");
 
-        audio.setAttribute('src','http://scottapmiller.com/scottoftheriver/01_stars_are_my_guide.ogg');
+        audio.setAttribute('src','01_stars_are_my_guide.ogg');
+        // audio.setAttribute('src','http://scottapmiller.com/scottoftheriver/01_stars_are_my_guide.ogg');
 
     } else if (audio.canPlayType('audio/mpeg')) {
         console.log("canPlayType mp3");
 
-        audio.setAttribute('src','http://scottapmiller.com/scottoftheriver/01_stars_are_my_guide.mp3');
+        audio.setAttribute('src','01_stars_are_my_guide.mp3');
+        // audio.setAttribute('src','http://scottapmiller.com/scottoftheriver/01_stars_are_my_guide.mp3');
     } 
      else {
         console.log("browser doesnt support audio");
@@ -137,8 +142,10 @@ function playIntroScreen() {
 
 
     // add delay to avoid accidentally skipping intro (mostly on mobile)
-    gsap.delayedCall(.6,function(){
+    gsap.delayedCall(2,function(){
         container.addEventListener('touchend', introPlayed);
+    });
+    gsap.delayedCall(.8,function(){
         container.addEventListener('click', introPlayed);
         document.body.addEventListener('keypress', introPlayed);
     });
@@ -160,12 +167,13 @@ function playIntroScreen() {
     audio.addEventListener("timeupdate",traceAudioTime);
     tlIntroScreen = gsap.timeline({onComplete:introPlayed})
     
-    
+    tlIntroScreen.timeScale(1);
 
     tlIntroScreen.addLabel('introScreen')
 
         // move game screen down:
-        .to("#tilt",0,{autoAlpha:1})
+        .to(tilt, 0, {autoAlpha:1,scale:1.8,x:388,y:100},"<")
+        .to([bgStars1,bgToGo3,introBG,introStars,introTxt05,introTxt05a],0,{scale:1.2,transformOrigin:"left bottom"},"<")
 
 
         // hide 'play' button
@@ -200,29 +208,48 @@ function playIntroScreen() {
         .to([introLogo2],3,{autoAlpha:1,ease:Linear.easeNone},"<1")
         .to([introTxt04,introLogo2],.5,{autoAlpha:0,ease:Linear.easeNone},">")
 
-        .to([introTxt05,introTxt05a],3,{autoAlpha:1,ease:Linear.easeNone},">")
-
-        .to(introScreen,3,{autoAlpha:0,ease:Linear.easeNone},">-3")
         
+        .to(tilt, 7, {y:-380,ease:Power1.easeOut},">")
 
-        .to(["#tilt"],3,{y:0,ease:Power1.easeOut},">-3")
-        .to([instructionsTxt0,instructions_optionsTxt],3,{autoAlpha:1},">")
-        .to([instructions_optionsTxt],3,{autoAlpha:.5},">")
-        .to([instructionsTxt0],{className:"instructionsTxtButt flashing hidden copy"},">");
+        .to(tilt, 10, {scale:1,x:0,y:0,ease:Power1.easeInOut},">")
+
+        .to([bgStars1,bgToGo3,introBG,introStars,introTxt05,introTxt05a],10,{scale:1,ease:Power1.easeInOut},"<")
+        .to(introScreen,5,{scale:1,transformOrigin:"left bottom",ease:Power1.easeInOut},"<")
+
+        .to([introTxt05],3,{autoAlpha:1,ease:Linear.easeNone},"<2")
+
+        .to(introScreen,1,{autoAlpha:0,ease:Linear.easeNone},"<4")
+
+        .to([introTxt05a],3,{autoAlpha:1,ease:Linear.easeNone},">")
+        
 }
 
-function introPlayed() {
+function showTitles() {
+    gsap.to(tilt, 0, {scale:1,x:0,y:0})
+
+    gsap.to([bgStars1,bgToGo3,introBG,introStars,introTxt05,introTxt05a],0,{scale:1})
+    gsap.to(introScreen,0,{scale:1,transformOrigin:"left bottom"})
 
     gsap.to([instructionsTxt0],0,{autoAlpha:1})
     gsap.to([instructions_optionsTxt],0,{autoAlpha:.5,display:"block"})
     gsap.to([instructionsTxt0],{className:"instructionsTxtButt flashing hidden copy",delay:0});
+    gsap.to([introTxt05,introTxt05a],0,{autoAlpha:1});
+}
+function introPlayed() {
 
+    showTitles();
+
+
+    // reset intro stuff:
+    gsap.to(["#bgStars1","#bgToGo3"],0,{scale:1})
     gsap.to("#introScreen",0,{display:"none"});
 
     tlIntroScreen.pause();
 
-    gsap.to([introTxt05,introTxt05a],0,{autoAlpha:1});
-    gsap.to("#tilt",0,{y:0,autoAlpha:1})
+    
+
+    //[todo]
+    // gsap.to("#tilt",0,{y:0,autoAlpha:1})
 
     container.removeEventListener('touchend', introPlayed);
     container.removeEventListener('click', introPlayed);
@@ -643,11 +670,11 @@ function startGame(ev,didAutoPlay)
     
         
             // [todo] - turn off to skip instructions
-        // .to(instructionsTxt3,0,{autoAlpha:1},"<1")
-        // .to(instructionsTxt3,0,{autoAlpha:0},"+=4")
+        .to(instructionsTxt3,0,{autoAlpha:1},"<1")
+        .to(instructionsTxt3,0,{autoAlpha:0},"+=4")
 
-        // .to(instructionsTxt4,0,{autoAlpha:1},"<.75")
-        // .to(instructionsTxt4,0,{autoAlpha:0},"+=4");
+        .to(instructionsTxt4,0,{autoAlpha:1},"<.75")
+        .to(instructionsTxt4,0,{autoAlpha:0},"+=4");
  	}       
 }
 
@@ -781,10 +808,29 @@ function jump() {
         jumpCount++;
         jumpingtxt.innerHTML="jump";
 
+
         if(jumpCount % 4 === 0){
+            
             speechtxt.innerHTML="primitaaaii";    
             gsap.set(speechbub,{autoAlpha:1});
             gsap.to(speechbub,0,{autoAlpha:0,delay:1.5});
+
+        } else if (jumpCount % 15 === 0) {
+
+            // every 9 jumps do a stand-up scream
+        
+            tlhair.pause();
+            primScreamTL = gsap.timeline({onComplete:function(){ tlhair.play(); }});
+
+            speechtxt.innerHTML="primitaaaii"
+            
+            primScreamTL.addLabel('primScream')
+                .to('.rider-scream2',0,{autoAlpha:1},"<")
+                .to(['.rider-go','.hair-go'],0,{autoAlpha:0},"<")
+                .to(speechbub,0,{autoAlpha:1,top:"-40px",rotation:-5},0)
+                .to(speechbub,0,{autoAlpha:0,top:"4px",rotation:0},1.5)
+                .to('.rider-scream2',0,{autoAlpha:0},1.5)
+                .to(['.rider-go','.hair-go'],0,{autoAlpha:1},1.5);
         }
         
 
@@ -873,11 +919,24 @@ var brakingPhrases = ["hit the brakes",
                     "yo butt head!!"];
 function backwards() {
     backwardsCount++;
+    
+    if($('#player').hasClass('forwards3')){
+        
+        $('#player').removeClass('forwards3');
 
-    $('#player').removeClass('forwards');   
+    } 
+    else if($('#player').hasClass('forwards2')){
+        
+        $('#player').removeClass('forwards2');
+    } 
+    else if($('#player').hasClass('forwards')){
+        
+        $('#player').removeClass('forwards');
+    } 
+    
 
-    gsap.to("#rider-jets",0,{scaleX:.75,x:-7})
-    gsap.to("#rider-jets",0,{scaleX:1,x:0,delay:.2})
+    gsap.to("#rider-jets",0,{scaleX:.35,scaleY:.9,x:-20,y:2,alpha:.6})
+    gsap.to("#rider-jets",0,{scaleX:1,scaleX:1,x:0,y:0,alpha:1,delay:.2})
 
     jumpingtxt.innerHTML="brakes";
     gsap.delayedCall(.7,function(){
@@ -905,8 +964,20 @@ var goPhrases = ["drive!",
                 "go go go"];
 function forwards() {
     forwardsCount++;
-
-    $('#player').addClass('forwards');
+    if($('#player').hasClass('forwards3'))
+    {
+        // do nothing
+    } 
+    else if($('#player').hasClass('forwards2'))
+    {
+        $('#player').addClass('forwards3');
+    } 
+    else if($('#player').hasClass('forwards')){
+         
+         $('#player').addClass('forwards2');
+    } else if ( !$('#player').hasClass('forwards')) {
+         $('#player').addClass('forwards');
+    }
 
     gsap.to("#rider-jets",0,{scaleX:1.25,x:7,filter:"hue-rotate(61deg)"})
     gsap.to("#rider-jets",0,{scaleX:1,x:0,filter:"hue-rotate(0deg)",delay:.2})
@@ -1196,12 +1267,12 @@ function playObstaclesTL(){
         .to(".ramp", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
 
         // ramp
-        .to(".ramp", 0, {left:obsStartLeft+"px"}, ">")
+        .to(".ramp", 0, {left:obsStartLeft+"px"}, ">1")
         .call(setWarningTxt,["ramp"],"<")
         .to(".ramp", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
 
         // ramp
-        .to(".ramp", 0, {left:obsStartLeft+"px"}, ">")
+        .to(".ramp", 0, {left:obsStartLeft+"px"}, ">1")
         .call(setWarningTxt,["ramp"],"<")
         .to(".ramp", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
 
@@ -1411,13 +1482,13 @@ function highScoreEntered(e) {
 
         $("#highscorestxt").html(highScoreListLower);
         
-        gsap.to(["#highscorestxt","#replayBtn","#shareBtn"],0,{autoAlpha:1});
-        gsap.to(["#replayBtn","#shareBtn"],0,{display:"block"});
+        gsap.to(["#highscorestxt","#endScreenBtns"],0,{autoAlpha:1});
+        gsap.to(["#endScreenBtns"],0,{display:"block"});
 
 
         // replay button
-        replayBtn.addEventListener("click", replayGame);
-        replayBtn.addEventListener("touchend", replayGame);
+        // replayBtn.addEventListener("click", replayGame);
+        // replayBtn.addEventListener("touchend", replayGame);
 
         // share button
         shareBtn.addEventListener("click", share);
@@ -1536,11 +1607,6 @@ function playerCollided(whichObstacleHit) {
                 gsap.set(speechbub,{autoAlpha:1});
                 gsap.to(speechbub,0,{autoAlpha:1,delay:0});
 
-
-                // setup kkeypress to resume:
-                gsap.set(resumetxt,{autoAlpha:1,delay:1,onComplete:function(){
-                    BindButtons_gameResume();
-                }});
             } else {
                 // jumped hole
             }
@@ -1664,7 +1730,11 @@ function doObstacleHit() {
             audio.volume=1;
         }
     }
-    // console.log("crashCount:"+crashCount,"volume:"+audio.volume);
+    
+    // setup kkeypress to resume:
+    gsap.set(resumetxt,{autoAlpha:1,className:"copy flashing",delay:1,onComplete:function(){
+        BindButtons_gameResume();
+    }});
     
 
 
@@ -1676,6 +1746,7 @@ function doObstacleHit() {
     tlstarsBG.pause();
     tl.pause();
     tlhair.pause();
+    primScreamTL.pause();
     
     gsap.killTweensOf("#rider-jets");
     gsap.to("#rider-jets",1,{scaleX:1,scaleY:1,x:0,y:0,filter:"hue-rotate(0deg)",top:"0px",skewY:0});
@@ -1684,7 +1755,7 @@ function doObstacleHit() {
     
     tlScream.addLabel('scream')
         .to(".rider-scream",0,{autoAlpha:1},0)
-        .to(".rider-go,.hair-go",0,{autoAlpha:0},0)
+        .to([".rider-go",".hair-go",".rider-scream2"],0,{autoAlpha:0},0)
         .to([".rider-scream","#rider-jets"],0,{autoAlpha:0},"1.5")
         .to("#rider-stopped",0,{autoAlpha:1},"1.5")
         .addLabel('screamDone');
@@ -1732,11 +1803,6 @@ function doRiderCrash(){
 
     gsap.set(speechbub,{autoAlpha:1});
     gsap.to(speechbub,0,{autoAlpha:0,delay:3});
-
-    // setup kkeypress to resume:
-    gsap.set(resumetxt,{autoAlpha:1,delay:1,onComplete:function(){
-        BindButtons_gameResume();
-    }});
 }
 
 
@@ -2077,7 +2143,7 @@ function replayGame() {
 function share() {
     shareBtn.removeEventListener("click", share);
     shareBtn.removeEventListener("touchend", share);
-    window.location="mailto:everyone.i.know@tell.your.friends.com?&subject=amazing game by this band called primitai&body=this game made by this band called primitai is absolutely brilliant, i scored "+scoretxt.innerHTML+" points: http://www.primitai.com";
+    window.location="mailto:everyone.i.know?&subject=amazing game by this band called primitai&body=this game made by this band primitai is absolutely brilliant, i scored "+scoretxt.innerHTML+" points: http://www.primitai.com";
     window.open="http://www.primitai.com";
 
 }
