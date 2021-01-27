@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Primitai - Error</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function(){
+            loadAssets();
+        });
+        function loadAssets() {
+            // Load in banner CSS
+            var extCSS = document.createElement("link");
+            extCSS.setAttribute("rel", "stylesheet");
+            extCSS.setAttribute("type", "text/css");
+            extCSS.setAttribute("href", "styles/styles.css");
+            
+            var extCSS1 = document.createElement("link");
+            extCSS1.setAttribute("rel", "stylesheet");
+            extCSS1.setAttribute("type", "text/css");
+            extCSS1.setAttribute("href", "styles/responsive.css");
+
+            var extCSS2 = document.createElement("link");
+            extCSS2.setAttribute("rel", "stylesheet");
+            extCSS2.setAttribute("type", "text/css");
+            extCSS2.setAttribute("href", "styles/intro.css");
+                extCSS.onload = function()
+                {
+                    cssLoadedHandler();
+                }
+
+            document.getElementsByTagName("head")[0].appendChild(extCSS);
+            document.getElementsByTagName("head")[0].appendChild(extCSS1);
+            document.getElementsByTagName("head")[0].appendChild(extCSS2);
+        }
+
+        /**
+        * Fired when the banners external CSS has been loaded
+        */
+        function cssLoadedHandler()
+        {
+            console.log("CSS LOADED");
+            // start loading external JS
+            loadExtJavaScript();
+        }
+
+        // array of all the external js files we want to politely load
+
+        var arrExtJs = ['https://cdnjs.cloudflare.com/ajax/libs/gsap/3.4.2/gsap.min.js','https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js','js/splittext.min.js','js/jquery-visibility.js','js/main.js'];
+
+        
+
+        var loadJsIndex = 0;
+
+        /**
+        * Function loads in an external JS file
+        */
+        function loadExtJavaScript()
+        {
+            // Load in external Javascript file
+            var extJavaScript = document.createElement("script");
+            extJavaScript.setAttribute("type", "text/javascript");
+            extJavaScript.setAttribute("src", arrExtJs[loadJsIndex]);
+                extJavaScript.onload = function()
+                {
+                    jsLoadedHandler();
+                }
+            document.getElementsByTagName("head")[0].appendChild(extJavaScript);
+        }
+
+        /**
+        * Fired when an External JS file has been loaded
+        */
+        function jsLoadedHandler()
+        {
+            console.log("JS LOADED (" + arrExtJs[loadJsIndex] + ")");
+
+            loadJsIndex++;
+
+            if(loadJsIndex < arrExtJs.length)
+            {
+                loadExtJavaScript(); // load next JS file
+            }
+            else
+            {
+                // init();
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style type="text/css">
+        body{
+            position:absolute;
+            border:0 none;
+            outline:0;
+            padding:0;
+            margin:0;
+            height: 100%;
+            width: 100%
+        }
+        #container {
+            display: none;
+        }
+        #loadingContent{
+            position:absolute;
+            background-color:transparent;
+            z-index:10;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            border:1px solid #666666;
+            height: 100%;
+            width: 100%;
+            line-height: 2em;
+        }
+
+        #loadingImage{
+            position:absolute;
+            left:50%;
+            top:50%;
+            transform: translate(-50%,-50%);
+            color: #fff;
+        }
+    </style>
+    <!-- <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/> -->
+</head>
+<body>
+    
+    <div id="loadingContent">
+        <div id="loadingImage">
+            sorry, an unknown error has occurred. try going back to <a href="https://stars-are-my-guide.ga">https://stars-are-my-guide.ga</a> or <a href="http://www.primitai.com">http://www.primitai.com</a>
+        </div>
+    </div>
+</body>
+</html>

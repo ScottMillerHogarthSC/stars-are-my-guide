@@ -74,7 +74,7 @@ function init()
     
     bg = document.getElementsByClassName("bg");
     audio = document.getElementById("audio");
-    oww = document.getElementById("oww");
+    // oww = document.getElementById("oww");
     
     btnMoveUp = document.getElementById("btnMoveUp");
     btnMoveForwards = document.getElementById("btnMoveForwards");
@@ -98,13 +98,13 @@ function init()
         console.log("canPlayType ogg");
 
         // audio.setAttribute('src','01_stars_are_my_guide.ogg');
-        audio.setAttribute('src','http://scottapmiller.com/scottoftheriver/01_stars_are_my_guide.ogg');
+        audio.setAttribute('src','01_stars_are_my_guide.ogg');
 
     } else if (audio.canPlayType('audio/mpeg')) {
         console.log("canPlayType mp3");
 
         // audio.setAttribute('src','01_stars_are_my_guide.mp3');
-        audio.setAttribute('src','http://scottapmiller.com/scottoftheriver/01_stars_are_my_guide.mp3');
+        audio.setAttribute('src','01_stars_are_my_guide.mp3');
     } 
      else {
         console.log("browser doesnt support audio");
@@ -141,7 +141,7 @@ function loadedAudio(){
     
     
         $(document).on('show.visibility', function() {
-            if(tlbg.isActive() || introPlaying){
+            if(tlbg.isActive() || introPlaying && !endingComplete){
                 audio.play();    
             }
         });
@@ -1527,11 +1527,13 @@ function playEnding(){
         .to("#player",2,{rotationZ:-10,ease:Power1.easeIn},"<")
         .to("#player",5,{x:222,y:-370,ease:Power1.easeIn},"<")
         
-        .to("#player",2,{x:1000,y:-630,ease:Back.easeIn},">")
+        .to("#player",2,{x:1100,y:-630,ease:Back.easeIn},">")
         .to(".car-jets",.75,{scaleX:3,ease:Power1.easeInOut},"-=1");
 }
 
+var endingComplete = false;
 function tlEndingComplete(){
+    endingComplete=true;
     // stop all timelines
     // show high score
     $("#scoretxt").html(points);
@@ -1607,14 +1609,9 @@ function highScoreEntered(e) {
         gsap.to(["#highscorestxt","#endScreenBtns"],0,{autoAlpha:1});
         gsap.to(["#endScreenBtns"],0,{display:"block"});
 
-
-        // replay button
-        // replayBtn.addEventListener("click", replayGame);
-        // replayBtn.addEventListener("touchend", replayGame);
-
         // share button
-        shareBtn.addEventListener("click", share);
-        shareBtn.addEventListener("touchend", share);
+        shareBtn.href="mailto:everyone.i.know?&subject=amazing game by this band called primitai&body=this game made by this band primitai is absolutely brilliant, i scored "+scoretxt.innerHTML+" points: http://www.primitai.com";
+
 
     }
 }
@@ -2255,17 +2252,4 @@ function replayGame() {
     // tlramp.pause();
     // tlLyrics.pause();
     // tlScream.pause();
-}
-
-
-/*///////////////////////  ////////////////////////////////*/
-/*/////////////////////// SHARE  ////////////////////////////////*/
-/*///////////////////////  ////////////////////////////////*/
-/*///////////////////////  ////////////////////////////////*/
-function share() {
-    shareBtn.removeEventListener("click", share);
-    shareBtn.removeEventListener("touchend", share);
-    window.location="mailto:everyone.i.know?&subject=amazing game by this band called primitai&body=this game made by this band primitai is absolutely brilliant, i scored "+scoretxt.innerHTML+" points: http://www.primitai.com";
-    window.open="http://www.primitai.com";
-
 }
