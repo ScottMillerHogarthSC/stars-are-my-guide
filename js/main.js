@@ -1,5 +1,7 @@
 var gameSpeed = 1;
 var introSpeed = 1;
+var cheat = "";
+var isCheat = false;
 
 var container,jumpingtxt,speechtxt,audio,oww,pointstxt,points=0;
 var body = document.body,
@@ -28,7 +30,6 @@ var tlIntroScreen = gsap.timeline(),
 
 function init()
 {
-
     console.log("init");
 
     // main content
@@ -36,6 +37,7 @@ function init()
     jumpingtxt = document.getElementById("jumpingtxt");
     speechtxt = document.getElementById("speechtxt");
     pointstxt = document.getElementById("pointstxt");
+    cheatstxt = document.getElementById("cheatstxt");
 
     replayBtn = document.getElementById("replayBtn");
     shareBtn = document.getElementById("shareBtn");
@@ -56,6 +58,32 @@ function init()
 
     $( window ).resize(resizeWindow);
     
+    // turn on any cheats
+    if(window.location.search!=""){
+        var cheat = window.location.search.split("?")[1];
+
+        switch (cheat){
+            case "rampMode":
+                isCheat = true;
+                cheatstxt.innerHTML=cheat;
+                cheatstxt.style.display="block";        
+                break;
+            
+            case "clearMode":
+                isCheat = true;        
+                cheatstxt.innerHTML=cheat;
+                cheatstxt.style.display="block";        
+                break;
+
+            case "fastMode":
+                isCheat = true;        
+                cheatstxt.innerHTML=cheat;
+                cheatstxt.style.display="block";
+                gameSpeed = 3;
+                introSpeed = 3;
+                break;
+        }
+    }
 
 
 
@@ -67,14 +95,14 @@ function init()
     if (audio.canPlayType('audio/ogg')) {
         console.log("canPlayType ogg");
 
-        audio.setAttribute('src','01_stars_are_my_guide.ogg');
-        // audio.setAttribute('src','http://scottapmiller.com/scottoftheriver/01_stars_are_my_guide.ogg');
+        // audio.setAttribute('src','01_stars_are_my_guide.ogg');
+        audio.setAttribute('src','http://scottapmiller.com/scottoftheriver/01_stars_are_my_guide.ogg');
 
     } else if (audio.canPlayType('audio/mpeg')) {
         console.log("canPlayType mp3");
 
-        audio.setAttribute('src','01_stars_are_my_guide.mp3');
-        // audio.setAttribute('src','http://scottapmiller.com/scottoftheriver/01_stars_are_my_guide.mp3');
+        // audio.setAttribute('src','01_stars_are_my_guide.mp3');
+        audio.setAttribute('src','http://scottapmiller.com/scottoftheriver/01_stars_are_my_guide.mp3');
     } 
      else {
         console.log("browser doesnt support audio");
@@ -132,6 +160,11 @@ function loadedAudio(){
     }
 }
 
+
+function introAddTouchSkip(){
+    container.addEventListener('touchend', introPlayed);
+}
+
 var introPlaying = false;
 function playIntroScreen() {
 
@@ -142,9 +175,8 @@ function playIntroScreen() {
 
 
     // add delay to avoid accidentally skipping intro (mostly on mobile)
-    gsap.delayedCall(2,function(){
-        container.addEventListener('touchend', introPlayed);
-    });
+    gsap.delayedCall(2, introAddTouchSkip);
+
     gsap.delayedCall(.8,function(){
         container.addEventListener('click', introPlayed);
         document.body.addEventListener('keypress', introPlayed);
@@ -221,10 +253,14 @@ function playIntroScreen() {
         .to(introScreen,1,{autoAlpha:0,ease:Linear.easeNone},"<4")
 
         .to([introTxt05a],3,{autoAlpha:1,ease:Linear.easeNone},">")
+        .addLabel("IntroScreen_ended")
         
 }
 
 function showTitles() {
+
+    tlIntroScreen.seek("IntroScreen_ended");
+
     gsap.to(tilt, 0, {scale:1,x:0,y:0})
 
     gsap.to([bgStars1,bgToGo3,introBG,introStars,introTxt05,introTxt05a],0,{scale:1})
@@ -236,6 +272,9 @@ function showTitles() {
     gsap.to([introTxt05,introTxt05a],0,{autoAlpha:1});
 }
 function introPlayed() {
+    gsap.killTweensOf(introAddTouchSkip);
+    tlIntroScreen.pause();
+
 
     showTitles();
 
@@ -244,7 +283,6 @@ function introPlayed() {
     gsap.to(["#bgStars1","#bgToGo3"],0,{scale:1})
     gsap.to("#introScreen",0,{display:"none"});
 
-    tlIntroScreen.pause();
 
     
 
@@ -364,6 +402,24 @@ function BindButtons_gamePlay(){
     // remove StartGame Event Listeners 
     unBindButtons_startGame();
     unBindButtons_gameResume();
+
+
+        // unbind the "do nothing" events of mobile buttons:
+            btnsMove.removeEventListener("touchstart", mobileBtnDoNothing);
+            btnsMove.removeEventListener("touchend", mobileBtnDoNothing);
+
+
+            btnMoveUp.removeEventListener("touchstart", mobileBtnDoNothing);
+            btnMoveForwards.removeEventListener("touchstart", mobileBtnDoNothing);
+            btnMoveBackwards.removeEventListener("touchstart", mobileBtnDoNothing);
+            btnJump.removeEventListener("touchstart", mobileBtnPressed);
+            btnWheelie.removeEventListener("touchstart", mobileBtnDoNothing);
+
+            btnMoveUp.removeEventListener("touchend", mobileBtnDoNothing);
+            btnMoveForwards.removeEventListener("touchend", mobileBtnDoNothing);
+            btnMoveBackwards.removeEventListener("touchend", mobileBtnDoNothing);
+            btnJump.removeEventListener("touchend", mobileBtnPressed);
+            btnWheelie.removeEventListener("touchend", mobileBtnDoNothing);
         
 
     // add Key Press listeners for game controls:
@@ -420,6 +476,10 @@ function unBindButtons_gamePlay(){
 
             
     // bind the mobile buttons to do nothing! (except down as that is in use)
+            btnsMove.addEventListener("touchstart", mobileBtnDoNothing);
+            btnsMove.addEventListener("touchend", mobileBtnDoNothing);
+
+
             btnMoveUp.addEventListener("touchstart", mobileBtnDoNothing);
             btnMoveForwards.addEventListener("touchstart", mobileBtnDoNothing);
             btnMoveBackwards.addEventListener("touchstart", mobileBtnDoNothing);
@@ -597,13 +657,19 @@ function startGame(ev,didAutoPlay)
 	if(!gameStarted){
 		gameStarted=true;
 
+        // prevent touch default:
+        if(ev.cancelable) {
+            ev.preventDefault();
+        }
+
+
 	// setup all listeners for gaming:
     BindButtons_gamePlay();
 
     tlIntroScreen.pause();
 
     gsap.to([introScreen,btnOption],0,{display:"none"});
-    gsap.to([introTxt05,introTxt05a,optionsScreen],0,{autoAlpha:0});
+
     gsap.to("#tilt",0,{y:0})
 
     points=0;
@@ -618,18 +684,13 @@ function startGame(ev,didAutoPlay)
     }
     
     
-    // prevent touch default:
-    if(ev.cancelable) {
-        ev.preventDefault();
-    }
+    
 
     
     // reset
-    gsap.set([flame,gameover,"#rider-stopped"],{autoAlpha:0});
+    gsap.set([flame,gameover,"#rider-stopped",instructionsTxt0,instructions_optionsTxt,introTxt05,introTxt05a,optionsScreen],{autoAlpha:0,overwrite:true});
     gsap.set([player,"#rider-go",pointstxt,jumpingtxt],{autoAlpha:1});
 
-    $("#instructionsTxt0,#instructions_optionsTxt").hide();
-    
     backtoBounce();
         
 
@@ -668,14 +729,20 @@ function startGame(ev,didAutoPlay)
 
         .add(playFGs,"<")
     
-        
-            // [todo] - turn off to skip instructions
-        .to(instructionsTxt3,0,{autoAlpha:1},"<1")
-        .to(instructionsTxt3,0,{autoAlpha:0},"+=4")
-
-        .to(instructionsTxt4,0,{autoAlpha:1},"<.75")
-        .to(instructionsTxt4,0,{autoAlpha:0},"+=4");
+        .add(showIntructions,"<");
  	}       
+}
+
+function showIntructions(){
+    if(!isCheat){
+        var tlInstructions = gsap.timeline();
+        tlInstructions
+            .to(instructionsTxt3,0,{autoAlpha:1},"<1")
+            .to(instructionsTxt3,0,{autoAlpha:0},"+=4")
+
+            .to(instructionsTxt4,0,{autoAlpha:1},"<.75")
+            .to(instructionsTxt4,0,{autoAlpha:0},"+=4");
+    }
 }
 
 
@@ -1120,6 +1187,9 @@ function playObstaclesTL(){
     detectCollision();
 
     tl = gsap.timeline({onComplete:timeLineComplete});
+
+    if(cheat==""){
+
     tl.addLabel("stage1", "<")
         .to("#player",0, {autoAlpha:1}, "<")
         
@@ -1274,9 +1344,23 @@ function playObstaclesTL(){
         // ramp
         .to(".ramp", 0, {left:obsStartLeft+"px"}, ">1")
         .call(setWarningTxt,["ramp"],"<")
-        .to(".ramp", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+        .to(".ramp", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">");
 
+
+
+    } else if(cheat=="rampMode"){
         
+        tl.addLabel("rampMode", "<")
+        // ramp
+        .to(".ramp", 0, {left:obsStartLeft+"px"}, ">1")
+        .call(setWarningTxt,["ramp"],"<")
+        .to(".ramp", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">");
+
+
+    } else if(cheat=="clearMode"){
+        tl.addLabel("clear", "<");
+        
+    }   
 }
 
 var reps = 0;
@@ -1482,6 +1566,7 @@ function highScoreEntered(e) {
 
         $("#highscorestxt").html(highScoreListLower);
         
+        gsap.to(["#mobileControls"],0,{display:"none"});
         gsap.to(["#highscorestxt","#endScreenBtns"],0,{autoAlpha:1});
         gsap.to(["#endScreenBtns"],0,{display:"block"});
 
@@ -1801,7 +1886,7 @@ function doRiderCrash(){
 
     speechtxt.innerHTML=collidedTxts[whichPhrase];
 
-    gsap.set(speechbub,{autoAlpha:1});
+    gsap.set(speechbub,{autoAlpha:1,top:"4px",rotation:0},1.5)
     gsap.to(speechbub,0,{autoAlpha:0,delay:3});
 }
 

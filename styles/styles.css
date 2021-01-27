@@ -378,6 +378,13 @@ img.ramp {
     left: 15px;
     top: 15px;
 }
+#cheatstxt {
+    position: absolute;
+    color: #fff;
+    left: 15px;
+    top: 43px;
+    display: none;
+}
 #pointstxt {
     position: absolute;
     color: #fff;
@@ -519,7 +526,7 @@ img.ramp {
 #highscorestxt {
     text-align: center;
     line-height: 1.2em;
-    top: 200px;
+    top: 170px;
 }
 #highscorestxt span{
     animation: colorRotateRed 1s infinite;
@@ -550,13 +557,11 @@ img.ramp {
 }
 
 #endScreenBtns a#replayBtn {
-    top: 380px;
+    top: 360px;
+    transform: scale(2) translate(-26%, -50%);
     animation: replayBounce 1s infinite steps(1);
 }
-#endScreenBtns a#shareBtn{
-    animation: none;
-    top: 446px;   
-}
+#endScreenBtns a#shareBtn,
 #endScreenBtns a#listenBtn,
 #endScreenBtns a#dotcomBtn{
     left: 45px;
@@ -577,6 +582,12 @@ img.ramp {
     border-bottom-color: rgb(5, 6, 8);
     cursor: pointer;
 }
+#endScreenBtns a#shareBtn {
+    left: 380px;
+    min-height: 0px;
+    top: 409px;
+}
+
 #endScreenBtns a#dotcomBtn {
     right: 45px;
     left: auto;
