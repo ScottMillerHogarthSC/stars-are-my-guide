@@ -953,7 +953,7 @@ function wheelie() {
             jumpingtxt.innerHTML="go";
         });
 
-        if(tl.isActive() && wheelieCount % 2 === 0)
+        if(tl.isActive() && wheelieCount % 3 === 0)
         {
             speechtxt.innerHTML="right on!!";    
             gsap.set(speechbub,{autoAlpha:1});
