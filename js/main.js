@@ -48,6 +48,7 @@ var tlIntroScreen = gsap.timeline(),
     tlfg = gsap.timeline(),
     tlbg = gsap.timeline(),
     tlstarsBG = gsap.timeline(),
+    tlMountainsBG = gsap.timeline(),
     tlhair = gsap.timeline(),
     tlramp = gsap.timeline(),
     tlLyrics = gsap.timeline(),
@@ -177,10 +178,11 @@ function playIntroScreen() {
 
 
     // add delay to avoid accidentally skipping intro (mostly on mobile)
-    gsap.delayedCall(2, introAddTouchSkip);
+        // [todo] dont allow mobile users to skip
+    //gsap.delayedCall(2, introAddTouchSkip);
 
     gsap.delayedCall(.8,function(){
-        container.addEventListener('click', introPlayed);
+        // container.addEventListener('click', introPlayed);
         document.body.addEventListener('keypress', introPlayed);
     });
 
@@ -760,6 +762,7 @@ function gamePause() {
     tlfg.pause();
     tlbg.pause();
     tlstarsBG.pause();
+    tlMountainsBG.pause();
     tlintro.pause();
     tlInstructions.pause();
     tl.pause();
@@ -836,6 +839,7 @@ function gameResume(ev) {
     tl.resume();
     tlbg.resume();  
     tlstarsBG.resume();
+    tlMountainsBG.resume();
     tlfg.resume();  
     tlhair.resume();  
     tlramp.resume();
@@ -1162,6 +1166,23 @@ function playStarsBG() {
         .to(bgStars3,starsBGSpeed,{x:0,rotationZ:0.01,ease:Linear.easeNone},"-="+starsBGSpeed);
 }
 
+var mountainsBGWidth = 1800,
+    mountainsBGSpeed = gameSpeed*5;
+function playMountainsBG() {
+    tlMountainsBG.addLabel('mountainsBGLoop', '<')
+        .to([bgMountains1,bgMountains2,bgMountains3,bgMountains4,bgMountains5,bgMountains6],0,{autoAlpha:1,x:mountainsBGWidth,z:0})
+        .to([bgMountains4,bgMountains5,bgMountains6],0,{scaleX:-1})
+        
+        .to(bgMountains1,mountainsBGSpeed*2,{x:-mountainsBGWidth,rotationZ:0.01,ease:Linear.easeNone},">")
+        .to(bgMountains2,mountainsBGSpeed*2,{x:-mountainsBGWidth,rotationZ:0.01,ease:Linear.easeNone},"-="+mountainsBGSpeed+"")
+        .to(bgMountains3,mountainsBGSpeed*2,{x:-mountainsBGWidth,rotationZ:0.01,ease:Linear.easeNone},"-="+mountainsBGSpeed+"")
+        
+        .to(bgMountains4,mountainsBGSpeed*2,{x:-mountainsBGWidth,z:0.01,ease:Linear.easeNone},"-="+mountainsBGSpeed+"")
+        .to(bgMountains5,mountainsBGSpeed*2,{x:-mountainsBGWidth,z:0.01,ease:Linear.easeNone},"-="+mountainsBGSpeed+"")
+        .to(bgMountains6,mountainsBGSpeed*2,{x:-mountainsBGWidth,z:0.01,ease:Linear.easeNone},"-="+mountainsBGSpeed+"")
+        .to(bgMountains,0,{display:"none"});
+}
+
 
 var hairspeed = 1,
     maxhairspeed=5;
@@ -1183,9 +1204,9 @@ function playHairTl() {
 }
 
 
-var obsSpeed = gameSpeed*4;
-var obsStartLeft = 1800;
-var obsEndLeft = -1800;
+var obsSpeed = gameSpeed*5;
+var obsStartLeft = 2200;
+var obsEndLeft = -2200;
 function playObstaclesTL(){
     // obstacles timeline! 
     gsap.killTweensOf(detectCollision);
@@ -1863,6 +1884,7 @@ function doObstacleHit() {
     tlfg.pause();
     tlbg.pause();
     tlstarsBG.pause();
+    tlMountainsBG.pause();
     tl.pause();
     tlhair.pause();
     primScreamTL.pause();
@@ -2088,41 +2110,25 @@ function traceAudioTime(){
     }
     
     // make BG red for Chorus 1
-    if(audio.currentTime-84>chorus1Start && !doneChorusTint && isChrome) {
+    if(audio.currentTime-84>chorus1Start && !doneChorusTint) {
         doneChorusTint=true;
-        // gsap.to([".bg"],
-        //     {   duration: 4,
-        //         filter: "hue-rotate(-220deg)"
-        //     }
-        // );
-        // gsap.to([".fg",".obstacle"],
-        //     {   duration: .1,
-        //         filter: "hue-rotate(150deg) invert(1)",
-        //         repeat:5,
-        //     }
-        // );
+
+        // [todo] - something for chorus 1
     }
     
     // make BG normal aftee Chorus 1
-    if(audio.currentTime-84>verse2Start && !doneChorusTintBack && isChrome) {
+    if(audio.currentTime-84>verse2Start && !doneChorusTintBack) {
         doneChorusTintBack=true;
-        // gsap.to([".bg"],
-        //     {   duration: 4,
-        //         filter: "hue-rotate(0deg)"
-        //     }
-        // );
-        // gsap.to([".fg",".obstacle"],
-        //     {   duration: .1,
-        //         filter: "hue-rotate(0deg) invert(0)",
-        //         repeat:5,
-        //     }
-        // );
+
+        playMountainsBG();
+        gsap.to(bgMountains,0,{display:"block"});
     }
 
     
 
     // flash lightning at heavy drop and go fast!!
     if(audio.currentTime-84>124.9 && !doneLightning) {
+    // if(audio.currentTime-84>14.9 && !doneLightning) {
         doneLightning=true;
 
 
@@ -2136,8 +2142,11 @@ function traceAudioTime(){
                 ease: "none"
             }
         );
-        gsap.to([tl,tlfg,tlbg], 1, {timeScale:1.5, ease:Quad.easeIn})
+        gsap.to([tl,tlfg,tlbg,tlMountainsBG], 1, {timeScale:1.5, ease:Quad.easeIn})
         gsap.to([tlstarsBG], 1, {timeScale:3, ease:Quad.easeIn})
+
+        // make long gap ramps show
+        gsap.to("#obstacle3",0,{className:"hidden ramp rampLong obstacle"})
 
         // [todo] hyperspace
         gsap.to(".bgStars",0,{className:"bg bgStars fast"})
@@ -2147,10 +2156,17 @@ function traceAudioTime(){
     // slow back down for final chorus
     if(audio.currentTime-84>chorus2Start && !doneSlowdown) {
         doneSlowdown=true;
-        gsap.to([tl,tlfg,tlbg,tlstarsBG], 1, {timeScale:1.1, ease:Quad.easeOut})
+        gsap.to([tl,tlfg,tlbg,tlMountainsBG], 1, {timeScale:1.1, ease:Quad.easeOut})
         gsap.to([tlstarsBG], 1, {timeScale:1, ease:Quad.easeOut})
+
+        // ramps back to normal length
+        gsap.to("#obstacle3",0,{className:"hidden ramp obstacle"})
+
         gsap.to(".bgStars",0,{className:"bg bgStars"})
         gsap.to(".bgToGo",1,{autoAlpha:1})
+
+        playMountainsBG();
+        gsap.to(bgMountains,0,{display:"block"});
 
     }
 
@@ -2168,8 +2184,10 @@ function traceAudioTime(){
                 ease: "none"
             }
         );
-        gsap.to([tl,tlfg,tlbg,tlstarsBG], 1, {timeScale:1.6, ease:Quad.easeIn})
+        gsap.to([tl,tlfg,tlbg,tlstarsBG,tlMountainsBG], 1, {timeScale:1.6, ease:Quad.easeIn})
 
+        // make long gap ramps show
+        gsap.to("#obstacle3",0,{className:"hidden ramp rampLong obstacle"})
     }
 
     // if the song is over!

@@ -67,6 +67,40 @@ body{
     background-image: url(../images/stars_1-fast.png);
 }
 
+
+
+#bgMountains {
+    display: none;
+}
+.bgMountains {
+    width: 1800px;
+    height: 475px;
+    background-size: contain;
+    transform: translateX(1800px);
+    top: 40px;
+}
+#bgMountains1 {
+    background-image: url(../images/bg_mountains1.png);
+}
+#bgMountains2{
+    background-image: url(../images/bg_mountains2.png);
+}
+#bgMountains3{
+    background-image: url(../images/bg_mountains3.png);
+}
+#bgMountains4{
+    background-image: url(../images/bg_mountains3.png);
+}
+#bgMountains5{
+    background-image: url(../images/bg_mountains2.png);
+}
+#bgMountains6{
+    background-image: url(../images/bg_mountains1.png);
+}
+
+
+
+
 #tilt {
     transform: translateY(400px);
 }
@@ -323,8 +357,23 @@ div.ramp {
     width: 360px;
 }
 img.ramp {
-    width: 791px;
-    margin-left: -60px;
+    display: block;
+    width: 1800px;
+    margin-left: -40px;
+    margin-top: 28px;
+}
+img.rampLong {
+    display: none;
+}
+div.rampLong img.ramp {
+    display: none;
+
+}
+div.rampLong img.rampLong {
+    display: block;
+    width: 2200px;
+    margin-left: -40px;
+    margin-top: 28px;
 }
 
 .obstacle, #player{
