@@ -4,32 +4,6 @@ var cheat = "";
 var isCheat = false;
 
 
-// turn on any cheats
-if(window.location.search!=""){
-    cheat = window.location.search.split("?")[1];
-
-    switch (cheat){
-        case "rampMode":
-            isCheat = true;
-            cheatstxt.innerHTML=cheat;
-            cheatstxt.style.display="block";        
-            break;
-        
-        case "clearMode":
-            isCheat = true;        
-            cheatstxt.innerHTML=cheat;
-            cheatstxt.style.display="block";        
-            break;
-
-        case "fastMode":
-            isCheat = true;        
-            cheatstxt.innerHTML=cheat;
-            cheatstxt.style.display="block";
-            gameSpeed = .5;
-            introSpeed = 10;
-            break;
-    }
-}
 
 var container,jumpingtxt,speechtxt,audio,oww,pointstxt,points=0;
 var body = document.body,
@@ -56,6 +30,40 @@ var tlIntroScreen = gsap.timeline(),
     tlEnding = gsap.timeline(),
     primScreamTL = gsap.timeline();
 
+// turn on any cheats
+if(window.location.search!=""){
+    cheat = window.location.search.split("?")[1];
+
+    switch (cheat){
+        case "rampMode":
+            isCheat = true;
+            cheatstxt.innerHTML=cheat;
+            cheatstxt.style.display="block";        
+            break;
+        
+        case "clearMode":
+            isCheat = true;        
+            cheatstxt.innerHTML=cheat;
+            cheatstxt.style.display="block";        
+            break;
+
+        case "fastMode":
+            isCheat = true;        
+            cheatstxt.innerHTML=cheat;
+            cheatstxt.style.display="block";
+            gameSpeed = .5;
+            introSpeed = 10;
+            break;
+
+        case "fzeroMode":
+            isCheat = true;        
+            cheatstxt.innerHTML=cheat;
+            cheatstxt.style.display="block";
+            document.getElementById("optionsScreen").classList.add("fzero");
+            document.getElementById("area").classList.add("fzero");
+            break;
+    }
+}
 
 
 function init()
@@ -72,6 +80,8 @@ function init()
     replayBtn = document.getElementById("replayBtn");
     shareBtn = document.getElementById("shareBtn");
     cta = document.getElementById("cta");
+
+    skipIntro = document.getElementById("skipIntro");
     
     bg = document.getElementsByClassName("bg");
     audio = document.getElementById("audio");
@@ -164,9 +174,26 @@ function loadedAudio(){
 }
 
 
-function introAddTouchSkip(){
-    container.addEventListener('touchend', introPlayed);
+function introBindShowSkip(){
+    container.addEventListener('touchend', introShowSkip);
+    container.addEventListener('click', introShowSkip);
+    document.body.addEventListener('keypress', introShowSkip);
+
 }
+
+function introShowSkip() {
+    container.removeEventListener('touchend', introShowSkip);
+    container.removeEventListener('click', introShowSkip);
+    document.body.removeEventListener('keypress', introShowSkip);
+
+    gsap.to(skipIntro,0,{display:"block"});
+    
+    skipIntro.addEventListener('touchend', introPlayed);
+    skipIntro.addEventListener('click', introPlayed);
+    document.body.addEventListener('keypress', introPlayed);
+}
+
+
 
 var introPlaying = false;
 function playIntroScreen() {
@@ -178,13 +205,7 @@ function playIntroScreen() {
 
 
     // add delay to avoid accidentally skipping intro (mostly on mobile)
-        // [todo] dont allow mobile users to skip
-    //gsap.delayedCall(2, introAddTouchSkip);
-
-    gsap.delayedCall(.8,function(){
-        // container.addEventListener('click', introPlayed);
-        document.body.addEventListener('keypress', introPlayed);
-    });
+    gsap.delayedCall(1, introBindShowSkip);
 
     container.className="";
 
@@ -276,13 +297,14 @@ function showTitles() {
     gsap.to([introTxt05,introTxt05a],0,{autoAlpha:1});
 }
 function introPlayed() {
-    gsap.killTweensOf(introAddTouchSkip);
+    gsap.killTweensOf(introBindShowSkip);
     tlIntroScreen.pause();
 
 
     showTitles();
 
-
+    gsap.to(mobileControls,0,{className:""});
+    gsap.to(skipIntro,0,{display:"none"});
     // reset intro stuff:
     gsap.to(["#bgStars1","#bgToGo3"],0,{scale:1})
     gsap.to("#introScreen",0,{display:"none"});
@@ -293,8 +315,8 @@ function introPlayed() {
     //[todo]
     // gsap.to("#tilt",0,{y:0,autoAlpha:1})
 
-    container.removeEventListener('touchend', introPlayed);
-    container.removeEventListener('click', introPlayed);
+    skipIntro.removeEventListener('touchend', introPlayed);
+    skipIntro.removeEventListener('click', introPlayed);
     document.body.removeEventListener('keypress', introPlayed);
 
     // add StartGame event listeners:
@@ -1173,13 +1195,13 @@ function playMountainsBG() {
         .to([bgMountains1,bgMountains2,bgMountains3,bgMountains4,bgMountains5,bgMountains6],0,{autoAlpha:1,x:mountainsBGWidth,z:0})
         .to([bgMountains4,bgMountains5,bgMountains6],0,{scaleX:-1})
         
-        .to(bgMountains1,mountainsBGSpeed*2,{x:-mountainsBGWidth,rotationZ:0.01,ease:Linear.easeNone},">")
-        .to(bgMountains2,mountainsBGSpeed*2,{x:-mountainsBGWidth,rotationZ:0.01,ease:Linear.easeNone},"-="+mountainsBGSpeed+"")
-        .to(bgMountains3,mountainsBGSpeed*2,{x:-mountainsBGWidth,rotationZ:0.01,ease:Linear.easeNone},"-="+mountainsBGSpeed+"")
+        .to(bgMountains1,mountainsBGSpeed*2,{x:-mountainsBGWidth,ease:Linear.easeNone},">")
+        .to(bgMountains2,mountainsBGSpeed*2,{x:-mountainsBGWidth,ease:Linear.easeNone},"-="+mountainsBGSpeed+"")
+        .to(bgMountains3,mountainsBGSpeed*2,{x:-mountainsBGWidth,ease:Linear.easeNone},"-="+mountainsBGSpeed+"")
         
-        .to(bgMountains4,mountainsBGSpeed*2,{x:-mountainsBGWidth,z:0.01,ease:Linear.easeNone},"-="+mountainsBGSpeed+"")
-        .to(bgMountains5,mountainsBGSpeed*2,{x:-mountainsBGWidth,z:0.01,ease:Linear.easeNone},"-="+mountainsBGSpeed+"")
-        .to(bgMountains6,mountainsBGSpeed*2,{x:-mountainsBGWidth,z:0.01,ease:Linear.easeNone},"-="+mountainsBGSpeed+"")
+        .to(bgMountains4,mountainsBGSpeed*2,{x:-mountainsBGWidth,ease:Linear.easeNone},"-="+mountainsBGSpeed+"")
+        .to(bgMountains5,mountainsBGSpeed*2,{x:-mountainsBGWidth,ease:Linear.easeNone},"-="+mountainsBGSpeed+"")
+        .to(bgMountains6,mountainsBGSpeed*2,{x:-mountainsBGWidth,ease:Linear.easeNone},"-="+mountainsBGSpeed+"")
         .to(bgMountains,0,{display:"none"});
 }
 
@@ -2143,13 +2165,13 @@ function traceAudioTime(){
             }
         );
         gsap.to([tl,tlfg,tlbg,tlMountainsBG], 1, {timeScale:1.5, ease:Quad.easeIn})
-        gsap.to([tlstarsBG], 1, {timeScale:3, ease:Quad.easeIn})
+        gsap.to([tlstarsBG], 1, {timeScale:4, ease:Quad.easeIn})
 
         // make long gap ramps show
         gsap.to("#obstacle3",0,{className:"hidden ramp rampLong obstacle"})
 
         // [todo] hyperspace
-        gsap.to(".bgStars",0,{className:"bg bgStars fast"})
+        gsap.to(".bgStars",0,{className:"bg bgStars fast",delay:.8})
         gsap.to(".bgToGo",1,{autoAlpha:0})
     }
 

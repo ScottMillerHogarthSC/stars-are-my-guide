@@ -64,7 +64,8 @@ body{
 #bgStars1.fast,
 #bgStars2.fast,
 #bgStars3.fast{
-    background-image: url(../images/stars_1-fast.png);
+    background-image: url(../images/stars_1-fast.gif);
+    opacity: 1!important;
 }
 
 
@@ -228,6 +229,9 @@ body{
 }
 #bike-go.bike2 {
     background-image: url("../images/bike2.png");
+}
+.fzero #bike-go.bike2 {
+    background-image: url("../images/bike3.png");
 }
 .rider-scream,.rider-scream2 {
     width: 100%;
@@ -740,6 +744,9 @@ div.rampLong img.rampLong {
     top: 310px;
     background-image: url(../images/bike2.png);
 }
+.fzero #optionsBike2 {
+    background-image: url(../images/bike3.png);
+}
 .flashing {
     animation: flash 1s infinite linear;
 }
@@ -761,7 +768,8 @@ div.rampLong img.rampLong {
     filter: invert(1);
     user-select: none;
 }
-#mobileControls.optionsShowing{
+#mobileControls.optionsShowing,
+#mobileControls.off{
     display: none;
 }
 .mobileControl,.btnMove  {
@@ -849,4 +857,22 @@ div.rampLong img.rampLong {
 #btnWheelie.pressed,
 #btnJump.pressed {
     background-position: 0px bottom;
+}
+
+
+#footer {
+    color: #fff;
+    display: none;
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8em;
+}
+#footer a {
+    color: #fff;
+    text-decoration: none; 
+}
+#footer a:hover {
+    text-decoration: underline;
 }

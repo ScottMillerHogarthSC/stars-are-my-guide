@@ -122,6 +122,10 @@
         }
     </style>
     <!-- <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/> -->
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
 </head>
 <body>
     <audio id="audio"></audio>
@@ -162,7 +166,7 @@
                 <div id="introTxt01" class="copy hidden">presents</div>
                 <div id="introTxt02" class="copy hidden">a<br><span id="introTxt02a">@scottoftheriver</span><br><span id="introTxt02b" class="hidden">production</div>
                 
-                <div id="introTxt03" class="copy hidden">graphics by<br><span id="introTxt03a">@ronninaosullivan</span></div>    
+                <div id="introTxt03" class="copy hidden">with graphics by<br><span id="introTxt03a">@ronninaosullivan</span></div>    
                 
                 <div id="introTxt04" class="copy hidden">licensed by</div>
                 <img id="introLogo2" src="images/roar-logo.png" class="intrologo hidden" />
@@ -270,7 +274,7 @@
 
                 <div id="endScreenBtns">
                     <a id="replayBtn" href="http://stars-are-my-guide.ga" title="play the game again" class="copy">play again</a>
-                    <a id="shareBtn" title="email a friend about this game" class="copy">share</a>
+                    <a id="shareBtn" target="_blank" title="email a friend about this game" class="copy">share</a>
                     <a id="listenBtn" href="listen" target="_blank" title="find Primitai on your favourite streaming services" class="copy">hear more<br>primitai</a>
                     <a id="dotcomBtn" href="http://www.primitai.com" target="_blank" title="visit the primitai official website" class="copy">visit<br>primitai.com</a>
                 </div>
@@ -329,7 +333,7 @@
             <div id="cheatstxt"></div>
             <div id="pointstxt" class="pointstxt hidden">0</div>
 
-            <div id="mobileControls">
+            <div id="mobileControls" class="off">
                 <div id="btnsMove" class="mobileControl">
                     <button id="btnMoveUp" class="btnMove" />
                     <button id="btnMoveForwards" class="btnMove" />
@@ -341,11 +345,16 @@
                 <button id="btnWheelie" class="mobileControl" />
             </div>
 
+            <button id="skipIntro">skip intro</button>
 
 
 
 
-         </div>
+        </div>
+        <div id="footer">
+            &copy;2021 primitai - 
+            <a href="http://www.primitai.com" target="_blank">primitai.com</a>
+        </div>
     </div>
 </body>
 </html>

@@ -76,10 +76,16 @@
     left: 5%;
     width: 90%; */
 
-    top: 90px;
+    /*top: 66px;
     position: absolute;
     left: 10%;
-    width: 80%;
+    width: 80%;*/
+
+    top: 12px;
+    position: absolute;
+    left: 0%;
+    width: 100%;
+    animation: hueRotate 2s 0s infinite;
 
     animation: hueRotate 2s 0s infinite;
 }
@@ -96,4 +102,23 @@
 }
 .clickable {
     cursor: pointer;
+}
+
+#skipIntro {
+    cursor: pointer;
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    border: none;
+    background-color: #fff;
+    color: #000;
+    font-family: 'Press Start 2P', 'Courier New', monospace;
+    padding: 1em;
+    font-size: .7em;
+    opacity: .5;
+    transition: 1s opacity;
+    display: none;
+}
+#skipIntro:hover,#skipIntro:active{
+    opacity: 1;
 }

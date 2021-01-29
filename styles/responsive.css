@@ -12,3 +12,8 @@
         display: none;
     }
 }
+@media screen and (min-height: 550px) {
+    #footer {
+    	display: block;
+    }
+}
