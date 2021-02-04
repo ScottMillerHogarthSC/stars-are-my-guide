@@ -23,12 +23,14 @@ var tlIntroScreen = gsap.timeline(),
     tlbg = gsap.timeline(),
     tlstarsBG = gsap.timeline(),
     tlMountainsBG = gsap.timeline(),
+    tlCloudsBG = gsap.timeline(),
     tlhair = gsap.timeline(),
     tlramp = gsap.timeline(),
     tlLyrics = gsap.timeline(),
     tlScream=gsap.timeline(),
     tlEnding = gsap.timeline(),
-    primScreamTL = gsap.timeline();
+    primScreamTL = gsap.timeline(),
+    tlFlyPast = gsap.timeline();
 
 // turn on any cheats
 if(window.location.search!=""){
@@ -53,6 +55,14 @@ if(window.location.search!=""){
             cheatstxt.style.display="block";
             gameSpeed = .5;
             introSpeed = 10;
+            break;
+
+        case "quickerMode":
+            isCheat = true;        
+            cheatstxt.innerHTML=cheat;
+            cheatstxt.style.display="block";
+            gameSpeed = .6;
+            // introSpeed = 10;
             break;
 
         case "fzeroMode":
@@ -300,10 +310,14 @@ function introPlayed() {
     gsap.killTweensOf(introBindShowSkip);
     tlIntroScreen.pause();
 
+    container.removeEventListener('touchend', introShowSkip);
+    container.removeEventListener('click', introShowSkip);
+    document.body.removeEventListener('keypress', introShowSkip);
+
 
     showTitles();
 
-    gsap.to(mobileControls,0,{className:""});
+    gsap.to(mobileControls,0,{className:"pulseMobileControls"});
     gsap.to(skipIntro,0,{display:"none"});
     // reset intro stuff:
     gsap.to(["#bgStars1","#bgToGo3"],0,{scale:1})
@@ -694,6 +708,7 @@ function startGame(ev,didAutoPlay)
 
     tlIntroScreen.pause();
 
+    gsap.to(mobileControls,0,{className:""});
     gsap.to([introScreen,btnOption],0,{display:"none"});
 
     gsap.to("#tilt",0,{y:0})
@@ -705,8 +720,6 @@ function startGame(ev,didAutoPlay)
     if(!didAutoPlay){
         audio.currentTime=84.00; 
         console.log(audio.currentTime);
-        // [todo]
-        // audio.currentTime=285;
     }
     
     
@@ -731,7 +744,7 @@ function startGame(ev,didAutoPlay)
     tlhair = gsap.timeline({onComplete:playHairTl});
     tlfg = gsap.timeline({onComplete:fgTimeLineComplete});
 
-    // speed up BG timelines from 0 - 1 for intro:
+    
     gsap.fromTo(tlstarsBG,4,{timeScale:0},{timeScale:1,ease:Power1.easeIn});
     gsap.fromTo(tlbg,4,{timeScale:0},{timeScale:1,ease:Power1.easeIn});
 
@@ -755,6 +768,15 @@ function startGame(ev,didAutoPlay)
 
         .add(playFGs,"<")
  	}       
+
+    // set up flyPast timeline but dont play:
+    tlFlyPast = gsap.timeline({paused:true});
+
+    tlFlyPast.addLabel('flypast','<')
+    .to(flyPast,0,{x:0,z:0.01},'<')
+    .to(flyPast,2,{x:300,z:-0.01,ease:Back.easeOut},'>')
+    .to(flyPast,1,{x:1220,z:-0.01,ease:Power1.easeIn},'>');
+
 }
 
 function showIntructions(){
@@ -785,6 +807,7 @@ function gamePause() {
     tlbg.pause();
     tlstarsBG.pause();
     tlMountainsBG.pause();
+    tlCloudsBG.pause();
     tlintro.pause();
     tlInstructions.pause();
     tl.pause();
@@ -853,8 +876,8 @@ function gameResume(ev) {
     audio.volume = 1;
 
     
-
-
+    // [todo] - fly past testing
+    // doFlyPast();
     
     tlintro.resume();
     tlInstructions.resume();
@@ -862,6 +885,7 @@ function gameResume(ev) {
     tlbg.resume();  
     tlstarsBG.resume();
     tlMountainsBG.resume();
+    tlCloudsBG.resume();
     tlfg.resume();  
     tlhair.resume();  
     tlramp.resume();
@@ -1100,8 +1124,8 @@ function forwards() {
 var playerTopPos = 245,
     playerBotPos = 345;
 function upwards() {
-    gsap.to(player,.75,{top:+playerTopPos+"px",ease:Power1.easeInOut});
-    gsap.to(playerMovements,.75,{z:-100,ease:Power1.easeInOut});
+    gsap.to(player,.6,{top:+playerTopPos+"px",ease:Power1.easeInOut});
+    gsap.to(playerMovements,.6,{z:-100,ease:Power1.easeInOut});
 
     jumpingtxt.innerHTML="turn";
     gsap.delayedCall(0.2,function(){
@@ -1109,8 +1133,8 @@ function upwards() {
     })
 }
 function downwards() {
-    gsap.to(player,.75,{top:playerBotPos+"px",ease:Power1.easeInOut});
-    gsap.to(playerMovements,.75,{z:0,ease:Power1.easeInOut});
+    gsap.to(player,.6,{top:playerBotPos+"px",ease:Power1.easeInOut});
+    gsap.to(playerMovements,.6,{z:0,ease:Power1.easeInOut});
     jumpingtxt.innerHTML="turn";
     gsap.delayedCall(0.2,function(){
         jumpingtxt.innerHTML="go";
@@ -1178,9 +1202,9 @@ var starsBGWidth = 1300,
 function playStarsBG() {
 
     tlstarsBG.addLabel('starsBGLoop', '<')
-        .to([bgStars1],0,{autoAlpha:.3,x:0,z:0})
-        .to([bgStars2],0,{autoAlpha:.3,x:starsBGWidth,z:0})
-        .to([bgStars3],0,{autoAlpha:.3,x:starsBGWidth,z:0})
+        .to([bgStars1],0,{x:0,z:0})
+        .to([bgStars2],0,{x:starsBGWidth,z:0})
+        .to([bgStars3],0,{x:starsBGWidth,z:0})
         
         .to(bgStars1,starsBGSpeed,{x:-starsBGWidth,rotationZ:0.01,ease:Linear.easeNone},">")
         .to(bgStars2,starsBGSpeed,{x:0,rotationZ:0.01,ease:Linear.easeNone},"-="+starsBGSpeed+"")
@@ -1205,6 +1229,36 @@ function playMountainsBG() {
         .to(bgMountains,0,{display:"none"});
 }
 
+// var cloudsBGWidth = 1300,
+//     cloudsBGSpeed = gameSpeed*2;
+// function playCloudsBG() {
+//     gsap.from(bgClouds,cloudsBGSpeed*2,{y:-300,ease:Power1.easeOut,delay:cloudsBGSpeed});
+//     gsap.to(bgClouds,cloudsBGSpeed*2,{y:-300,ease:Power1.easeIn,delay:cloudsBGSpeed*4}) 
+
+//     tlCloudsBG.addLabel('cloudsBGLoop', '<')
+//         .to([bgClouds1,bgClouds2,bgClouds3,bgLightning],0,{autoAlpha:1,x:cloudsBGWidth,z:0})
+        
+//         .to(bgClouds1,cloudsBGSpeed*2,{x:-cloudsBGWidth,ease:Linear.easeNone},">")
+//         .to([bgClouds2],cloudsBGSpeed*2,{x:-cloudsBGWidth,ease:Linear.easeNone},"-="+cloudsBGSpeed+"")
+//         .to([bgClouds3,bgLightning],cloudsBGSpeed*2,{x:-cloudsBGWidth,ease:Linear.easeNone},"-="+cloudsBGSpeed+"")
+//         .to([bgClouds1,bgClouds2,bgLightning],0,{x:cloudsBGWidth,ease:Linear.easeNone},"-="+cloudsBGSpeed+"")
+//         .to(bgClouds1,cloudsBGSpeed*2,{x:-cloudsBGWidth,ease:Linear.easeNone},"-="+cloudsBGSpeed+"")
+//         .to([bgClouds2,bgLightning],cloudsBGSpeed*2,{x:-cloudsBGWidth,ease:Linear.easeNone},"-="+cloudsBGSpeed+"")
+//         .to(bgClouds3,0,{x:cloudsBGWidth,ease:Linear.easeNone},"-="+cloudsBGSpeed+"")
+//         .to(bgClouds3,cloudsBGSpeed*2,{x:-cloudsBGWidth,ease:Linear.easeNone},"-="+cloudsBGSpeed+"")
+//         .to(bgClouds,0,{display:"none"});
+// }
+
+
+function doFlyPast(which) {
+    if(which=="sergio"){
+        gsap.to(flyPast,0,{className:"+=sergio"})
+    } else {
+        gsap.to(flyPast,0,{className:""})
+    }
+
+    tlFlyPast.restart();
+}
 
 var hairspeed = 1,
     maxhairspeed=5;
@@ -1409,7 +1463,7 @@ function playObstaclesTL(){
         tl.addLabel("clear", "<");
 
         
-    } else if(cheat=="fastMode"){
+    } else if(cheat=="fastMode" || cheat=="quickerMode"){
         
         tl.addLabel("fastMode", "<")
 
@@ -1538,6 +1592,9 @@ function playEnding(){
     gsap.killTweensOf(backtoBounce);
     gsap.killTweensOf(notJumping);
 
+    // [todo] how many obstacles
+    console.log('you hit '+noObstaclesHit)
+
     gsap.to([".obstacle",pausedtxt],0,{autoAlpha:0});
     tl.pause();
 
@@ -1566,7 +1623,7 @@ function playEnding(){
         .to("#car-shadow",2,{autoAlpha:0},">")
 
 
-        .to("#tilt",5,{y:250,ease:Power1.easeIn},"<")
+        .to("#tilt,#bgMountains",5,{y:250,ease:Power1.easeIn},"<")
         .to("#player",2,{rotationZ:-10,ease:Power1.easeIn},"<")
         .to("#player",5,{x:222,y:-370,ease:Power1.easeIn},"<")
         
@@ -1580,6 +1637,17 @@ function tlEndingComplete(){
     // stop all timelines
     // show high score
     $("#scoretxt").html(points);
+    
+    $("#obstaclesHittxt").html(noObstaclesHit);
+    if(noObstaclesHit==0){
+
+        // [todo] - one falling balloon animation:
+        alert('perfect ride!! one falling balloon...')
+    } else if(noObstaclesHit<4) {
+        $('#obstaclesHittxt').addClass('colorRotateYellow');
+    } else {
+        $('#obstaclesHittxt').addClass('colorRotateRed');
+    }
     
     $("#pointstxt").html(points);
 
@@ -1599,8 +1667,8 @@ function tlEndingComplete(){
     // tlstarsBG.pause();
     tlhair.pause();
     tlLyrics.pause();
+    tlFlyPast.pause();
 
-    
 }
 
 
@@ -1615,6 +1683,7 @@ var highScores = [
 ];
 
 var scoretxt = document.getElementById("scoretxt");
+var obstaclesHittxt = document.getElementById("obstaclesHittxt");
 var initialstxt = document.getElementById("initialstxt");
 
 function highScoreEntered(e) {
@@ -1653,7 +1722,8 @@ function highScoreEntered(e) {
         gsap.to(["#endScreenBtns"],0,{display:"block"});
 
         // share button
-        shareBtn.href="mailto:everyone.i.know?&subject=amazing game by this band called primitai&body=this game made by this band primitai is absolutely brilliant, i scored "+scoretxt.innerHTML+" points: http://www.primitai.com";
+        shareBtn.href="mailto:everyone.i.know?&subject=amazing game by this band called primitai&body=this game made by this band primitai is absolutely brilliant, i crashed "+obstaclesHittxt.innerHTML+" times and scored "+scoretxt.innerHTML+" points: http://www.primitai.com";
+
 
 
     }
@@ -1873,7 +1943,10 @@ function tlRampComplete(){
 /*///////////////////////  ////////////////////////////////*/
 /*///////////////////////  ////////////////////////////////*/
 var audioIncreaseAmount=1;
+var noObstaclesHit = 0; 
 function doObstacleHit() {
+    noObstaclesHit++;
+
     collided=true;
         
     gsap.killTweensOf(backtoBounce);
@@ -1907,6 +1980,7 @@ function doObstacleHit() {
     tlbg.pause();
     tlstarsBG.pause();
     tlMountainsBG.pause();
+    tlCloudsBG.pause();
     tl.pause();
     tlhair.pause();
     primScreamTL.pause();
@@ -2113,7 +2187,8 @@ var doneChorusTint = false,
     doneLightning = false,
     doneLightning2 = false,
     doneSlowdown = false,
-    lyricsAreGo = false;
+    lyricsAreGo = false,
+    doneSergioFlyBy = false;
 function traceAudioTime(){
     // 84
     if(audio.currentTime>=84 && !lyricsAreGo){
@@ -2135,17 +2210,28 @@ function traceAudioTime(){
     if(audio.currentTime-84>chorus1Start && !doneChorusTint) {
         doneChorusTint=true;
 
+        // playCloudsBG();
+        gsap.to(".bgStars",8,{autoAlpha:1,ease:Linear.easeNone});
+
         // [todo] - something for chorus 1
+        doFlyPast();
     }
     
     // make BG normal aftee Chorus 1
     if(audio.currentTime-84>verse2Start && !doneChorusTintBack) {
         doneChorusTintBack=true;
 
+        gsap.to(".bgStars",3,{autoAlpha:.3,ease:Linear.easeNone});
+
         playMountainsBG();
         gsap.to(bgMountains,0,{display:"block"});
     }
 
+    // fly past sergio
+    if(audio.currentTime-84>soloStart && !doneSergioFlyBy){
+        doneSergioFlyBy=true;
+        doFlyPast("sergio")
+    }
     
 
     // flash lightning at heavy drop and go fast!!
@@ -2178,6 +2264,9 @@ function traceAudioTime(){
     // slow back down for final chorus
     if(audio.currentTime-84>chorus2Start && !doneSlowdown) {
         doneSlowdown=true;
+
+        gsap.to(".bgStars",8,{autoAlpha:1,ease:Linear.easeNone});
+
         gsap.to([tl,tlfg,tlbg,tlMountainsBG], 1, {timeScale:1.1, ease:Quad.easeOut})
         gsap.to([tlstarsBG], 1, {timeScale:1, ease:Quad.easeOut})
 
@@ -2194,6 +2283,9 @@ function traceAudioTime(){
 
     // more lightning at outro start and super fast to end:
     if(audio.currentTime-84>outroStart && !doneLightning2) {
+
+        gsap.to(".bgStars",1,{autoAlpha:.3});
+
         doneLightning2=true;
 
         gsap.fromTo("#lightning", 

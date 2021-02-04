@@ -155,6 +155,8 @@
                 <div class="bg bgMountains" id="bgMountains5"></div>
                 <div class="bg bgMountains" id="bgMountains6"></div>
             </div>
+
+            
             
             <div class="lightning" id="lightning"></div>
 
@@ -243,9 +245,14 @@
                 </div>
             </div>
             
+            <div id="bgClouds">
+                <div class="bg bgClouds" id="bgClouds1"></div>
+                <div class="bg bgClouds" id="bgClouds2"></div>
+                <div class="bg bgClouds" id="bgLightning"></div>
+                <div class="bg bgClouds" id="bgClouds3"></div>
+            </div>
             
             
-
 
 
 
@@ -264,11 +271,20 @@
                 
                 <div id="instructionsTxt3" class="copy instructionsTxt instructionsTxtButt hidden">use <span id="introBtn"><img src="images/introBtn.png"></span> to move</div>
                 <div id="instructionsTxt4" class="copy instructionsTxt instructionsTxtButt hidden">use <span id="introBtnK"><img src="images/introBtnK.png"></span> to jump<br>use <span id="introBtnJ"><img src="images/introBtnJ.png"></span> to wheelie</div>
+                
                 <div id="endtxt" class="copy hidden">
-                    score<br>
-                    <div id="scoretxt">1000</div><br>
-                    enter initials<br>
-                    <input id="initialstxt" name="initialstxt" type="text" maxlength="3" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+                    <div id="endtxt_obs">
+                        <h2>obstacles hit</h2>
+                        <div id="obstaclesHittxt">0</div>
+                    </div>
+                    <div id="endtxt_score">
+                        <h2>score</h2>
+                        <div id="scoretxt">0</div>
+                    </div>
+                    <div id="initailsWrap">
+                        <h2>enter initials</h2>
+                        <input id="initialstxt" name="initialstxt" type="text" maxlength="3" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+                    </div>
                 </div>
                 <div id="highscorestxt" class="copy hidden"></div>
 
@@ -327,6 +343,11 @@
                     <div id="optionsBike1" class="optionsBike">scramble jet</div>
                     <div id="optionsBike2" class="optionsBike">fire stringray</div>
                 </div>
+            </div>
+
+            <div id="flyPast">
+                <div id="flyPast-jets"></div>
+                <div id="flyPast-sergio"></div>
             </div>
             
             <div id="jumpingtxt" class="jumpingtxt hidden">...</div>
