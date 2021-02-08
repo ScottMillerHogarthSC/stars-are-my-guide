@@ -192,6 +192,11 @@
                     <div id="obstacle2" class="hidden rockL obstacle">
                         <img src="images/obstacle_rock.png" class="rockL">
                     </div>
+
+                    <div id="obstacle2a" class="hidden rockL obstacle">
+                        <img src="images/obstacle_rock.png" class="rockL">
+                    </div>
+                    
                     <div id="obstacle3" class="hidden ramp obstacle">
                         <img src="images/obstacle_ramp.png" class="ramp">
                         <img src="images/obstacle_rampLong.png" class="rampLong">
@@ -241,6 +246,9 @@
                     <div id="obstacle5" class="hidden rockR obstacle">
                         <img src="images/obstacle_rock2.png" class="rockR">
                     </div>
+                    <div id="obstacle5a" class="hidden rockR obstacle">
+                        <img src="images/obstacle_rock2.png" class="rockR">
+                    </div>
                     
                 </div>
             </div>
@@ -274,13 +282,15 @@
                 
                 <div id="endtxt" class="copy hidden">
                     <div id="endtxt_obs">
-                        <h2>obstacles hit</h2>
+                        <h2>collisions</h2>
                         <div id="obstaclesHittxt">0</div>
                     </div>
                     <div id="endtxt_score">
                         <h2>score</h2>
                         <div id="scoretxt">0</div>
                     </div>
+                    <div id="endtxt_perf">* PERFECT RUN! *</div>
+                    <img src="images/perf.png" id="endtxt_perfBalloon" alt="">
                     <div id="initailsWrap">
                         <h2>enter initials</h2>
                         <input id="initialstxt" name="initialstxt" type="text" maxlength="3" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
@@ -347,7 +357,11 @@
 
             <div id="flyPast">
                 <div id="flyPast-jets"></div>
+                <div id="flyPast-fzero"></div>
                 <div id="flyPast-sergio"></div>
+                <div id="flyPast-toad">
+                    <img src="images/shadow.png" id="toad-shadow">
+                </div>
             </div>
             
             <div id="jumpingtxt" class="jumpingtxt hidden">...</div>

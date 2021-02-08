@@ -18,7 +18,7 @@ var btnMoveUp, btnMoveForwards, btnMoveBackwards, btnMoveDown, btnJump, btnOptio
 var tlIntroScreen = gsap.timeline(),
     tlintro = gsap.timeline(),
     tlInstructions = gsap.timeline(),
-    tl = gsap.timeline(),
+    tlMainGame = gsap.timeline(),
     tlfg = gsap.timeline(),
     tlbg = gsap.timeline(),
     tlstarsBG = gsap.timeline(),
@@ -30,7 +30,8 @@ var tlIntroScreen = gsap.timeline(),
     tlScream=gsap.timeline(),
     tlEnding = gsap.timeline(),
     primScreamTL = gsap.timeline(),
-    tlFlyPast = gsap.timeline();
+    tlFlyPast = gsap.timeline(),
+    tlCruisePast = gsap.timeline();
 
 // turn on any cheats
 if(window.location.search!=""){
@@ -53,7 +54,7 @@ if(window.location.search!=""){
             isCheat = true;        
             cheatstxt.innerHTML=cheat;
             cheatstxt.style.display="block";
-            gameSpeed = .5;
+            gameSpeed = 0.5;
             introSpeed = 10;
             break;
 
@@ -61,7 +62,7 @@ if(window.location.search!=""){
             isCheat = true;        
             cheatstxt.innerHTML=cheat;
             cheatstxt.style.display="block";
-            gameSpeed = .6;
+            gameSpeed = 0.6;
             // introSpeed = 10;
             break;
 
@@ -104,7 +105,7 @@ function init()
     btnJump = document.getElementById("btnJump");
     btnOption = document.getElementById("btnOption");
     
-    resizeWindow()
+    resizeWindow();
 
     $( window ).resize(resizeWindow);
 
@@ -116,13 +117,13 @@ function init()
 
 
     if (audio.canPlayType('audio/ogg')) {
-        console.log("canPlayType ogg");
+        // console.log("canPlayType ogg");
 
         // audio.setAttribute('src','01_stars_are_my_guide.ogg');
         audio.setAttribute('src','01_stars_are_my_guide.ogg');
 
     } else if (audio.canPlayType('audio/mpeg')) {
-        console.log("canPlayType mp3");
+        // console.log("canPlayType mp3");
 
         // audio.setAttribute('src','01_stars_are_my_guide.mp3');
         audio.setAttribute('src','01_stars_are_my_guide.mp3');
@@ -133,9 +134,9 @@ function init()
 
 
     if (audio.readyState > 3) {
-    	loadedAudio();
+        loadedAudio();
     } else {
-    	preloadAudio();	
+        preloadAudio(); 
     }
 }
 
@@ -170,7 +171,7 @@ function loadedAudio(){
             audio.pause();
         });
     
-        console.log("loaded Audio");
+        // console.log("loaded Audio");
     
         
         document.getElementById("loadingContent").style.display="none";
@@ -232,7 +233,7 @@ function playIntroScreen() {
     introPlaying=true;
 
     audio.addEventListener("timeupdate",traceAudioTime);
-    tlIntroScreen = gsap.timeline({onComplete:introPlayed})
+    tlIntroScreen = gsap.timeline({onComplete:introPlayed});
     
     tlIntroScreen.timeScale(introSpeed);
 
@@ -249,31 +250,31 @@ function playIntroScreen() {
         // setup intro BGs
         .to([introStars],0,{y:0,autoAlpha:1})
         .to([introBG],0,{y:0,autoAlpha:0})
-        .to(introStars,30,{y:"-1880px",autoAlpha:.4,rotationZ:0.01,ease:Power1.easeInOut})
-        .to(introStars,10,{autoAlpha:.4,ease:Linear.easeNone},20)
+        .to(introStars,30,{y:"-1880px",autoAlpha:0.4,rotationZ:0.01,ease:Power1.easeInOut})
+        .to(introStars,10,{autoAlpha:0.4,ease:Linear.easeNone},20)
         .to(introBG,30,{y:"-423px",autoAlpha:1,rotationZ:0.01,ease:Power1.easeInOut},0)
         
         // intro copy:
         .to(introLogo,3,{autoAlpha:1,ease:Linear.easeNone},3)
         .to(introTxt01,3,{autoAlpha:1,ease:Linear.easeNone},"<2")
-        .to([introTxt01,introLogo],.5,{autoAlpha:0,ease:Linear.easeNone},">")
+        .to([introTxt01,introLogo],0.5,{autoAlpha:0,ease:Linear.easeNone},">")
         
         .to(introTxt02,3,{autoAlpha:1,ease:Linear.easeNone},">")
         .to(introTxt02a,0,{autoAlpha:0,ease:Linear.easeNone},"<")
         .call(typeText,["#introTxt02a",2],"<1")
         .to(introTxt02a,3,{autoAlpha:1,ease:Linear.easeNone},"<")
         .to(introTxt02b,3,{autoAlpha:1,ease:Linear.easeNone},"<1")
-        .to([introTxt02],.5,{autoAlpha:0,ease:Linear.easeNone},">")
+        .to([introTxt02],0.5,{autoAlpha:0,ease:Linear.easeNone},">")
         
         .to(introTxt03,3,{autoAlpha:1,ease:Linear.easeNone},">")
         .to(introTxt03a,0,{autoAlpha:0,ease:Linear.easeNone},"<")
         .call(typeText,["#introTxt03a",2],"<1")
         .to(introTxt03a,3,{autoAlpha:1,ease:Linear.easeNone},"<")
-        .to([introTxt03],.5,{autoAlpha:0,ease:Linear.easeNone},">")
+        .to([introTxt03],0.5,{autoAlpha:0,ease:Linear.easeNone},">")
 
         .to([introTxt04],3,{autoAlpha:1,ease:Linear.easeNone},">")
         .to([introLogo2],3,{autoAlpha:1,ease:Linear.easeNone},"<1")
-        .to([introTxt04,introLogo2],.5,{autoAlpha:0,ease:Linear.easeNone},">")
+        .to([introTxt04,introLogo2],0.5,{autoAlpha:0,ease:Linear.easeNone},">")
 
         
         .to(tilt, 7, {y:-380,ease:Power1.easeOut},">")
@@ -288,7 +289,7 @@ function playIntroScreen() {
         .to(introScreen,1,{autoAlpha:0,ease:Linear.easeNone},"<4")
 
         .to([introTxt05a],3,{autoAlpha:1,ease:Linear.easeNone},">")
-        .addLabel("IntroScreen_ended")
+        .addLabel("IntroScreen_ended");
         
 }
 
@@ -296,13 +297,13 @@ function showTitles() {
 
     tlIntroScreen.seek("IntroScreen_ended");
 
-    gsap.to(tilt, 0, {scale:1,x:0,y:0})
+    gsap.to(tilt, 0, {scale:1,x:0,y:0});
 
-    gsap.to([bgStars1,bgToGo3,introBG,introStars,introTxt05,introTxt05a],0,{scale:1})
-    gsap.to(introScreen,0,{scale:1,transformOrigin:"left bottom"})
+    gsap.to([bgStars1,bgToGo3,introBG,introStars,introTxt05,introTxt05a],0,{scale:1});
+    gsap.to(introScreen,0,{scale:1,transformOrigin:"left bottom"});
 
-    gsap.to([instructionsTxt0],0,{autoAlpha:1})
-    gsap.to([instructions_optionsTxt],0,{autoAlpha:.5,display:"block"})
+    gsap.to([instructionsTxt0],0,{autoAlpha:1});
+    gsap.to([instructions_optionsTxt],0,{autoAlpha:0.5,display:"block"});
     gsap.to([instructionsTxt0],{className:"instructionsTxtButt flashing hidden copy",delay:0});
     gsap.to([introTxt05,introTxt05a],0,{autoAlpha:1});
 }
@@ -320,7 +321,7 @@ function introPlayed() {
     gsap.to(mobileControls,0,{className:"pulseMobileControls"});
     gsap.to(skipIntro,0,{display:"none"});
     // reset intro stuff:
-    gsap.to(["#bgStars1","#bgToGo3"],0,{scale:1})
+    gsap.to(["#bgStars1","#bgToGo3"],0,{scale:1});
     gsap.to("#introScreen",0,{display:"none"});
 
 
@@ -334,7 +335,7 @@ function introPlayed() {
     document.body.removeEventListener('keypress', introPlayed);
 
     // add StartGame event listeners:
-    console.log("introPlayed calls BindButtons_startGame")
+    // console.log("introPlayed calls BindButtons_startGame")
     BindButtons_startGame();   
 }
 
@@ -354,13 +355,13 @@ function unBindButtons_gameResume(){
 }
 
 function BindButtons_startGame(){
-    console.log("BindButtons_startGame");
+    // console.log("BindButtons_startGame");
 
      // mobile
     btnMoveDown.addEventListener('touchend', startGame);
     btnOption.addEventListener('touchend', showOptions);
 
-	 //keyboard
+     //keyboard
     document.body.addEventListener('keypress', introScreenBtnPressed);
 }
 
@@ -405,20 +406,20 @@ function showOptions(){
     gsap.to([introTxt05,introTxt05a],0,{autoAlpha:0});
     gsap.to(optionsScreen,0,{autoAlpha:1,display:"block"});
 
-    optionsBike.addEventListener('click',function(){ optionsBike_chosen()});
-    optionsBike1.addEventListener('click',function(){ optionsBike_chosen(1)});
-    optionsBike2.addEventListener('click',function(){ optionsBike_chosen(2)});
+    optionsBike.addEventListener('click',function(){ optionsBike_chosen(0); });
+    optionsBike1.addEventListener('click',function(){ optionsBike_chosen(1); });
+    optionsBike2.addEventListener('click',function(){ optionsBike_chosen(2); });
 
-    optionsBike.addEventListener('touchend',function(){ optionsBike_chosen()});
-    optionsBike1.addEventListener('touchend',function(){ optionsBike_chosen(1)});
-    optionsBike2.addEventListener('touchend',function(){ optionsBike_chosen(2)});  
+    optionsBike.addEventListener('touchend',function(){ optionsBike_chosen(0); });
+    optionsBike1.addEventListener('touchend',function(){ optionsBike_chosen(1); });
+    optionsBike2.addEventListener('touchend',function(){ optionsBike_chosen(2); });  
 }
 
 
 
 function optionsBike_chosen(bikeNo){
-    if(bikeNo==undefined) {bikeNo=""}
-    gsap.to("#bike-go",0,{className: "bike"+bikeNo})
+    if(bikeNo==undefined || bikeNo==0) {bikeNo="";}
+    gsap.to("#bike-go",0,{className: "bike"+bikeNo});
     gsap.to([introTxt05,introTxt05a],0,{autoAlpha:1});
     gsap.to(optionsScreen,0,{autoAlpha:0,display:"none"});
 
@@ -429,7 +430,7 @@ function optionsBike_chosen(bikeNo){
 }
 
 function unBindButtons_startGame(){
-    console.log("unBindButtons_startGame");
+    // console.log("unBindButtons_startGame");
 
     btnMoveDown.removeEventListener('touchend', startGame);
     document.body.removeEventListener('keypress', startGame);
@@ -437,7 +438,7 @@ function unBindButtons_startGame(){
 
 
 function BindButtons_gamePlay(){
-    console.log("BindButtons_gamePlay")
+    // console.log("BindButtons_gamePlay")
 
     // remove StartGame Event Listeners 
     unBindButtons_startGame();
@@ -548,8 +549,8 @@ function mobileBtnPressed(ev){
         if(this.id=="btnJump") {
             gsap.killTweensOf(backtoBounce);
             jump();
-            $('#introBtnK').addClass('pressed')
-            $('#btnJump').addClass('pressed')
+            $('#introBtnK').addClass('pressed');
+            $('#btnJump').addClass('pressed');
         }
         if(this.id=="btnWheelie") {
             gsap.killTweensOf(backtoBounce);
@@ -692,10 +693,9 @@ var gameStarted = false;
 /*/////////////////////// START GAME ////////////////////////////////*/
 /*///////////////////////  ////////////////////////////////*/
 /*///////////////////////  ////////////////////////////////*/
-function startGame(ev,didAutoPlay)
-{
-	if(!gameStarted){
-		gameStarted=true;
+function startGame(ev,didAutoPlay){
+    if(!gameStarted){
+        gameStarted=true;
 
         // prevent touch default:
         if(ev.cancelable) {
@@ -703,59 +703,93 @@ function startGame(ev,didAutoPlay)
         }
 
 
-	// setup all listeners for gaming:
-    BindButtons_gamePlay();
+        // setup all listeners for gaming:
+        BindButtons_gamePlay();
 
-    tlIntroScreen.pause();
+        tlIntroScreen.pause();
 
-    gsap.to(mobileControls,0,{className:""});
-    gsap.to([introScreen,btnOption],0,{display:"none"});
+        gsap.to(mobileControls,0,{className:""});
+        gsap.to([introScreen,btnOption],0,{display:"none"});
 
-    gsap.to("#tilt",0,{y:0})
+        gsap.to("#tilt",0,{y:0});
 
-    points=0;
+        points=0;
 
-    introPlaying=false;
+        introPlaying=false;
 
-    if(!didAutoPlay){
-        audio.currentTime=84.00; 
-        console.log(audio.currentTime);
+        if(!didAutoPlay){
+            audio.currentTime=84.00; 
+            // console.log(audio.currentTime);
+        }
+        
+        
+        
+
+        
+        // reset
+        gsap.set([flame,gameover,"#rider-stopped",instructionsTxt0,instructions_optionsTxt,introTxt05,introTxt05a,optionsScreen],{autoAlpha:0,overwrite:true});
+        gsap.set([player,"#rider-go",pointstxt,jumpingtxt],{autoAlpha:1});
+
+        backtoBounce();
+            
+
+
+        //
+        setupGamePlayTimelines();
+        
+        
+        
+
+        
+
+        
+        gsap.fromTo(tlstarsBG,4,{timeScale:0},{timeScale:1,ease:Power1.easeIn});
+        gsap.fromTo(tlbg,4,{timeScale:0},{timeScale:1,ease:Power1.easeIn});
     }
+}
     
+
+
+/////// TIME LINE VARS /////
+var fgWidth = 1800,
+    fgSpeed = gameSpeed*2;
+
+var bgWidth = 1800,
+    bgSpeed = gameSpeed*10;
+
+var starsBGWidth = 1300,
+    starsBGSpeed = gameSpeed*5;
+
+var mountainsBGWidth = 1800,
+    mountainsBGSpeed = gameSpeed*5;
+
+var hairspeed = 1,
+    maxhairspeed=5;
+
+function setupGamePlayTimelines() {
+
+
+    tlhair = gsap.timeline({repeat:-1});
+    tlhair.addLabel('rider','<')
+        .add(function(){ 
+            if(hairspeed<maxhairspeed) {
+                hairspeed++;
+                tlhair.timeScale(hairspeed/maxhairspeed);
+            }
+        })
+        .to('#hair-go1',0,{autoAlpha:1},"<")
+        .to('#hair-go1',0,{autoAlpha:0},"+=0.1")
+        .to('#hair-go2',0,{autoAlpha:1},"<")
+        .to('#hair-go2',0,{autoAlpha:0},"+=0.1")
+        .to('#hair-go3',0,{autoAlpha:1},"<")
+        .to('#hair-go3',0,{autoAlpha:0},"+=0.1");
     
     
 
     
-    // reset
-    gsap.set([flame,gameover,"#rider-stopped",instructionsTxt0,instructions_optionsTxt,introTxt05,introTxt05a,optionsScreen],{autoAlpha:0,overwrite:true});
-    gsap.set([player,"#rider-go",pointstxt,jumpingtxt],{autoAlpha:1});
 
-    backtoBounce();
-        
-
-
-    
-    
-    
-
-    tlbg = gsap.timeline({repeat:-1});
-    tlstarsBG = gsap.timeline({repeat:-1});
-
-    tlhair = gsap.timeline({onComplete:playHairTl});
-    tlfg = gsap.timeline({onComplete:fgTimeLineComplete});
-
-    
-    gsap.fromTo(tlstarsBG,4,{timeScale:0},{timeScale:1,ease:Power1.easeIn});
-    gsap.fromTo(tlbg,4,{timeScale:0},{timeScale:1,ease:Power1.easeIn});
-
-    
     tlintro = gsap.timeline({onComplete:showIntructions});
-
     tlintro.addLabel("FGs BGs", "<")
-        .add(playBGs,"<")
-        .add(playStarsBG,"<")
-        .add(playHairTl,"<")
-        
         .to("#fg-intro",0, {autoAlpha:1},"<")
         
         // reset obs
@@ -766,18 +800,82 @@ function startGame(ev,didAutoPlay)
         .to(fgToGo1,0,{autoAlpha:1,x:fgWidth},"-=1.25")
         .to(fgToGo1,(fgSpeed/2),{x:0,ease:Linear.easeNone},">")
 
-        .add(playFGs,"<")
- 	}       
+        .add(playFGs,"<");
+    
+       
 
-    // set up flyPast timeline but dont play:
+    tlbg = gsap.timeline({repeat:-1});
+    tlbg.addLabel('bgLoop', '<')
+        .to([bgToGo1],0,{x:0,z:0})
+        .to([bgToGo2],0,{x:bgWidth,z:0})
+        .to([bgToGo3],0,{x:bgWidth,z:0})
+        
+        .to(bgToGo1,bgSpeed,{x:-bgWidth,rotationZ:0.01,ease:Linear.easeNone},">")
+        .to(bgToGo2,bgSpeed,{x:0,rotationZ:0.01,ease:Linear.easeNone},"-="+bgSpeed)
+        .to(bgToGo2,bgSpeed,{x:-bgWidth,rotationZ:0.01,ease:Linear.easeNone},">")
+        .to(bgToGo3,bgSpeed,{x:0,rotationZ:0.01,ease:Linear.easeNone},"-="+bgSpeed);
+
+    
+    tlstarsBG = gsap.timeline({repeat:-1});
+    tlstarsBG.addLabel('starsBGLoop', '<')
+        .to([bgStars1],0,{x:0,z:0})
+        .to([bgStars2],0,{x:starsBGWidth,z:0})
+        .to([bgStars3],0,{x:starsBGWidth,z:0})
+        
+        .to(bgStars1,starsBGSpeed,{x:-starsBGWidth,rotationZ:0.01,ease:Linear.easeNone},">")
+        .to(bgStars2,starsBGSpeed,{x:0,rotationZ:0.01,ease:Linear.easeNone},"-="+starsBGSpeed+"")
+        .to(bgStars2,starsBGSpeed,{x:-starsBGWidth,rotationZ:0.01,ease:Linear.easeNone},">")
+        .to(bgStars3,starsBGSpeed,{x:0,rotationZ:0.01,ease:Linear.easeNone},"-="+starsBGSpeed);
+
+    
+    tlfg = gsap.timeline({onComplete:fgTimeLineComplete,paused:true});
+    tlfg.addLabel('fg loop', '<')
+        .to([fgToGo3],0,{autoAlpha:0},">")
+        
+        .to([fgToGo1],0,{x:0,z:0,},"<")
+        .to([fgToGo2],0,{x:fgWidth,z:0},"<")
+        
+        .to([fgToGo1],fgSpeed,{x:-fgWidth,rotationZ:0.01,ease:Linear.easeNone},">")
+        .to([fgToGo2],fgSpeed,{x:0,rotationZ:0.01,ease:Linear.easeNone},"<");
+
+
+    tlMountainsBG = gsap.timeline({paused:true});
+    tlMountainsBG.addLabel('mountainsBGLoop', '<')
+        .to([bgMountains1,bgMountains2,bgMountains3,bgMountains4,bgMountains5,bgMountains6],0,{autoAlpha:1,x:mountainsBGWidth,z:0})
+        .to([bgMountains4,bgMountains5,bgMountains6],0,{scaleX:-1})
+        
+        .to(bgMountains1,mountainsBGSpeed*2,{x:-mountainsBGWidth,ease:Linear.easeNone},">")
+        .to(bgMountains2,mountainsBGSpeed*2,{x:-mountainsBGWidth,ease:Linear.easeNone},"-="+mountainsBGSpeed+"")
+        .to(bgMountains3,mountainsBGSpeed*2,{x:-mountainsBGWidth,ease:Linear.easeNone},"-="+mountainsBGSpeed+"")
+        
+        .to(bgMountains4,mountainsBGSpeed*2,{x:-mountainsBGWidth,ease:Linear.easeNone},"-="+mountainsBGSpeed+"")
+        .to(bgMountains5,mountainsBGSpeed*2,{x:-mountainsBGWidth,ease:Linear.easeNone},"-="+mountainsBGSpeed+"")
+        .to(bgMountains6,mountainsBGSpeed*2,{x:-mountainsBGWidth,ease:Linear.easeNone},"-="+mountainsBGSpeed+"")
+        .to(bgMountains,0,{display:"none"});
+    
+
     tlFlyPast = gsap.timeline({paused:true});
-
     tlFlyPast.addLabel('flypast','<')
     .to(flyPast,0,{x:0,z:0.01},'<')
     .to(flyPast,2,{x:300,z:-0.01,ease:Back.easeOut},'>')
     .to(flyPast,1,{x:1220,z:-0.01,ease:Power1.easeIn},'>');
 
+
+    tlCruisePast = gsap.timeline({paused:true});
+    tlCruisePast.addLabel('cruisepast','<')
+    .to(flyPast,0,{x:0,z:0.01},'<')
+    .to(flyPast,3,{x:1220,z:-0.01,ease:Linear.easeNone},'>')
+    .to(flyPast,0.7,{y:"-70",scale:0.65,ease:Power1.easeInOut},'>-1.7');
+
+    tlScream = gsap.timeline({paused:true});
+    tlScream.addLabel('scream')
+    .to(".rider-scream",0,{autoAlpha:1},0)
+    .to([".rider-go",".hair-go",".rider-scream2"],0,{autoAlpha:0},0)
+    .to([".rider-scream","#rider-jets"],0,{autoAlpha:0},"1")
+    .to("#rider-stopped",0,{autoAlpha:1},"1")
+    .addLabel('screamDone');
 }
+
 
 function showIntructions(){
     if(!isCheat){
@@ -810,9 +908,9 @@ function gamePause() {
     tlCloudsBG.pause();
     tlintro.pause();
     tlInstructions.pause();
-    tl.pause();
+    tlMainGame.pause();
     tlLyrics.pause();
-    tlramp.pause()
+    tlramp.pause();
     tlhair.pause();
 
     $('#rider').removeClass('riderBounce');
@@ -822,7 +920,7 @@ function gamePause() {
     gsap.set(["#rider-stopped"],{autoAlpha:1});
     gsap.set(["#rider-go"],{autoAlpha:0});
     gsap.to(["#rider-go","#bike-go"],0,{rotationZ:0});
-    gsap.to("#rider-jets",0,{top:"0px",skewY:0,autoAlpha:0})
+    gsap.to("#rider-jets",0,{top:"0px",skewY:0,autoAlpha:0});
 
     jumpingtxt.innerHTML="paused";
     gsap.set(pausedtxt,{autoAlpha:1});
@@ -847,15 +945,17 @@ function gameResume(ev) {
     }
 
 
-    console.log('resume');
+    // console.log('resume');
 
     
 
     // resuming after crash
     if(collided) {
         collided=false;
-
-        gsap.set([speechbub,flame,".rider-scream",resumetxt],{autoAlpha:0});
+        gsap.set(resumetxt,{autoAlpha:0,className:"copy"});
+        gsap.set([flame,".rider-scream"],{autoAlpha:0});
+        
+        hideSpeechBub();
 
 
         // reset from "fallen down hole":
@@ -865,7 +965,7 @@ function gameResume(ev) {
         gsap.set(player,{x:0,y:0,rotationZ:0,rotationY:0,scale:1,autoAlpha:1});
 
         // flash player for 1s
-        gsap.to(player,0.1,{autoAlpha:0,yoyo:true,repeat:9})
+        gsap.to(player,0.1,{autoAlpha:0,yoyo:true,repeat:9});
 
         gsap.delayedCall(1,detectCollision);
     } else {
@@ -881,7 +981,7 @@ function gameResume(ev) {
     
     tlintro.resume();
     tlInstructions.resume();
-    tl.resume();
+    tlMainGame.resume();
     tlbg.resume();  
     tlstarsBG.resume();
     tlMountainsBG.resume();
@@ -900,7 +1000,7 @@ function gameResume(ev) {
     tlScream.seek(0);
 
     gsap.set("#rider-stopped",{autoAlpha:0});
-    gsap.set(["#rider-go,.rider-go,#rider-jets"],{autoAlpha:1});
+    gsap.set(["#rider-go",".rider-go","#rider-jets"],{autoAlpha:1});
 
     
     jumpingtxt.innerHTML="go";
@@ -909,7 +1009,98 @@ function gameResume(ev) {
     gsap.set(pausedtxt,{autoAlpha:0});
 
     BindButtons_gamePlay();
+}               
+
+
+
+
+
+// speech
+var jumpPhrases = ["to the void we ride",
+                "rising high",
+                "feel it soaring",
+                "slice the air",
+                "primitaaaii"];
+
+var brakingPhrases = ["hit the brakes",
+                    "what the hell?",
+                    "woah!",
+                    "hang back",
+                    "yo butt head!!"];
+                    
+var goPhrases = ["drive!",
+                "let's go!",
+                "go go go",
+                "no time to lose",
+                "my road goes on forever",
+                "the quest goes on",
+                "pedal to the floor"];
+
+var wheeliePhrases = ["right on!",
+                    "out of control",
+                    "Black Rider!",
+                    "stop for no man",
+                    "on the loose",
+                    "too fast to die",
+                    "above the law"];
+
+var collidedPhrases=["move the wreck!",
+                "move the wreck!",
+                "outta my way!!",
+                "outta my way!!",
+                "aaargh",
+                "oh no!",
+                "@#$%&!0",
+                "@#$%&!0"];
+
+var vortexPhrases = ["aaargh",
+                    "to the void we ride",
+                    "vortex warping"];
+
+
+var isSpeaking = false;
+function doSpeech(whatOccurred,delay,count,factor){
+
+    if(!isSpeaking){
+        isSpeaking=true;
+        gsap.delayedCall(.5,isntSpeaking);
+
+        var whichPhrase = Math.floor(Math.random() * whatOccurred.length-1) + 1; 
+        speechtxt.innerHTML=whatOccurred[whichPhrase];
+
+        
+        gsap.killTweensOf(hideSpeechBub);
+
+        if(whatOccurred==collidedPhrases){
+            gsap.set(speechbub,{autoAlpha:1,top:"4px",rotation:0,delay:0.7});
+            
+            gsap.delayedCall(delay+0.7, hideSpeechBub);
+
+        } else {
+            if(count != undefined){
+                if(count % factor === 0){
+                    gsap.set(speechbub,{autoAlpha:1});
+                }
+            } else {
+                gsap.set(speechbub,{autoAlpha:1});
+            }
+            gsap.delayedCall(delay,hideSpeechBub);
+        }
+    }
 }
+
+function isntSpeaking(){
+    isSpeaking=false;
+}
+
+function hideSpeechBub(){
+    if(isSpeaking){
+        isSpeaking=false;
+    }
+    speechtxt.innerHTML="";
+    gsap.to(speechbub,0,{autoAlpha:0});
+}
+
 
 
 var isJumping = false;
@@ -931,20 +1122,18 @@ function jump() {
         jumpingtxt.innerHTML="jump";
 
 
-        if(tl.isActive() && jumpCount % 4 === 0){
+        if(tlfg.isActive()){
             
-            speechtxt.innerHTML="primitaaaii";    
-            gsap.set(speechbub,{autoAlpha:1});
-            gsap.to(speechbub,0,{autoAlpha:0,delay:1.5});
+            doSpeech(jumpPhrases,1.5,jumpCount,3);
 
-        } else if (tl.isActive() && jumpCount % 15 === 0) {
+        } else if (tlfg.isActive() && jumpCount % 15 === 0) {
 
             // every 9 jumps do a stand-up scream
         
             tlhair.pause();
             primScreamTL = gsap.timeline({onComplete:function(){ tlhair.play(); }});
 
-            speechtxt.innerHTML="primitaaaii"
+            speechtxt.innerHTML="primitaaaii";
             
             primScreamTL.addLabel('primScream')
                 .to('.rider-scream2',0,{autoAlpha:1},"<")
@@ -963,16 +1152,16 @@ function jump() {
         gsap.to("#rider-jets",0.2,{scaleX:1,scaleY:1,x:0,y:0,filter:"hue-rotate(0deg)",delay:1});
 
 
-        gsap.to([rider],1,{y:-110})
-        gsap.to([speechbub],1,{y:-167})
+        gsap.to([rider],1,{y:-110});
+        gsap.to([speechbub],1,{y:-167});
         
-        gsap.to([speechbub],1.5,{y:-67,delay:1,ease:Bounce.easeOut})
-        gsap.to([rider],1.5,{y:0,delay:1,ease:Bounce.easeOut})
+        gsap.to([speechbub],1.5,{y:-67,delay:1,ease:Bounce.easeOut});
+        gsap.to([rider],1.5,{y:0,delay:1,ease:Bounce.easeOut});
 
-        gsap.set(shadow,{autoAlpha:.4})
-        gsap.to(shadow,1,{autoAlpha:0,scaleX:.6})
+        gsap.set(shadow,{autoAlpha:0.4});
+        gsap.to(shadow,1,{autoAlpha:0,scaleX:0.6});
         
-        gsap.to(shadow,1.5,{autoAlpha:.5,scaleX:1,delay:1,ease:Bounce.easeOut})
+        gsap.to(shadow,1.5,{autoAlpha:0.5,scaleX:1,delay:1,ease:Bounce.easeOut});
         
         gsap.delayedCall(1.7,notJumping);
     }
@@ -981,7 +1170,7 @@ function jump() {
 function notJumping(){
     isJumping=false; 
     jumpingtxt.innerHTML="go";
-    gsap.delayedCall(.6,backtoBounce);
+    gsap.delayedCall(0.6,backtoBounce);
 }
 
 var wheelieCount=0;
@@ -995,33 +1184,28 @@ function wheelie() {
     
     if(!isRamping) {
         jumpingtxt.innerHTML="&#47;&#47;";
-        gsap.delayedCall(.7,function(){
+        gsap.delayedCall(0.7,function(){
             jumpingtxt.innerHTML="go";
         });
 
-        if(tl.isActive() && wheelieCount % 3 === 0)
+        if(tlfg.isActive())
         {
-            speechtxt.innerHTML="right on!!";    
-            gsap.set(speechbub,{autoAlpha:1});
-            gsap.delayedCall(.7,function(){
-                speechtxt.innerHTML="";
-                gsap.to(speechbub,0,{autoAlpha:0});
-            })
+            doSpeech(wheeliePhrases,0.7,wheelieCount,3);
         }
 
         points++;
         
-        gsap.to(["#rider-go","#bike-go"],1,{rotationZ:-30})
+        gsap.to(["#rider-go","#bike-go"],1,{rotationZ:-30});
 
         // if()
-        gsap.to("#rider-jets",1,{top:"30px",skewY:13})
+        gsap.to("#rider-jets",1,{top:"30px",skewY:13});
 
         
-        gsap.to(shadow,1,{x:-10,scaleX:.7})
-        gsap.to(shadow,1.5,{x:0,scaleX:1,delay:1,ease:Bounce.easeOut})
+        gsap.to(shadow,1,{x:-10,scaleX:0.7});
+        gsap.to(shadow,1.5,{x:0,scaleX:1,delay:1,ease:Bounce.easeOut});
         
         gsap.to(["#rider-go","#bike-go"],1.5,{rotationZ:0,delay:1,ease:Bounce.easeOut});
-        gsap.to("#rider-jets",1.5,{top:"0px",skewY:0,delay:1,ease:Bounce.easeOut})
+        gsap.to("#rider-jets",1.5,{top:"0px",skewY:0,delay:1,ease:Bounce.easeOut});
         gsap.delayedCall(2.4,backtoBounce);
     } else {
         if(!isFlipping)
@@ -1029,16 +1213,13 @@ function wheelie() {
             isFlipping=true;
             points = points + 100;
                 
-            gsap.to(rider,1.5,{rotation:-360,ease:Sine.easeInOut})
-            gsap.to(rider,0,{rotation:0,delay:1.5,onComplete:function(){isFlipping=false;}})
+            gsap.to(rider,1.5,{rotation:-360,ease:Sine.easeInOut});
+            gsap.to(rider,0,{rotation:0,delay:1.5,onComplete:function(){isFlipping=false;}});
         }
     }
 }
 
 var backwardsCount = 0;
-var brakingPhrases = ["hit the brakes",
-                    "what the hell?",
-                    "yo butt head!!"];
 function backwards() {
     backwardsCount++;
     
@@ -1057,33 +1238,23 @@ function backwards() {
     } 
     
 
-    gsap.to("#rider-jets",0,{scaleX:.35,scaleY:.9,x:-20,y:2,alpha:.6})
-    gsap.to("#rider-jets",0,{scaleX:1,scaleX:1,x:0,y:0,alpha:1,delay:.2})
+    gsap.to("#rider-jets",0,{scaleX:0.35,scaleY:0.9,x:-20,y:2,autoAlpha:0.6});
+    gsap.to("#rider-jets",0,{scaleX:1,x:0,y:0,autoAlpha:1,delay:0.2});
 
     jumpingtxt.innerHTML="brakes";
-    gsap.delayedCall(.7,function(){
+    gsap.delayedCall(0.7,function(){
         jumpingtxt.innerHTML="go";
     });
 
 
 
-    if(tl.isActive() && backwardsCount % 5 === 0)
+    if(tlfg.isActive())
     {
-        var whichPhrase = Math.floor(Math.random() * brakingPhrases.length-1) + 1; 
-        speechtxt.innerHTML=brakingPhrases[whichPhrase];;
-        gsap.set(speechbub,{autoAlpha:1});
-        gsap.delayedCall(.7,function(){
-            speechtxt.innerHTML="";
-            gsap.to(speechbub,0,{autoAlpha:0});
-        })
+        doSpeech(brakingPhrases,0.7,backwardsCount,5);
     }
 }
 
 var forwardsCount = 0;
-var goPhrases = ["drive!",
-                "pedal to the metal",
-                "let's go!",
-                "go go go"];
 function forwards() {
     forwardsCount++;
     if($('#player').hasClass('forwards3'))
@@ -1101,44 +1272,37 @@ function forwards() {
          $('#player').addClass('forwards');
     }
 
-    gsap.to("#rider-jets",0,{scaleX:1.25,x:7,filter:"hue-rotate(61deg)"})
-    gsap.to("#rider-jets",0,{scaleX:1,x:0,filter:"hue-rotate(0deg)",delay:.2})
+    gsap.to("#rider-jets",0,{scaleX:1.25,x:7,filter:"hue-rotate(61deg)"});
+    gsap.to("#rider-jets",0,{scaleX:1,x:0,filter:"hue-rotate(0deg)",delay:0.2});
     
     jumpingtxt.innerHTML="drive";
 
-    if(tl.isActive() && forwardsCount % 2 === 0)
+    if(tlfg.isActive())
     {
-        var whichPhrase = Math.floor(Math.random() * goPhrases.length-1) + 1; 
-        speechtxt.innerHTML=goPhrases[whichPhrase];;
-        gsap.set(speechbub,{autoAlpha:1});
-        
-        gsap.delayedCall(.7,function(){
-            speechtxt.innerHTML="";
-            gsap.to(speechbub,0,{autoAlpha:0});
-        })
+        doSpeech(goPhrases,1,forwardsCount,2);
     }
     gsap.delayedCall(1,function(){
         jumpingtxt.innerHTML="go";
-    })
+    });
 }
 var playerTopPos = 245,
     playerBotPos = 345;
 function upwards() {
-    gsap.to(player,.6,{top:+playerTopPos+"px",ease:Power1.easeInOut});
-    gsap.to(playerMovements,.6,{z:-100,ease:Power1.easeInOut});
+    gsap.to(player,0.6,{top:+playerTopPos+"px",ease:Power1.easeInOut});
+    gsap.to(playerMovements,0.6,{z:-100,ease:Power1.easeInOut});
 
     jumpingtxt.innerHTML="turn";
     gsap.delayedCall(0.2,function(){
         jumpingtxt.innerHTML="go";
-    })
+    });
 }
 function downwards() {
-    gsap.to(player,.6,{top:playerBotPos+"px",ease:Power1.easeInOut});
-    gsap.to(playerMovements,.6,{z:0,ease:Power1.easeInOut});
+    gsap.to(player,0.6,{top:playerBotPos+"px",ease:Power1.easeInOut});
+    gsap.to(playerMovements,0.6,{z:0,ease:Power1.easeInOut});
     jumpingtxt.innerHTML="turn";
     gsap.delayedCall(0.2,function(){
         jumpingtxt.innerHTML="go";
-    })
+    });
 }
 
 function backtoBounce(){
@@ -1158,7 +1322,7 @@ function typeText(whichEle, thisLength){
     var mySplitText = new SplitText(whichEle, {type:"words,chars"}),
         numChars = mySplitText.chars.length,
         characterTime = (thisLength/(numChars+6));
-        gsap.set(whichEle,{autoAlpha:1})
+        gsap.set(whichEle,{autoAlpha:1});
         gsap.set(mySplitText.chars, {autoAlpha:0});
         for(var i = 0; i < numChars; i++){
             gsap.to(mySplitText.chars[i], 0, {autoAlpha:1, delay:(i * characterTime),ease:Linear.easeNone});
@@ -1167,118 +1331,37 @@ function typeText(whichEle, thisLength){
 
 
 
-var fgWidth = 1800;
-var fgSpeed = gameSpeed*2;
+
+
 function playFGs() {
-
-    tlfg.addLabel('fg loop', '<')
-        .to([fgToGo3],0,{autoAlpha:0},">")
-        
-        .to([fgToGo1],0,{x:0,z:0,},"<")
-        .to([fgToGo2],0,{x:fgWidth,z:0},"<")
-        
-        .to([fgToGo1],fgSpeed,{x:-fgWidth,rotationZ:0.01,ease:Linear.easeNone},">")
-        .to([fgToGo2],fgSpeed,{x:0,rotationZ:0.01,ease:Linear.easeNone},"<");
+    tlfg.restart();
 }
-
-
-var bgWidth = 1800,
-    bgSpeed = gameSpeed*10;
-function playBGs() {
-    tlbg.addLabel('bgLoop', '<')
-        .to([bgToGo1],0,{x:0,z:0})
-        .to([bgToGo2],0,{x:bgWidth,z:0})
-        .to([bgToGo3],0,{x:bgWidth,z:0})
-        
-        .to(bgToGo1,bgSpeed,{x:-bgWidth,rotationZ:0.01,ease:Linear.easeNone},">")
-        .to(bgToGo2,bgSpeed,{x:0,rotationZ:0.01,ease:Linear.easeNone},"-="+bgSpeed)
-        .to(bgToGo2,bgSpeed,{x:-bgWidth,rotationZ:0.01,ease:Linear.easeNone},">")
-        .to(bgToGo3,bgSpeed,{x:0,rotationZ:0.01,ease:Linear.easeNone},"-="+bgSpeed)
-}
-
-
-var starsBGWidth = 1300,
-    starsBGSpeed = gameSpeed*5;
-function playStarsBG() {
-
-    tlstarsBG.addLabel('starsBGLoop', '<')
-        .to([bgStars1],0,{x:0,z:0})
-        .to([bgStars2],0,{x:starsBGWidth,z:0})
-        .to([bgStars3],0,{x:starsBGWidth,z:0})
-        
-        .to(bgStars1,starsBGSpeed,{x:-starsBGWidth,rotationZ:0.01,ease:Linear.easeNone},">")
-        .to(bgStars2,starsBGSpeed,{x:0,rotationZ:0.01,ease:Linear.easeNone},"-="+starsBGSpeed+"")
-        .to(bgStars2,starsBGSpeed,{x:-starsBGWidth,rotationZ:0.01,ease:Linear.easeNone},">")
-        .to(bgStars3,starsBGSpeed,{x:0,rotationZ:0.01,ease:Linear.easeNone},"-="+starsBGSpeed);
-}
-
-var mountainsBGWidth = 1800,
-    mountainsBGSpeed = gameSpeed*5;
 function playMountainsBG() {
-    tlMountainsBG.addLabel('mountainsBGLoop', '<')
-        .to([bgMountains1,bgMountains2,bgMountains3,bgMountains4,bgMountains5,bgMountains6],0,{autoAlpha:1,x:mountainsBGWidth,z:0})
-        .to([bgMountains4,bgMountains5,bgMountains6],0,{scaleX:-1})
-        
-        .to(bgMountains1,mountainsBGSpeed*2,{x:-mountainsBGWidth,ease:Linear.easeNone},">")
-        .to(bgMountains2,mountainsBGSpeed*2,{x:-mountainsBGWidth,ease:Linear.easeNone},"-="+mountainsBGSpeed+"")
-        .to(bgMountains3,mountainsBGSpeed*2,{x:-mountainsBGWidth,ease:Linear.easeNone},"-="+mountainsBGSpeed+"")
-        
-        .to(bgMountains4,mountainsBGSpeed*2,{x:-mountainsBGWidth,ease:Linear.easeNone},"-="+mountainsBGSpeed+"")
-        .to(bgMountains5,mountainsBGSpeed*2,{x:-mountainsBGWidth,ease:Linear.easeNone},"-="+mountainsBGSpeed+"")
-        .to(bgMountains6,mountainsBGSpeed*2,{x:-mountainsBGWidth,ease:Linear.easeNone},"-="+mountainsBGSpeed+"")
-        .to(bgMountains,0,{display:"none"});
+    tlMountainsBG.restart();
 }
-
-// var cloudsBGWidth = 1300,
-//     cloudsBGSpeed = gameSpeed*2;
-// function playCloudsBG() {
-//     gsap.from(bgClouds,cloudsBGSpeed*2,{y:-300,ease:Power1.easeOut,delay:cloudsBGSpeed});
-//     gsap.to(bgClouds,cloudsBGSpeed*2,{y:-300,ease:Power1.easeIn,delay:cloudsBGSpeed*4}) 
-
-//     tlCloudsBG.addLabel('cloudsBGLoop', '<')
-//         .to([bgClouds1,bgClouds2,bgClouds3,bgLightning],0,{autoAlpha:1,x:cloudsBGWidth,z:0})
-        
-//         .to(bgClouds1,cloudsBGSpeed*2,{x:-cloudsBGWidth,ease:Linear.easeNone},">")
-//         .to([bgClouds2],cloudsBGSpeed*2,{x:-cloudsBGWidth,ease:Linear.easeNone},"-="+cloudsBGSpeed+"")
-//         .to([bgClouds3,bgLightning],cloudsBGSpeed*2,{x:-cloudsBGWidth,ease:Linear.easeNone},"-="+cloudsBGSpeed+"")
-//         .to([bgClouds1,bgClouds2,bgLightning],0,{x:cloudsBGWidth,ease:Linear.easeNone},"-="+cloudsBGSpeed+"")
-//         .to(bgClouds1,cloudsBGSpeed*2,{x:-cloudsBGWidth,ease:Linear.easeNone},"-="+cloudsBGSpeed+"")
-//         .to([bgClouds2,bgLightning],cloudsBGSpeed*2,{x:-cloudsBGWidth,ease:Linear.easeNone},"-="+cloudsBGSpeed+"")
-//         .to(bgClouds3,0,{x:cloudsBGWidth,ease:Linear.easeNone},"-="+cloudsBGSpeed+"")
-//         .to(bgClouds3,cloudsBGSpeed*2,{x:-cloudsBGWidth,ease:Linear.easeNone},"-="+cloudsBGSpeed+"")
-//         .to(bgClouds,0,{display:"none"});
-// }
-
 
 function doFlyPast(which) {
-    if(which=="sergio"){
-        gsap.to(flyPast,0,{className:"+=sergio"})
-    } else {
-        gsap.to(flyPast,0,{className:""})
-    }
+    gsap.to(flyPast,0,{className:""});
+    
+    if(which=="toad"){
+        gsap.to(flyPast,0,{className:"+=toad"});
+        tlCruisePast.restart();
 
-    tlFlyPast.restart();
+        // [todo] whall the hell
+        speechtxt.innerHTML="what the hell?";
+        gsap.set(speechbub,{autoAlpha:1,delay:1});
+        gsap.delayedCall(1.7,hideSpeechBub);
+
+    } else if(which=="sergio"){
+        gsap.to(flyPast,0,{className:"+=sergio"}); 
+        tlFlyPast.restart();
+
+    } else if(which=="fzero"){
+        gsap.to(flyPast,0,{className:"+=fzero"}); 
+        tlFlyPast.restart();
+
+    }  
 }
-
-var hairspeed = 1,
-    maxhairspeed=5;
-function playHairTl() {
-    tlhair.addLabel('rider','<')
-        .add(function(){ 
-            if(hairspeed<maxhairspeed) {
-                hairspeed++;
-                tlhair.timeScale(hairspeed/maxhairspeed);
-            }
-        })
-        .to('#hair-go1',0,{autoAlpha:1},"<")
-        .to('#hair-go1',0,{autoAlpha:0},"+=0.1")
-        .to('#hair-go2',0,{autoAlpha:1},"<")
-        .to('#hair-go2',0,{autoAlpha:0},"+=0.1")
-        .to('#hair-go3',0,{autoAlpha:1},"<")
-        .to('#hair-go3',0,{autoAlpha:0},"+=0.1")
-        
-}
-
 
 var obsSpeed = gameSpeed*5;
 var obsStartLeft = 2200;
@@ -1288,11 +1371,11 @@ function playObstaclesTL(){
     gsap.killTweensOf(detectCollision);
     detectCollision();
 
-    tl = gsap.timeline({onComplete:timeLineComplete});
+    tlMainGame = gsap.timeline({onComplete:tlMainGameComplete});
 
     if(!isCheat){
 
-    tl.addLabel("stage1", "<")
+    tlMainGame.addLabel("stage1", "<")
         .to("#player",0, {autoAlpha:1}, "<")
         
 
@@ -1346,25 +1429,30 @@ function playObstaclesTL(){
         .call(setWarningTxt,["ramp"],"<")
         .to(".ramp", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
 
-        // rock R
-        .to("#obstacle5", 0, {left:obsStartLeft+"px"}, "-=3")
-        .call(setWarningTxt,["up"],"+=1")
-        .to("#obstacle5", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
 
-        // rock L
-        .to("#obstacle2", 0, {left:obsStartLeft+"px"}, "-=3")
-        .to("#obstacle2", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+        
 
-        // rock R
-        .to("#obstacle5", 0, {left:obsStartLeft+"px"}, "-=3")
-        // .call(setWarningTxt,["up"],"+=1")
-        .to("#obstacle5", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+        
+            .addLabel("labelUpdown",">")
+            // rock R
+            .to("#obstacle5", 0, {left:obsStartLeft+"px"}, "labelUpdown")
+            .call(setWarningTxt,["updown"],"<")
+            .to("#obstacle5", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},"<")
 
-        // rock L
-        .to("#obstacle2", 0, {left:obsStartLeft+"px"}, "-=2")
-        // .call(setWarningTxt,["down"],"<")
-        .to("#obstacle2", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
-            
+            // rock L
+            .to("#obstacle2", 0, {left:obsStartLeft+"px"},"-="+(obsSpeed*0.8))
+            .to("#obstacle2", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},"<")
+
+            // rock R
+            .to("#obstacle5a", 0, {left:obsStartLeft+"px"},"-="+(obsSpeed*0.8))
+            .to("#obstacle5a", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},"<")
+
+            // rock L
+            .to("#obstacle2a", 0, {left:obsStartLeft+"px"},"-="+(obsSpeed*0.8))
+            .to("#obstacle2a", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},"<")
+                
+
+
             
         .to("#tilt",7,{rotationZ:5,x:0,y:10},">")
             
@@ -1380,26 +1468,27 @@ function playObstaclesTL(){
         .call(setWarningTxt,["ramp"],"<")
         .to(".ramp", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
 
-        // rock R
-        .to("#obstacle5", 0, {left:obsStartLeft+"px"}, "-=3")
-        .call(setWarningTxt,["updown",true],"+=1")
-        .to("#obstacle5", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
 
-        // rock L
-        .to("#obstacle2", 0, {left:obsStartLeft+"px"}, "-=3")
-        .to("#obstacle2", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+        // updown :
+        .addLabel("labelUpdown2", ">")
+            // rock R
+            .to("#obstacle5", 0, {left:obsStartLeft+"px"}, "labelUpdown2")
+            .call(setWarningTxt,["updown"],"<")
+            .to("#obstacle5", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},"<")
+
+            // rock L
+            .to("#obstacle2", 0, {left:obsStartLeft+"px"},"-="+(obsSpeed*0.8))
+            .to("#obstacle2", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},"<")
+
+            // rock R
+            .to("#obstacle5a", 0, {left:obsStartLeft+"px"},"-="+(obsSpeed*0.8))
+            .to("#obstacle5a", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},"<")
+
+            // rock L
+            .to("#obstacle2a", 0, {left:obsStartLeft+"px"},"-="+(obsSpeed*0.8))
+            .to("#obstacle2a", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},"<")
 
 
-// rock L
-        .to("#obstacle2", 0, {left:obsStartLeft+"px"}, ">")
-        .call(setWarningTxt,["down"],"<")
-        .to("#obstacle2", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
-
-
-        // rock R
-        .to("#obstacle5", 0, {left:obsStartLeft+"px"}, ">")
-        .call(setWarningTxt,["up"],"<")
-        .to("#obstacle5", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
 
         .to("#obstacle4", 0, {left:obsStartLeft+"px"}, "-=2")
         .call(setWarningTxt,["asteroid"],"<")
@@ -1452,7 +1541,7 @@ function playObstaclesTL(){
 
     } else if(cheat=="rampMode"){
         
-        tl.addLabel("rampMode", "<")
+        tlMainGame.addLabel("rampMode", "<")
         // ramp
         .to(".ramp", 0, {left:obsStartLeft+"px"}, ">1")
         .call(setWarningTxt,["ramp"],"<")
@@ -1460,47 +1549,44 @@ function playObstaclesTL(){
 
 
     } else if(cheat=="clearMode"){
-        tl.addLabel("clear", "<");
+        tlMainGame.addLabel("clear", "<");
 
         
     } else if(cheat=="fastMode" || cheat=="quickerMode"){
         
-        tl.addLabel("fastMode", "<")
+        tlMainGame.addLabel("fastMode", "<")
 
-        // rock L
-        .to("#obstacle2", 0, {left:obsStartLeft+"px"}, ">")
-        .call(setWarningTxt,["down"],"<")
-        .to("#obstacle2", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
-
-
-        // rock R
-        .to("#obstacle5", 0, {left:obsStartLeft+"px"}, ">")
-        .call(setWarningTxt,["up"],"<")
-        .to("#obstacle5", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
-
-    
-        // ramp
-        .to(".ramp", 0, {left:obsStartLeft+"px"}, ">")
+        // // ramp
+        .to(".ramp", 0, {left:obsStartLeft+"px"}, ">2")
         .call(setWarningTxt,["ramp"],"<")
         .to(".ramp", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
 
 
-        // hole
-        .to("#obstacle1", 0, {left:obsStartLeft+"px"}, ">3")
-        .call(setWarningTxt,["hole"],"<")
-        .to("#obstacle1", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">")
+        
+            .addLabel("labelUpdown")
+            // rock R
+            .to("#obstacle5", 0, {left:obsStartLeft+"px"}, "labelUpdown")
+            .call(setWarningTxt,["updown"],"<")
+            .to("#obstacle5", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},"<")
 
-        // asteroid
-        .to("#obstacle4", 0, {left:obsStartLeft+"px"}, ">")
-        .call(setWarningTxt,["asteroid"],"<")
-        .to("#obstacle4", obsSpeed, {left:(obsEndLeft),ease:Linear.easeNone},">")
+            // rock L
+            .to("#obstacle2", 0, {left:obsStartLeft+"px"},"-="+(obsSpeed*0.8))
+            .to("#obstacle2", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},"<")
+
+            // rock R
+            .to("#obstacle5a", 0, {left:obsStartLeft+"px"},"-="+(obsSpeed*0.8))
+            .to("#obstacle5a", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},"<")
+
+            // rock L
+            .to("#obstacle2a", 0, {left:obsStartLeft+"px"},"-="+(obsSpeed*0.8))
+            .to("#obstacle2a", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},"<")
     }
 }
 
 var reps = 0;
 var numberOfLoops = 100;
 var collided = false;
-function timeLineComplete() {
+function tlMainGameComplete() {
     // console.log(audio.currentTime);
     if (reps < numberOfLoops) {
         if(!collided && !isSongToEnding)
@@ -1508,9 +1594,10 @@ function timeLineComplete() {
             // if(reps)
             // gameSpeed++
             
-            tl.restart();
+            tlMainGame.restart();
     } else {
         // stop playing
+        playEnding();
     }
 
     reps++;
@@ -1518,6 +1605,7 @@ function timeLineComplete() {
 
 
 function setWarningTxt(txt){
+    // console.log('setWarningTxt')
     var warningtxtTl = gsap.timeline();
     switch(txt) {
         case "down":
@@ -1525,7 +1613,7 @@ function setWarningTxt(txt){
             warningtxtTl.addLabel('warningtxtDown')
                 .to("#warningtxt",0,{rotationZ:-90,rotationY:150,z:0,scaleX:4,scaleY:5},"<")
                 .to("#warningtxt",{autoAlpha:1},"<")
-                .to("#warningtxt",.3,{z:10,ease:Linear.easeNone,repeat:3},"<")
+                .to("#warningtxt",0.3,{z:10,ease:Linear.easeNone,repeat:3},"<")
                 .to("#warningtxt",0,{autoAlpha:0,rotationZ:0,rotationY:0,z:0,scaleX:2,scaleY:2},">");
         break;
         case "up":
@@ -1533,15 +1621,25 @@ function setWarningTxt(txt){
             warningtxtTl.addLabel('warningtxtUp')
                 .to("#warningtxt",0,{rotationZ:-90,rotationY:150,z:0,scaleX:4,scaleY:5},"<")
                 .to("#warningtxt",{autoAlpha:1},"<")
-                .to("#warningtxt",.3,{z:-10,ease:Linear.easeNone,repeat:3},"<")
+                .to("#warningtxt",0.3,{z:-10,ease:Linear.easeNone,repeat:3},"<")
                 .to("#warningtxt",0,{autoAlpha:0,rotationZ:0,rotationY:0,z:0,scaleX:2,scaleY:2},">");
         break;
+        case "updown":
+            warningtxt.innerHTML="<span>&nearr;</span><span>&searr;</span><span>&nearr;</span><span>&searr;</span>";
+            warningtxtTl.addLabel('warningtxtS')
+                .to("#warningtxt",0,{x:-60,z:0,scaleX:4,scaleY:3},"<")
+                .to("#warningtxt", 0, {autoAlpha:1},"<")
+                .to("#warningtxt span", 0, {autoAlpha:0},"<")
+                .staggerTo("#warningtxt span",0.3,{autoAlpha:1,stagger:0.2},"<")
+                .staggerTo("#warningtxt span", 0, {autoAlpha:0,stagger:0.2},"<.5")
+                .to("#warningtxt",0,{autoAlpha:0,scaleX:2,scaleY:2},">4");
+        break;
         case "asteroid":
-            warningtxt.innerHTML=">";
+            warningtxt.innerHTML=">|";
             warningtxtTl.addLabel('warningtxtAsteroid')
-                .to("#warningtxt",0,{rotation:90,scaleY:2},"<")
-                .to("#warningtxt",.1,{autoAlpha:1,yoyo:true,repeat:9},"<")
-                .to("#warningtxt",0,{autoAlpha:0,y:0,rotation:0,scaleY:2},"+=1");
+                .to("#warningtxt",0,{rotation:90,scaleY:2,scaleX:2},"<")
+                .to("#warningtxt",0.1,{autoAlpha:1,yoyo:true,repeat:9},"<")
+                .to("#warningtxt",0,{autoAlpha:0,y:0,rotation:0,scaleY:2,scaleX:2},"+=1");
         break;
         case "hole":
             warningtxt.innerHTML="<div>@</div>";
@@ -1556,15 +1654,14 @@ function setWarningTxt(txt){
         case "ramp":
             warningtxt.innerHTML=">>>>";
             warningtxtTl.addLabel('warningtxtRamp')
-                .to("#warningtxt",{autoAlpha:1},"<")
-                .to("#warningtxt",.3,{x:50,ease:Power1.easeIn,repeat:3},"<")
-                .to("#warningtxt",0,{autoAlpha:0,x:0},">");
+                .to("#warningtxt",{autoAlpha:1,scaleX:2,scaleY:2},"<")
+                .to("#warningtxt",0.3,{x:50,ease:Power1.easeIn,repeat:3},"<")
+                .to("#warningtxt",0,{autoAlpha:0,x:0,scaleX:2,scaleY:2},">");
         break;
     }
     
 }
 
-var collided = false;
 var isSongToEnding = false;
 var songEndTime = 315;
 // var songEndTime = 90; //[for testing]
@@ -1592,11 +1689,16 @@ function playEnding(){
     gsap.killTweensOf(backtoBounce);
     gsap.killTweensOf(notJumping);
 
+    gsap.set(resumetxt,{autoAlpha:0,className:"copy"});
+
+
     // [todo] how many obstacles
-    console.log('you hit '+noObstaclesHit)
+    // console.log('you hit '+noObstaclesHit)
 
     gsap.to([".obstacle",pausedtxt],0,{autoAlpha:0});
-    tl.pause();
+    gsap.set(resumetxt,{autoAlpha:0,className:"copy"});
+
+    tlMainGame.pause();
 
     gsap.set([pointstxt,jumpingtxt],{autoAlpha:0});
 
@@ -1606,12 +1708,13 @@ function playEnding(){
         tlEnding = gsap.timeline({onComplete:tlEndingComplete});
 
         tlEnding.addLabel("ending", "<")
-        .to("#car-shadow",0,{autoAlpha:.4,x:900},"<")
+        .to("#car-shadow",0,{autoAlpha:0.4,x:900},"<")
         .to(".car",0,{autoAlpha:1,x:900},"<")
         .to([".car","#car-shadow"],6,{x:0,ease:Power1.easeOut},">")
         .to("#player",1,{top:"270px"},"<")
         
         .to(["#rider-go","#bike-go"],1,{rotationZ:-30},"-=3")
+        .to("#rider-jets",0,{display:"none"},"<")
         .to("#rider", {className: 'riderBounce'},"<")
 
     
@@ -1628,7 +1731,7 @@ function playEnding(){
         .to("#player",5,{x:222,y:-370,ease:Power1.easeIn},"<")
         
         .to("#player",2,{x:1100,y:-630,ease:Back.easeIn},">")
-        .to(".car-jets",.75,{scaleX:3,ease:Power1.easeInOut},"-=1");
+        .to(".car-jets",0.75,{scaleX:3,ease:Power1.easeInOut},"-=1");
 }
 
 var endingComplete = false;
@@ -1642,8 +1745,17 @@ function tlEndingComplete(){
     if(noObstaclesHit==0){
 
         // [todo] - one falling balloon animation:
-        alert('perfect ride!! one falling balloon...')
-    } else if(noObstaclesHit<4) {
+        // alert('perfect ride!! one falling balloon...')
+
+        gsap.to(endtxt_perf,0,{autoAlpha:1});
+        gsap.from(endtxt_perf,1,{scale:0,ease:Elastic.easeOut});
+
+        gsap.to(endtxt_perfBalloon,0,{autoAlpha:1,x:10});
+        // gsap.to(endtxt_perfBalloon,5,{x:-10,yoyo:true,repeat:-1})
+        gsap.to(endtxt_perfBalloon,5,{top:215,ease:Linear.easeNone});
+    }
+
+    if(noObstaclesHit<4) {
         $('#obstaclesHittxt').addClass('colorRotateYellow');
     } else {
         $('#obstaclesHittxt').addClass('colorRotateRed');
@@ -1651,7 +1763,7 @@ function tlEndingComplete(){
     
     $("#pointstxt").html(points);
 
-    gsap.set(endtxt,{display:"block", autoAlpha:1})
+    gsap.set(endtxt,{display:"block", autoAlpha:1});
 
     document.getElementById('initialstxt').focus();
 
@@ -1661,13 +1773,14 @@ function tlEndingComplete(){
     document.getElementById('initialstxt').addEventListener('keypress',highScoreEntered);
 
     tlintro.pause();
-    tl.pause();
+    tlMainGame.pause();
     tlfg.pause();
     // tlbg.pause();     /// -- keep stars moving after end
     // tlstarsBG.pause();
     tlhair.pause();
     tlLyrics.pause();
     tlFlyPast.pause();
+    tlCruisePast.pause();
 
 }
 
@@ -1712,7 +1825,7 @@ function highScoreEntered(e) {
             highScoreList+= highScores[i][0]+"........."+highScores[i][1]+"<br>";
         }
 
-        gsap.set(endtxt,{display:"none", autoAlpha:0})
+        gsap.set(endtxt,{display:"none", autoAlpha:0});
         var highScoreListLower = highScoreList.toLowerCase();
 
         $("#highscorestxt").html(highScoreListLower);
@@ -1769,7 +1882,9 @@ var area = $( '#area' )[0],
 function detectCollision() {
     
     collide = ($( area ).children().not( player ).map( function ( i ) {
-        return 'obstacle'+(i+1) + ":" + overlaps( player, this );
+        // [todo] - took out meaningless :
+        // return 'obstacle'+(i+1) + ":" + overlaps( player, this );
+        return (i+1) + ":" + overlaps( player, this );
     }).get());
     collideAll = collide.join( ',' );
 
@@ -1787,19 +1902,23 @@ function detectCollision() {
     if(!collided) {
         points++;
         pointstxt.innerHTML=points;
-        gsap.delayedCall(.025,detectCollision)
+        gsap.delayedCall(0.025,detectCollision);
     }
 } 
 
 var isRamping = false;
 function playerCollided(whichObstacleHit) {
+
+// whichObstacleHit is not an id it is in
+    whichObstacleHit_Ele = $(".obstacle").eq(whichObstacleHit-1);
+
     // get player Pos so we can do right "falling down hole" and "ramp" animations:
     var playerTop = player.offsetTop,
     yAmount,
     rotateZAmount,
     rotateYAmount;
 
-    switch (whichObstacleHit){
+    switch (whichObstacleHit_Ele.attr("id")){
 
         case "obstacle1":   // hole!
             if(!isJumping){
@@ -1824,20 +1943,15 @@ function playerCollided(whichObstacleHit) {
                     rotateYAmount = 20;
                 }
 
-                gsap.to(playerMovements,1,{x:240,y:yAmount,rotationZ:rotateZAmount,rotationY:rotateYAmount,scale:.4});
-                gsap.to(player,.5,{autoAlpha:0,delay:.5});
+                gsap.to(playerMovements,1,{x:240,y:yAmount,rotationZ:rotateZAmount,rotationY:rotateYAmount,scale:0.4});
+                gsap.to(player,0.5,{autoAlpha:0,delay:0.5});
 
-                gsap.to(shadow,.2,{autoAlpha:0})
+                gsap.to(shadow,0.2,{autoAlpha:0});
                 
 
                 jumpingtxt.innerHTML="@";
 
-                // say random phrase:
-                var whichPhrase = Math.floor(Math.random() * collidedTxts.length-1) + 1; 
-                speechtxt.innerHTML=collidedTxts[4];
-
-                gsap.set(speechbub,{autoAlpha:1});
-                gsap.to(speechbub,0,{autoAlpha:1,delay:0});
+                doSpeech(vortexPhrases,2);
 
             } else {
                 // jumped hole
@@ -1845,7 +1959,7 @@ function playerCollided(whichObstacleHit) {
             break;
 
 
-        case "obstacle2": // rock-top (can be jumped)
+        case "obstacle2" || "obstacle2a": // rock-top (can be jumped)
 
                 if(!isJumping){
                     doObstacleHit();
@@ -1855,7 +1969,7 @@ function playerCollided(whichObstacleHit) {
 
 
         case "obstacle3":   // ramp
-            console.log("hit ramp");
+            // console.log("hit ramp");
 
             if(isJumping){
                 // hit a ramp while isJumping true
@@ -1874,7 +1988,7 @@ function playerCollided(whichObstacleHit) {
                         // console.log(playerTop+" = player at middle");
                     } else if(playerTop<=340) {
                         // console.log(playerTop+" = player at top");
-                        rampStartDelay = .1;
+                        rampStartDelay = 0.1;
                     } else  {
                         // console.log(playerTop+" = player at bottom");
                     }
@@ -1888,16 +2002,16 @@ function playerCollided(whichObstacleHit) {
                     tlramp = gsap.timeline({onComplete:tlRampComplete});
                     tlramp.addLabel("hitRamp")
                         .to(rider,rampStartDelay,{autoAlpha:1})
-                        .to(shadow,.2,{autoAlpha:0,scaleX:0},">")
+                        .to(shadow,0.2,{autoAlpha:0,scaleX:0},">")
                         .to(rider,1,{y:"-=250"},"<")
-                        .to(speechbub,.5,{x:"+=50"},"<")
-                        .to(speechbub,.5,{y:"-=270"},"<")
+                        .to(speechbub,0.5,{x:"+=50"},"<")
+                        .to(speechbub,0.5,{y:"-=270"},"<")
 
-                        .to(rider,.3,{rotationZ:-80},"<")
+                        .to(rider,0.3,{rotationZ:-80},"<")
                         .to(rider,1.5,{rotationZ:0,ease:Sine.easeIn},'>')
                         .to(rider,2,{y:"+=250",ease:Bounce.easeOut},"-=.6")
                         .to(speechbub,2,{y:"+=270",x:"-=50",ease:Bounce.easeOut},"<")
-                        .to(shadow,2,{autoAlpha:.4,scaleX:1,ease:Bounce.easeOut},"<")
+                        .to(shadow,2,{autoAlpha:0.4,scaleX:1,ease:Bounce.easeOut},"<");
                 }
             }
             break;
@@ -1920,7 +2034,7 @@ function playerCollided(whichObstacleHit) {
         break;
 
 
-        case "obstacle5":   // rock bottom (cannot be jumped)
+        case "obstacle5" || "obstacle5a":   // rock bottom (cannot be jumped)
             if(isJumping){
                 isJumping=false;
             }
@@ -1981,36 +2095,17 @@ function doObstacleHit() {
     tlstarsBG.pause();
     tlMountainsBG.pause();
     tlCloudsBG.pause();
-    tl.pause();
+    tlMainGame.pause();
     tlhair.pause();
     primScreamTL.pause();
     
     gsap.killTweensOf("#rider-jets");
     gsap.to("#rider-jets",1,{scaleX:1,scaleY:1,x:0,y:0,filter:"hue-rotate(0deg)",top:"0px",skewY:0});
 
-
-    
-    tlScream.addLabel('scream')
-        .to(".rider-scream",0,{autoAlpha:1},0)
-        .to([".rider-go",".hair-go",".rider-scream2"],0,{autoAlpha:0},0)
-        .to([".rider-scream","#rider-jets"],0,{autoAlpha:0},"1.5")
-        .to("#rider-stopped",0,{autoAlpha:1},"1.5")
-        .addLabel('screamDone');
-
     tlScream.play();
 
     unBindButtons_gamePlay();
 }
-
-
-var collidedTxts=["move the wreck!",
-                "move the wreck!",
-                "outta my way!!",
-                "outta my way!!",
-                "aaargh",
-                "oh no!",
-                "@#$%&!0",
-                "@#$%&!0"];
 
 var crashCount=0;
 function doRiderCrash(){
@@ -2027,19 +2122,10 @@ function doRiderCrash(){
 
     gsap.set(flame,{autoAlpha:1});
 
-    // say random phrase:
-    var whichPhrase = Math.floor(Math.random() * collidedTxts.length-1) + 1; 
-    
-    
     jumpingtxt.innerHTML="crashed";
 
     // say something for crash
-    whichPhrase = Math.floor(Math.random() * collidedTxts.length-1) + 1; 
-
-    speechtxt.innerHTML=collidedTxts[whichPhrase];
-
-    gsap.set(speechbub,{autoAlpha:1,top:"4px",rotation:0},1.5)
-    gsap.to(speechbub,0,{autoAlpha:0,delay:3});
+    doSpeech(collidedPhrases,3);
 }
 
 
@@ -2188,7 +2274,8 @@ var doneChorusTint = false,
     doneLightning2 = false,
     doneSlowdown = false,
     lyricsAreGo = false,
-    doneSergioFlyBy = false;
+    doneSergioFlyBy = false,
+    doneFlypastFzero = false;
 function traceAudioTime(){
     // 84
     if(audio.currentTime>=84 && !lyricsAreGo){
@@ -2214,23 +2301,29 @@ function traceAudioTime(){
         gsap.to(".bgStars",8,{autoAlpha:1,ease:Linear.easeNone});
 
         // [todo] - something for chorus 1
-        doFlyPast();
+        doFlyPast("toad");
     }
     
     // make BG normal aftee Chorus 1
     if(audio.currentTime-84>verse2Start && !doneChorusTintBack) {
         doneChorusTintBack=true;
 
-        gsap.to(".bgStars",3,{autoAlpha:.3,ease:Linear.easeNone});
+        gsap.to(".bgStars",3,{autoAlpha:0.3,ease:Linear.easeNone});
 
         playMountainsBG();
         gsap.to(bgMountains,0,{display:"block"});
     }
 
+    // do fzero
+    if(audio.currentTime-84>soloStart-20 && !doneFlypastFzero){
+        doneFlypastFzero=true;
+        doFlyPast("fzero");
+    }
+
     // fly past sergio
     if(audio.currentTime-84>soloStart && !doneSergioFlyBy){
         doneSergioFlyBy=true;
-        doFlyPast("sergio")
+        doFlyPast("sergio");
     }
     
 
@@ -2242,23 +2335,23 @@ function traceAudioTime(){
 
         gsap.fromTo("#lightning", 
             { autoAlpha: 0 },
-            {   duration: .01,
-                autoAlpha: .6,
+            {   duration: 0.01,
+                autoAlpha: 0.6,
                 yoyo: true,
                 repeat: 29,
                 repeatDelay: 0.02,
                 ease: "none"
             }
         );
-        gsap.to([tl,tlfg,tlbg,tlMountainsBG], 1, {timeScale:1.5, ease:Quad.easeIn})
-        gsap.to([tlstarsBG], 1, {timeScale:4, ease:Quad.easeIn})
+        gsap.to([tlMainGame,tlfg,tlbg,tlMountainsBG], 1, {timeScale:1.5, ease:Quad.easeIn});
+        gsap.to([tlstarsBG], 1, {timeScale:4, ease:Quad.easeIn});
 
         // make long gap ramps show
-        gsap.to("#obstacle3",0,{className:"hidden ramp rampLong obstacle"})
+        gsap.to("#obstacle3",0,{className:"hidden ramp rampLong obstacle"});
 
         // [todo] hyperspace
-        gsap.to(".bgStars",0,{className:"bg bgStars fast",delay:.8})
-        gsap.to(".bgToGo",1,{autoAlpha:0})
+        gsap.to(".bgStars",0,{className:"bg bgStars fast",delay:0.8});
+        gsap.to(".bgToGo",1,{autoAlpha:0});
     }
 
     // slow back down for final chorus
@@ -2267,14 +2360,14 @@ function traceAudioTime(){
 
         gsap.to(".bgStars",8,{autoAlpha:1,ease:Linear.easeNone});
 
-        gsap.to([tl,tlfg,tlbg,tlMountainsBG], 1, {timeScale:1.1, ease:Quad.easeOut})
-        gsap.to([tlstarsBG], 1, {timeScale:1, ease:Quad.easeOut})
+        gsap.to([tlMainGame,tlfg,tlbg,tlMountainsBG], 1, {timeScale:1.1, ease:Quad.easeOut});
+        gsap.to([tlstarsBG], 1, {timeScale:1, ease:Quad.easeOut});
 
         // ramps back to normal length
-        gsap.to("#obstacle3",0,{className:"hidden ramp obstacle"})
+        gsap.to("#obstacle3",0,{className:"hidden ramp obstacle"});
 
-        gsap.to(".bgStars",0,{className:"bg bgStars"})
-        gsap.to(".bgToGo",1,{autoAlpha:1})
+        gsap.to(".bgStars",0,{className:"bg bgStars"});
+        gsap.to(".bgToGo",1,{autoAlpha:1});
 
         playMountainsBG();
         gsap.to(bgMountains,0,{display:"block"});
@@ -2284,24 +2377,27 @@ function traceAudioTime(){
     // more lightning at outro start and super fast to end:
     if(audio.currentTime-84>outroStart && !doneLightning2) {
 
-        gsap.to(".bgStars",1,{autoAlpha:.3});
+        //[todo] 
+        // lightning speed
+
+        gsap.to(".bgStars",1,{autoAlpha:0.3});
 
         doneLightning2=true;
 
         gsap.fromTo("#lightning", 
             { autoAlpha: 0 },
-            {   duration: .01,
-                autoAlpha: .6,
+            {   duration: 0.01,
+                autoAlpha: 0.6,
                 yoyo: true,
                 repeat: 29,
                 repeatDelay: 0.02,
                 ease: "none"
             }
         );
-        gsap.to([tl,tlfg,tlbg,tlstarsBG,tlMountainsBG], 1, {timeScale:1.6, ease:Quad.easeIn})
+        gsap.to([tlMainGame,tlfg,tlbg,tlstarsBG,tlMountainsBG], 1, {timeScale:1.6, ease:Quad.easeIn});
 
         // make long gap ramps show
-        gsap.to("#obstacle3",0,{className:"hidden ramp rampLong obstacle"})
+        gsap.to("#obstacle3",0,{className:"hidden ramp rampLong obstacle"});
     }
 
     // if the song is over!
@@ -2323,13 +2419,12 @@ function traceAudioTime(){
 function getWindowSize(){
     windowheight = window.innerHeight;
     windowwidth = window.innerWidth;
-    body = document.body,
+    body = document.body;
     html = document.documentElement;
 
     pageHeight = Math.max( body.scrollHeight, body.offsetHeight, 
     html.clientHeight, html.scrollHeight, html.offsetHeight );
 }
-
 function resizeWindow(){
     getWindowSize();
     // console.log(windowwidth);
@@ -2360,11 +2455,11 @@ function replayGame() {
 
     // points=0;
 
-    // tl.seek(0);
+    // tlMainGame.seek(0);
     // tlEnding.seek(0);
     // tlIntroScreen.seek(0);
     // tlintro.seek(0);
-    // tl.seek(0);
+    // tlMainGame.seek(0);
     // tlfg.seek(0);
     // tlbg.seek(0);
     // tlstarsBG.seek(0);
@@ -2376,7 +2471,7 @@ function replayGame() {
     // tlEnding.pause();
     // tlIntroScreen.pause();
     // tlintro.pause();
-    // tl.pause();
+    // tlMainGame.pause();
     // tlfg.pause();
     // tlbg.pause();
     // tlstarsBG.pause();

@@ -65,7 +65,7 @@ body{
 #bgStars2.fast,
 #bgStars3.fast{
     background-image: url(../images/stars_1-fast.gif);
-    opacity: 1!important;
+    opacity: .8!important;
 }
 
 
@@ -309,7 +309,7 @@ body{
     top: 40px;
     left: 23px;
     transform: scaleY(1.2) scaleX(1.9);
-    filter: hue-rotate(190deg);
+    filter: hue-rotate(181deg);
 }
 #car-jets2 {
     top: -3px;
@@ -594,16 +594,41 @@ div.rampLong img.rampLong {
 }
 #endtxt_score,#endtxt_obs {
     position: absolute;
-    left: 120px;
-    top: 10px;
-    font-size: 0.8em;
+    left: 110px;
+    top: -6px;
+    font-size: 1.4em;
+    line-height: 0.8em;
 }
 #endtxt_score{
     top: -6px;
     right: 140px;
     left: auto;
-    font-size: 1.4em;
-    line-height: 0.8em;
+}
+#endtxt_perf {
+    font-size: 1.2em;
+    top: 167px;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    animation: colorRotateYellow .5s infinite;
+    visibility: hidden;
+    opacity: 0;
+}
+#endtxt_perfBalloon {
+    position: absolute;
+    top: -140px;
+    left: 40px;
+    width: 70px;
+    animation: balloon 1.5s infinite ease-in-out alternate; 
+}
+@keyframes balloon {
+    0% {
+        transform: translateX(-20px) rotate(-10deg);
+    }
+    100% {
+        transform: translateX(20px) rotate(10deg);   
+    }
 }
 #obstaclesHittxt.colorRotateRed {
     animation: colorRotateRed 1s infinite;
@@ -813,17 +838,12 @@ div.rampLong img.rampLong {
 
 
 #flyPast {
-    background-image: url(../images/bike3.png);
-
+    left: -164px;
+    top: 38px;
+    transform: scale(.7);
+    position: absolute;
     width: 164px;
     height: 150px;
-    position: absolute;
-    background-size: 100%;
-    background-repeat: no-repeat;
-    background-position: left top;
-    left: -164px;
-    top: 30px;
-    transform: scale(.7);
 }
 #flyPast-jets {
     background-image: url(../images/rider-jets.png);
@@ -836,6 +856,20 @@ div.rampLong img.rampLong {
     animation: jetsGo 0.1s steps(2, end) infinite;
     overflow: hidden;
     background-repeat: no-repeat;
+    opacity: 0;
+}
+#flyPast-fzero {
+    opacity: 0;
+    background-image: url(../images/bike3.png);
+    width: 164px;
+    height: 150px;
+    position: absolute;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: left top;
+}
+#flyPast.fzero #flyPast-fzero {
+    opacity: 1;
 }
 #flyPast-sergio {
     opacity: 0;
@@ -853,15 +887,63 @@ div.rampLong img.rampLong {
     left: -32px;
 }
 #flyPast.sergio { 
-    top: 70px;
+    top: 150px;
     background-size: 85%;
     background-repeat: no-repeat;
     background-position: 2px 18px;
     background-image: url(../images/sergio_ship.png);
 }
+#flyPast.sergio #flyPast-jets,
+#flyPast.fzero #flyPast-jets,
 #flyPast.sergio #flyPast-sergio{
     opacity: 1;
 }
+#flyPast-toad {
+    opacity: 0;
+    background-image: url(../images/battletoads.png);
+    width: 164px;
+    height: 150px;
+    top: 466px;
+    left: -11px;
+    position: absolute;
+    background-size: 164px 150px; 
+}
+#toad-shadow {
+    width: 170px;
+    left: -20px;
+    position: absolute;
+    top: 0px;
+    animation: toadShadowBounce .5s infinite linear;
+    transform-origin: center 90%;
+}
+@keyframes toadShadowBounce {
+    0%{ 
+        transform: translateY(-9px) scale(1);
+        opacity: .2; 
+    }
+    50%{ 
+        transform: translateY(-9px) scale(1.1); 
+        opacity: .4;
+    }
+    100%{ 
+        transform: translateY(-9px) scale(1); 
+        opacity: .2; 
+    }
+}
+#flyPast.toad {
+    z-index: 1;
+}
+#flyPast.toad #flyPast-toad{
+    opacity: 1;
+    animation: riderBounce .5s infinite linear;
+}
+#flyPast.toad #flyPast-jets{
+    opacity: 0;
+}
+
+
+
+
 
 
 #mobileControls {
