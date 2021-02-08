@@ -1157,7 +1157,7 @@ function wheelie() {
     $('#rider').removeClass('riderBounce');
     $('#shadow').removeClass('shadowBounce');
     
-    if(!isRamping) {
+    if(!isRampFlying) {
         jumpingtxt.innerHTML="&#47;&#47;";
         gsap.delayedCall(0.7,function(){
             jumpingtxt.innerHTML="go";
@@ -1171,21 +1171,22 @@ function wheelie() {
         points++;
         
         gsap.to(["#rider-go","#bike-go"],1,{rotationZ:-30});
-        gsap.to(["#rider-jets"],1,{top:30});
 
-        
+        // do jets anim:
+        gsap.to(["#rider-jets"],1,{top:30});
         $('#rider-jets').addClass('wheelieJets');
 
         gsap.delayedCall(1,function(){
             $('#rider-jets').removeClass('wheelieJets');
         });
+        gsap.to(["#rider-jets"],1.5,{top:2,delay:1,ease:Bounce.easeOut});
 
-        
+
+        // shadow        
         gsap.to(shadow,1,{x:-10,scaleX:0.7});
         gsap.to(shadow,1.5,{x:0,scaleX:1,delay:1,ease:Bounce.easeOut});
         
         gsap.to(["#rider-go","#bike-go"],1.5,{rotationZ:0,delay:1,ease:Bounce.easeOut});
-        gsap.to(["#rider-jets"],1.5,{top:2,delay:1,ease:Bounce.easeOut});
 
         gsap.delayedCall(2.4,backtoBounce);
     } else {
@@ -1952,10 +1953,13 @@ function detectCollision() {
 } 
 
 var isRamping = false;
+var isRampFlying = false;
 function playerCollided(whichObstacleHit) {
 
 // whichObstacleHit is not an id it is in
     whichObstacleHit_Ele = $(".obstacle").eq(whichObstacleHit-1);
+
+
 
     // get player Pos so we can do right "falling down hole" and "ramp" animations:
     var playerTop = player.offsetTop,
@@ -2004,7 +2008,16 @@ function playerCollided(whichObstacleHit) {
             break;
 
 
-        case "obstacle2" || "obstacle2a": // rock-top (can be jumped)
+        case "obstacle2": // rock-top (can be jumped)
+
+                if(!isJumping){
+                    doObstacleHit();
+                    doRiderCrash();
+                }
+            break;
+
+
+        case "obstacle2a": // rock-top (can be jumped)
 
                 if(!isJumping){
                     doObstacleHit();
@@ -2026,6 +2039,8 @@ function playerCollided(whichObstacleHit) {
             } else {
                 if(!isRamping){
                     isRamping=true;
+                    isRampFlying=true;
+
                     var rampStartDelay=0;
 
                     if(playerTop==270){
@@ -2055,7 +2070,8 @@ function playerCollided(whichObstacleHit) {
                         .to(rider,1.5,{rotationZ:0,ease:Sine.easeIn},'>')
                         .to(rider,2,{y:"+=250",ease:Bounce.easeOut},"-=.6")
                         .to(speechbub,2,{y:"+=270",x:"-=50",ease:Bounce.easeOut},"<")
-                        .to(shadow,2,{autoAlpha:0.4,scaleX:1,ease:Bounce.easeOut},"<");
+                        .to(shadow,2,{autoAlpha:0.4,scaleX:1,ease:Bounce.easeOut},"<")
+                        .add(function(){isRampFlying=false;},"-=2.5");
                 }
             }
             break;
@@ -2078,7 +2094,16 @@ function playerCollided(whichObstacleHit) {
         break;
 
 
-        case "obstacle5" || "obstacle5a":   // rock bottom (cannot be jumped)
+        case "obstacle5":   // rock bottom (cannot be jumped)
+            if(isJumping){
+                isJumping=false;
+            }
+            doObstacleHit();
+            doRiderCrash();
+
+        break;
+
+        case "obstacle5a":   // rock bottom (cannot be jumped)
             if(isJumping){
                 isJumping=false;
             }
@@ -2144,7 +2169,7 @@ function doObstacleHit() {
     
     gsap.killTweensOf("#rider-jets");
     $('#rider-jets').removeClass('backJets').removeClass('forwJets').removeClass('wheelieJets').removeClass('jumpJets');
-    gsap.to("#rider-jets",0,{autoAlpha:0,delay:1});
+    gsap.to("#rider-jets",0,{autoAlpha:0,top:2,delay:1});
 
     tlScream.play();
 
