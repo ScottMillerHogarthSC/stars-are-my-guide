@@ -775,10 +775,12 @@ div.rampLong img.rampLong {
     display: inline-block;
     background-image: url(../images/music-note.png);
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: 100% auto;
+    background-position: 0px bottom;
     width: 1em;
-    height: 1em;
+    height: 1.2em;
     margin-right: 1em;
+    overflow: hidden;
 }
 .chorusLyrics {
     color: #fcac7c;
@@ -786,8 +788,24 @@ div.rampLong img.rampLong {
 .chorusLyrics:before {
     content: " ";
     display: inline-block;
-    background-image: url(../images/music-note-chorus.png);
+    background-position: 0px 0%;
 }
+.colour1,
+.colour1:before {
+    background-position: 0px 75%;
+    color: #c556c5;
+}
+.colour2,
+.colour2:before { 
+    color: #fa8a5a;
+    background-position: 0px 25%;
+}
+.colour3,
+.colour3:before { 
+    color: #46f4f3;
+    background-position: 0px 50%;
+}
+
 
 
 #optionsScreen {
@@ -1075,6 +1093,8 @@ div.rampLong img.rampLong {
     left: 50%;
     transform: translateX(-50%);
     font-size: 0.8em;
+    width: 100%;
+    text-align: center;
 }
 #footer a {
     color: #fff;

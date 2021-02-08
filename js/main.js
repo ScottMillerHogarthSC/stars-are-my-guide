@@ -1015,7 +1015,6 @@ var goPhrases = ["drive!",
 
 var wheeliePhrases = ["right on!",
                     "out of control",
-                    "Black Rider!",
                     "stop for no man",
                     "on the loose",
                     "too fast to die",
@@ -1093,15 +1092,12 @@ function jump() {
         jumpCount++;
         jumpingtxt.innerHTML="jump";
 
-
-        if(tlMainGame.isActive()){
+        if (tlfg.isActive() && jumpCount % 9 === 0) {
             
-            doSpeech(jumpPhrases,1.5,jumpCount,3);
-
-        } else if (tlfg.isActive() && jumpCount % 15 === 0) {
-
             // every 9 jumps do a stand-up scream
-        
+
+            speakingLocked = true;
+
             tlhair.pause();
             primScreamTL = gsap.timeline({onComplete:function(){ tlhair.play(); }});
 
@@ -1113,7 +1109,13 @@ function jump() {
                 .to(speechbub,0,{autoAlpha:1,top:"-40px",rotation:-5},0)
                 .to(speechbub,0,{autoAlpha:0,top:"4px",rotation:0},1.5)
                 .to('.rider-scream2',0,{autoAlpha:0},1.5)
-                .to(['.rider-go','.hair-go'],0,{autoAlpha:1},1.5);
+                .to(['.rider-go','.hair-go'],0,{autoAlpha:1},1.5)
+                .add(function(){speakingLocked=false},2.5);
+
+        } else if(tlMainGame.isActive()){
+
+            doSpeech(jumpPhrases,1.5,jumpCount,3);
+
         }
         
 
@@ -1130,7 +1132,7 @@ function jump() {
         gsap.to([rider],1,{y:-110});
         gsap.to([speechbub],1,{y:-167});
         
-        gsap.to([speechbub],1.5,{y:-67,delay:1,ease:Bounce.easeOut});
+        gsap.to([speechbub],1.5,{y:-57,delay:1,ease:Bounce.easeOut});
         gsap.to([rider],1.5,{y:0,delay:1,ease:Bounce.easeOut});
 
         gsap.set(shadow,{autoAlpha:0.4});
@@ -1393,12 +1395,14 @@ function doFlyPast(which) {
         gsap.to(flyPast,0,{className:"+=toad"});
         tlCruisePast.restart();
 
-        speakingLocked = true;
         speechtxt.innerHTML="what the hell?";
         gsap.set(speechbub,{autoAlpha:1,delay:1});
+        gsap.set(speechbub,{autoAlpha:0,delay:1.7});
+
+        speakingLocked = true;
+
         
-        gsap.delayedCall(1.7,function() {
-            gsap.set(speechbub,{autoAlpha:0});
+        gsap.delayedCall(2.7,function(){
             speechtxt.innerHTML="";
             speakingLocked=false;
         });
@@ -1540,6 +1544,23 @@ function playObstaclesTL(){
             .to("#obstacle2a", 0, {left:obsStartLeft+"px"},"-="+(obsSpeed*0.8))
             .to("#obstacle2a", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},"<")
 
+            // rock R
+            .to("#obstacle5", 0, {left:obsStartLeft+"px"},"-="+(obsSpeed*0.8))
+            .call(setWarningTxt,["updown"],"<")
+            .to("#obstacle5", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},"<")
+
+            // rock L
+            .to("#obstacle2", 0, {left:obsStartLeft+"px"},"-="+(obsSpeed*0.8))
+            .to("#obstacle2", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},"<")
+
+            // rock R
+            .to("#obstacle5a", 0, {left:obsStartLeft+"px"},"-="+(obsSpeed*0.8))
+            .to("#obstacle5a", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},"<")
+
+            // rock L
+            .to("#obstacle2a", 0, {left:obsStartLeft+"px"},"-="+(obsSpeed*0.8))
+            .to("#obstacle2a", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},"<")
+
 
 
         .to("#obstacle4", 0, {left:obsStartLeft+"px"}, "-=2")
@@ -1615,9 +1636,8 @@ function playObstaclesTL(){
 
 
         
-            .addLabel("labelUpdown")
             // rock R
-            .to("#obstacle5", 0, {left:obsStartLeft+"px"}, "labelUpdown")
+            .to("#obstacle5", 0, {left:obsStartLeft+"px"}, "labelUpdown2")
             .call(setWarningTxt,["updown"],"<")
             .to("#obstacle5", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},"<")
 
@@ -1632,6 +1652,30 @@ function playObstaclesTL(){
             // rock L
             .to("#obstacle2a", 0, {left:obsStartLeft+"px"},"-="+(obsSpeed*0.8))
             .to("#obstacle2a", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},"<")
+
+            // rock R
+            .to("#obstacle5", 0, {left:obsStartLeft+"px"},"-="+(obsSpeed*0.8))
+            .call(setWarningTxt,["updown"],"<")
+            .to("#obstacle5", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},"<")
+
+            // rock L
+            .to("#obstacle2", 0, {left:obsStartLeft+"px"},"-="+(obsSpeed*0.8))
+            .to("#obstacle2", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},"<")
+
+            // rock R
+            .to("#obstacle5a", 0, {left:obsStartLeft+"px"},"-="+(obsSpeed*0.8))
+            .to("#obstacle5a", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},"<")
+
+            // rock L
+            .to("#obstacle2a", 0, {left:obsStartLeft+"px"},"-="+(obsSpeed*0.8))
+            .to("#obstacle2a", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},"<")
+
+            // // ramp
+        .to(".ramp", 0, {left:obsStartLeft+"px"}, ">2")
+        .call(setWarningTxt,["ramp"],"<")
+        .to(".ramp", obsSpeed, {left:obsEndLeft,ease:Linear.easeNone},">");
+
+
     }
 }
 
@@ -1838,7 +1882,7 @@ function tlEndingComplete(){
 
 
 var highScores = [
-    ["sco","7662"],
+    ["sco","7180"],
     ["jon","6437"],
     ["srj","5876"],
     ["guy","5211"]
@@ -2063,13 +2107,13 @@ function playerCollided(whichObstacleHit) {
                         .to(rider,rampStartDelay,{autoAlpha:1})
                         .to(shadow,0.2,{autoAlpha:0,scaleX:0},">")
                         .to(rider,1,{y:"-=250"},"<")
-                        .to(speechbub,0.5,{x:"+=50"},"<")
-                        .to(speechbub,0.5,{y:"-=270"},"<")
+                        .to(speechbub,0.5,{x:-7},"<")
+                        .to(speechbub,0.5,{y:-330},"<")
 
                         .to(rider,0.3,{rotationZ:-80},"<")
                         .to(rider,1.5,{rotationZ:0,ease:Sine.easeIn},'>')
                         .to(rider,2,{y:"+=250",ease:Bounce.easeOut},"-=.6")
-                        .to(speechbub,2,{y:"+=270",x:"-=50",ease:Bounce.easeOut},"<")
+                        .to(speechbub,2,{x:-57,y:-60,ease:Bounce.easeOut},"<")
                         .to(shadow,2,{autoAlpha:0.4,scaleX:1,ease:Bounce.easeOut},"<")
                         .add(function(){isRampFlying=false;},"-=2.5");
                 }
