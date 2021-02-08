@@ -767,28 +767,26 @@ var hairspeed = 1,
 
 function setupGamePlayTimelines() {
 
-    console.log("hair",tlhair.timeScale());
-    tlhair.timeScale(hairspeed/maxhairspeed);
     tlhair = gsap.timeline({repeat:-1});
-    tlhair.add(function(){ 
+    tlhair.timeScale(hairspeed/maxhairspeed);
+    
+    tlhair.to(['#hair-go3','#hair-go2'],0,{autoAlpha:0},"<")
+        .to('#hair-go1',0,{autoAlpha:1},"<")
+        .to('#hair-go1',0,{autoAlpha:0},">0.1")
+        .to('#hair-go2',0,{autoAlpha:1},">")
+        .to('#hair-go2',0,{autoAlpha:0},">0.1")
+        .to('#hair-go3',0,{autoAlpha:1},">")
+        .to('#hair-go3',0,{autoAlpha:0},">0.1")
+        .add(function(){ 
             if(hairspeed<maxhairspeed) {
                 hairspeed++;
                 tlhair.timeScale(hairspeed/maxhairspeed);
             }
-        })
-        .to('#hair-go1',0,{autoAlpha:1},"<")
-        .to('#hair-go1',0,{autoAlpha:0},"+=0.1")
-        .to('#hair-go2',0,{autoAlpha:1},"<")
-        .to('#hair-go2',0,{autoAlpha:0},"+=0.1")
-        .to('#hair-go3',0,{autoAlpha:1},"<")
-        .to('#hair-go3',0,{autoAlpha:0},"+=0.1");
-    
-    
-
+        },"<");
     
 
     tlintro = gsap.timeline({onComplete:showIntructions});
-    tlintro.addLabel("FGs BGs", "<")
+    tlintro.addLabel("FGsBGs", "<")
         .to("#fg-intro",0, {autoAlpha:1},"<")
         
         // reset obs
