@@ -323,18 +323,11 @@ function introPlayed() {
     gsap.to(["#bgStars1","#bgToGo3"],0,{scale:1});
     gsap.to("#introScreen",0,{display:"none"});
 
-
-    
-
-    //[todo]
-    // gsap.to("#tilt",0,{y:0,autoAlpha:1})
-
     skipIntro.removeEventListener('touchend', introPlayed);
     skipIntro.removeEventListener('click', introPlayed);
     document.body.removeEventListener('keypress', introPlayed);
 
     // add StartGame event listeners:
-    // console.log("introPlayed calls BindButtons_startGame")
     BindButtons_startGame();   
 }
 
@@ -900,7 +893,7 @@ function gamePause() {
     gsap.set(["#rider-stopped"],{autoAlpha:1});
     gsap.set(["#rider-go"],{autoAlpha:0});
     gsap.to(["#rider-go","#bike-go"],0,{rotationZ:0});
-    gsap.to("#rider-jets",0,{top:"0px",skewY:0,autoAlpha:0});
+    gsap.to("#rider-jets",0,{autoAlpha:0});
 
     jumpingtxt.innerHTML="paused";
     gsap.set(pausedtxt,{autoAlpha:1});
@@ -934,6 +927,7 @@ function gameResume(ev) {
         collided=false;
         gsap.set(resumetxt,{autoAlpha:0,className:"copy"});
         gsap.set([flame,".rider-scream"],{autoAlpha:0});
+        gsap.to(shadow,0,{autoAlpha:0.4});
         
         hideSpeechBub();
 
@@ -955,9 +949,6 @@ function gameResume(ev) {
     audio.play();
     audio.volume = 1;
 
-    
-    // [todo] - fly past testing
-    // doFlyPast();
     
     tlintro.resume();
     tlInstructions.resume();
@@ -1044,45 +1035,40 @@ var vortexPhrases = ["aaargh",
                     "vortex warping"];
 
 
-var isSpeaking = false;
+var speakingLocked = false;
 function doSpeech(whatOccurred,delay,count,factor){
 
-    if(!isSpeaking){
-        isSpeaking=true;
-        gsap.delayedCall(.5,isntSpeaking);
+    gsap.killTweensOf(hideSpeechBub);
 
-        var whichPhrase = Math.floor(Math.random() * whatOccurred.length-1) + 1; 
-        speechtxt.innerHTML=whatOccurred[whichPhrase];
-
-        
-        gsap.killTweensOf(hideSpeechBub);
-
+    if(!speakingLocked){
         if(whatOccurred==collidedPhrases){
+            var whichPhrase = Math.floor(Math.random() * whatOccurred.length-1) + 1; 
+            speechtxt.innerHTML=whatOccurred[whichPhrase];
+        
             gsap.set(speechbub,{autoAlpha:1,top:"4px",rotation:0,delay:0.7});
             
             gsap.delayedCall(delay+0.7, hideSpeechBub);
 
-        } else {
-            if(count != undefined){
-                if(count % factor === 0){
-                    gsap.set(speechbub,{autoAlpha:1});
-                }
-            } else {
-                gsap.set(speechbub,{autoAlpha:1});
-            }
+        } else if(whatOccurred==vortexPhrases){
+            var whichPhrase = Math.floor(Math.random() * whatOccurred.length-1) + 1; 
+            speechtxt.innerHTML=whatOccurred[whichPhrase];
+
+            gsap.set(speechbub,{autoAlpha:1});
             gsap.delayedCall(delay,hideSpeechBub);
+
+        } else if(count != undefined && count % factor === 0){
+            var whichPhrase = Math.floor(Math.random() * whatOccurred.length-1) + 1; 
+            speechtxt.innerHTML=whatOccurred[whichPhrase];
+
+            gsap.set(speechbub,{autoAlpha:1});
+            gsap.delayedCall(delay,hideSpeechBub);
+        } else {
+            gsap.delayedCall(.5,hideSpeechBub);
         }
     }
 }
 
-function isntSpeaking(){
-    isSpeaking=false;
-}
-
 function hideSpeechBub(){
-    if(isSpeaking){
-        isSpeaking=false;
-    }
     speechtxt.innerHTML="";
     gsap.to(speechbub,0,{autoAlpha:0});
 }
@@ -1134,8 +1120,11 @@ function jump() {
         $('#rider').removeClass('riderBounce');
         $('#shadow').removeClass('shadowBounce');
 
-        gsap.to("#rider-jets",0.2,{scaleX:1.4,scaleY:1.1,x:10,y:-2,filter:"hue-rotate(150deg)"});
-        gsap.to("#rider-jets",0.2,{scaleX:1,scaleY:1,x:0,y:0,filter:"hue-rotate(0deg)",delay:1});
+        $('#rider-jets').addClass('jumpJets');
+
+        gsap.delayedCall(1,function(){
+            $('#rider-jets').removeClass('jumpJets');
+        });
 
 
         gsap.to([rider],1,{y:-110});
@@ -1182,16 +1171,22 @@ function wheelie() {
         points++;
         
         gsap.to(["#rider-go","#bike-go"],1,{rotationZ:-30});
+        gsap.to(["#rider-jets"],1,{top:30});
 
-        // if()
-        gsap.to("#rider-jets",1,{top:"30px",skewY:13});
+        
+        $('#rider-jets').addClass('wheelieJets');
+
+        gsap.delayedCall(1,function(){
+            $('#rider-jets').removeClass('wheelieJets');
+        });
 
         
         gsap.to(shadow,1,{x:-10,scaleX:0.7});
         gsap.to(shadow,1.5,{x:0,scaleX:1,delay:1,ease:Bounce.easeOut});
         
         gsap.to(["#rider-go","#bike-go"],1.5,{rotationZ:0,delay:1,ease:Bounce.easeOut});
-        gsap.to("#rider-jets",1.5,{top:"0px",skewY:0,delay:1,ease:Bounce.easeOut});
+        gsap.to(["#rider-jets"],1.5,{top:2,delay:1,ease:Bounce.easeOut});
+
         gsap.delayedCall(2.4,backtoBounce);
     } else {
         if(!isFlipping)
@@ -1209,23 +1204,42 @@ var backwardsCount = 0;
 function backwards() {
     backwardsCount++;
     
-    if($('#player').hasClass('forwards3')){
+    if($('#player').hasClass('forwards7')){
+        $('#player').removeClass('forwards7');
         
+    }
+    else if($('#player').hasClass('forwards6')){
+        $('#player').removeClass('forwards6');
+
+    }
+    else if($('#player').hasClass('forwards5')){
+        $('#player').removeClass('forwards5');
+
+    }
+    else if($('#player').hasClass('forwards4')){
+        $('#player').removeClass('forwards4');
+
+    }
+    else if($('#player').hasClass('forwards3')){
         $('#player').removeClass('forwards3');
 
     } 
-    else if($('#player').hasClass('forwards2')){
-        
+    else if($('#player').hasClass('forwards2')){        
         $('#player').removeClass('forwards2');
+
     } 
     else if($('#player').hasClass('forwards')){
-        
         $('#player').removeClass('forwards');
+
     } 
     
+    $('#rider-jets').addClass('backJets');
 
-    gsap.to("#rider-jets",0,{scaleX:0.35,scaleY:0.9,x:-20,y:2,autoAlpha:0.6});
-    gsap.to("#rider-jets",0,{scaleX:1,x:0,y:0,autoAlpha:1,delay:0.2});
+    gsap.delayedCall(0.2,function(){
+        $('#rider-jets').removeClass('backJets');
+    });
+
+    
 
     jumpingtxt.innerHTML="brakes";
     gsap.delayedCall(0.7,function(){
@@ -1243,10 +1257,26 @@ function backwards() {
 var forwardsCount = 0;
 function forwards() {
     forwardsCount++;
-    if($('#player').hasClass('forwards3'))
+    if($('#player').hasClass('forwards7'))
     {
         // do nothing
-    } 
+    }
+    else if($('#player').hasClass('forwards6'))
+    {
+        $('#player').addClass('forwards7');
+    }
+    else if($('#player').hasClass('forwards5'))
+    {
+        $('#player').addClass('forwards6');
+    }
+    else if($('#player').hasClass('forwards4'))
+    {
+        $('#player').addClass('forwards5');
+    }
+    else if($('#player').hasClass('forwards3'))
+    {
+        $('#player').addClass('forwards4');   
+    }
     else if($('#player').hasClass('forwards2'))
     {
         $('#player').addClass('forwards3');
@@ -1254,12 +1284,16 @@ function forwards() {
     else if($('#player').hasClass('forwards')){
          
          $('#player').addClass('forwards2');
-    } else if ( !$('#player').hasClass('forwards')) {
+    } 
+    else if ( !$('#player').hasClass('forwards')) {
          $('#player').addClass('forwards');
     }
 
-    gsap.to("#rider-jets",0,{scaleX:1.25,x:7,filter:"hue-rotate(61deg)"});
-    gsap.to("#rider-jets",0,{scaleX:1,x:0,filter:"hue-rotate(0deg)",delay:0.2});
+    $('#rider-jets').addClass('forwJets');
+
+    gsap.delayedCall(0.2,function(){
+        $('#rider-jets').removeClass('forwJets');
+    });
     
     jumpingtxt.innerHTML="drive";
 
@@ -1271,6 +1305,7 @@ function forwards() {
         jumpingtxt.innerHTML="go";
     });
 }
+
 var playerTopPos = 245,
     playerBotPos = 345;
 function upwards() {
@@ -1282,6 +1317,7 @@ function upwards() {
         jumpingtxt.innerHTML="go";
     });
 }
+
 function downwards() {
     gsap.to(player,0.6,{top:playerBotPos+"px",ease:Power1.easeInOut});
     gsap.to(playerMovements,0.6,{z:0,ease:Power1.easeInOut});
@@ -1295,7 +1331,10 @@ function backtoBounce(){
     if(isJumping){
         isJumping=false;
     }
-    gsap.to("#rider-jets",0,{scaleX:1,scaleY:1,x:0,y:0,filter:"hue-rotate(0deg)",top:"0px",skewY:0});
+        
+    $('#rider-jets').removeClass('backJets').removeClass('forwJets').removeClass('wheelieJets').removeClass('jumpJets');
+    gsap.to("#rider-jets",0,{top:2});
+    
 
     
     $('#rider').addClass('riderBounce');
@@ -1351,10 +1390,13 @@ function doFlyPast(which) {
         gsap.to(flyPast,0,{className:"+=toad"});
         tlCruisePast.restart();
 
-        // [todo] whall the hell
+        speakingLocked = true;
         speechtxt.innerHTML="what the hell?";
         gsap.set(speechbub,{autoAlpha:1,delay:1});
-        gsap.delayedCall(1.7,hideSpeechBub);
+        gsap.delayedCall(1.7,function() {
+            hideSpeechBub();
+            speakingLocked=false;
+        });
 
     } else if(which=="sergio"){
         gsap.to(flyPast,0,{className:"+=sergio"}); 
@@ -1696,9 +1738,6 @@ function playEnding(){
     gsap.set(resumetxt,{autoAlpha:0,className:"copy"});
 
 
-    // [todo] how many obstacles
-    // console.log('you hit '+noObstaclesHit)
-
     gsap.to([".obstacle",pausedtxt],0,{autoAlpha:0});
     gsap.set(resumetxt,{autoAlpha:0,className:"copy"});
 
@@ -1708,8 +1747,10 @@ function playEnding(){
 
     
     $('#shadow').removeClass('shadowBounce');
+
+    gsap.to(player,0,{className:"forwards3"});
     
-        tlEnding = gsap.timeline({onComplete:tlEndingComplete});
+    tlEnding = gsap.timeline({onComplete:tlEndingComplete});
 
         tlEnding.addLabel("ending", "<")
         .to("#car-shadow",0,{autoAlpha:0.4,x:900},"<")
@@ -1748,14 +1789,12 @@ function tlEndingComplete(){
     $("#obstaclesHittxt").html(noObstaclesHit);
     if(noObstaclesHit==0){
 
-        // [todo] - one falling balloon animation:
-        // alert('perfect ride!! one falling balloon...')
+        // play perfect game anim:
 
         gsap.to(endtxt_perf,0,{autoAlpha:1});
         gsap.from(endtxt_perf,1,{scale:0,ease:Elastic.easeOut});
 
         gsap.to(endtxt_perfBalloon,0,{autoAlpha:1,x:10});
-        // gsap.to(endtxt_perfBalloon,5,{x:-10,yoyo:true,repeat:-1})
         gsap.to(endtxt_perfBalloon,5,{top:215,ease:Linear.easeNone});
     }
 
@@ -1886,8 +1925,6 @@ var area = $( '#area' )[0],
 function detectCollision() {
     
     collide = ($( area ).children().not( player ).map( function ( i ) {
-        // [todo] - took out meaningless :
-        // return 'obstacle'+(i+1) + ":" + overlaps( player, this );
         return (i+1) + ":" + overlaps( player, this );
     }).get());
     collideAll = collide.join( ',' );
@@ -1896,7 +1933,6 @@ function detectCollision() {
 
         for(i=0; i < collide.length; i++){
             if(collide[i].includes("true")) {
-                // console.log(collide);
                 var obstacleHit = collide[i].split(':')[0];
                 playerCollided(obstacleHit);
             }
@@ -1972,12 +2008,11 @@ function playerCollided(whichObstacleHit) {
             break;
 
 
-        case "obstacle3":   // ramp
-            // console.log("hit ramp");
+        case "obstacle3":  
+             // ramp
 
             if(isJumping){
-                // hit a ramp while isJumping true
-                // [todo] 
+                // hit a ramp while jumping true
                 isJumping=false;
                 doObstacleHit();
 
@@ -2103,7 +2138,8 @@ function doObstacleHit() {
     primScreamTL.pause();
     
     gsap.killTweensOf("#rider-jets");
-    gsap.to("#rider-jets",1,{scaleX:1,scaleY:1,x:0,y:0,filter:"hue-rotate(0deg)",top:"0px",skewY:0});
+    $('#rider-jets').removeClass('backJets').removeClass('forwJets').removeClass('wheelieJets').removeClass('jumpJets');
+    gsap.to("#rider-jets",0,{autoAlpha:0,delay:1});
 
     tlScream.play();
 
@@ -2300,10 +2336,8 @@ function traceAudioTime(){
     if(audio.currentTime-84>chorus1Start && !doneChorusTint) {
         doneChorusTint=true;
 
-        // playCloudsBG();
         gsap.to(".bgStars",8,{autoAlpha:1,ease:Linear.easeNone});
 
-        // [todo] - something for chorus 1
         doFlyPast("toad");
     }
     
@@ -2332,6 +2366,8 @@ function traceAudioTime(){
 
     // flash lightning at heavy drop and go fast!!
     if(audio.currentTime-84>124.9 && !doneLightning) {
+
+    // [todo] - testing fast mode:
     // if(audio.currentTime-84>14.9 && !doneLightning) {
         doneLightning=true;
 

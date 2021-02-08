@@ -99,35 +99,6 @@ body{
     background-image: url(../images/bg_mountains1.png);
 }
 
-
-#bgClouds {
-    display: none;
-}
-.bgClouds {
-    width: 1300px;
-    height: 300px;
-    background-size: contain;
-    transform: translateX(1300px);
-    top: 0px;
-}
-#bgClouds1 {
-    background-image: url(../images/bg_clouds1.png);
-}
-#bgClouds2{
-    background-image: url(../images/bg_clouds2.png);
-}
-#bgClouds3{
-    background-image: url(../images/bg_clouds1.png);
-}
-#bgLightning {
-    background-image: url(../images/bg_lightning.png);
-    animation: lightningflash 0.1s infinite;
-}
-@keyframes lightningflash{
-    0% {opacity: 0}
-    100% {opacity: 1}
-}
-
 #tilt {
     transform: translateY(400px);
 }
@@ -223,7 +194,10 @@ body{
 }
 #rider-jets {
     top: 2px;
-    left:-5px;
+    left: -5px;
+    transform: scaleX(1) scaleY(1) translate(0,0) skewY(0);
+    filter: hue-rotate(0deg);
+    transition: transform .2s, filter 1s;
 }
 @keyframes jetsGo {
     0%{ 
@@ -232,6 +206,25 @@ body{
     100%{ 
         background-position-y: -300px;    
     }
+}
+#rider-jets.wheelieJets{
+    transition: transform 1.5s;
+    transform: skewY(13deg);
+}
+#rider-jets.jumpJets {
+    transition: transform .2s, filter .2s;
+    transform: scaleX(1.4) scaleY(1.1) translate(8px,-2px);
+    filter: hue-rotate(150deg);
+}
+#rider-jets.backJets{
+    filter: hue-rotate(265deg);    
+    transform: scaleX(.75) translate(-10px,0px);
+    transition: transform 0s;
+}
+#rider-jets.forwJets{
+    transition: transform 0s;
+    transform: scaleX(1.25) translate(7px,0px);
+    filter: hue-rotate(61deg);
 }
 #rider-go {
     width: 164px;
@@ -242,7 +235,6 @@ body{
     position: absolute;
 }
 .rider-go {
-    /*opacity: 1;*/
     background-image: url("../images/rider-go-new.png");
     background-size: 100%;
 }
@@ -287,13 +279,25 @@ body{
     }
 }
 #player.forwards {
-    left: 150px;
+    left: 140px;
 }
 #player.forwards2 {
-    left: 300px;
+    left: 240px;
 }
 #player.forwards3 {
-    left: 400px;
+    left: 340px;
+}
+#player.forwards4 {
+    left: 440px;
+}
+#player.forwards5 {
+    left: 540px;
+}
+#player.forwards6 {
+    left: 640px;
+}
+#player.forwards7 {
+    left: 740px;
 }
 #flame {
     width: 200px;
@@ -331,7 +335,7 @@ body{
 
 div.rockL {
     top: 180px;
-    width: 160px;
+    width: 100px;
 }
 img.rockL {
     width: 160px;
