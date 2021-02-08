@@ -1094,7 +1094,7 @@ function jump() {
         jumpingtxt.innerHTML="jump";
 
 
-        if(tlfg.isActive()){
+        if(tlMainGame.isActive()){
             
             doSpeech(jumpPhrases,1.5,jumpCount,3);
 
@@ -1163,7 +1163,7 @@ function wheelie() {
             jumpingtxt.innerHTML="go";
         });
 
-        if(tlfg.isActive())
+        if(tlMainGame.isActive())
         {
             doSpeech(wheeliePhrases,0.7,wheelieCount,3);
         }
@@ -1248,7 +1248,7 @@ function backwards() {
 
 
 
-    if(tlfg.isActive())
+    if(tlMainGame.isActive())
     {
         doSpeech(brakingPhrases,0.7,backwardsCount,5);
     }
@@ -1297,7 +1297,7 @@ function forwards() {
     
     jumpingtxt.innerHTML="drive";
 
-    if(tlfg.isActive())
+    if(tlMainGame.isActive())
     {
         doSpeech(goPhrases,1,forwardsCount,2);
     }
@@ -1385,6 +1385,8 @@ function playMountainsBG() {
 
 function doFlyPast(which) {
     gsap.to(flyPast,0,{className:""});
+    gsap.to(tlFlyPast, 0, {timeScale:1.25});
+
     
     if(which=="toad"){
         gsap.to(flyPast,0,{className:"+=toad"});
@@ -1393,13 +1395,16 @@ function doFlyPast(which) {
         speakingLocked = true;
         speechtxt.innerHTML="what the hell?";
         gsap.set(speechbub,{autoAlpha:1,delay:1});
+        
         gsap.delayedCall(1.7,function() {
-            hideSpeechBub();
+            gsap.set(speechbub,{autoAlpha:0});
+            speechtxt.innerHTML="";
             speakingLocked=false;
         });
 
     } else if(which=="sergio"){
         gsap.to(flyPast,0,{className:"+=sergio"}); 
+        gsap.to(tlFlyPast, 0, {timeScale:.5});
         tlFlyPast.restart();
 
     } else if(which=="fzero"){
@@ -2342,8 +2347,7 @@ function traceAudioTime(){
     }
     
     // make BG normal aftee Chorus 1
-    // if(audio.currentTime-84>verse2Start && !doneChorusTintBack) {
-    if(audio.currentTime-84>20 && !doneChorusTintBack) {
+    if(audio.currentTime-84>verse2Start && !doneChorusTintBack) {
         doneChorusTintBack=true;
 
         gsap.to(".bgStars",3,{autoAlpha:0.3,ease:Linear.easeNone});
@@ -2468,52 +2472,4 @@ function resizeWindow(){
     gsap.set([wrap],{height:windowheight});
     gsap.set([wrap],{width:windowwidth});
     
-}
-
-
-/*///////////////////////  ////////////////////////////////*/
-/*/////////////////////// REPLAY BUTTON ////////////////////////////////*/
-/*///////////////////////  ////////////////////////////////*/
-/*///////////////////////  ////////////////////////////////*/
-function replayGame() {
-    replayBtn.removeEventListener("click", replayGame);
-    replayBtn.removeEventListener("touchend", replayGame);
-
-    window.location=window.location.href;
-    // gsap.to([replayBtn,highscorestxt],0,{autoAlpha:0});
-
-    // gsap.to([".car","#car-shadow"],0,{autoAlpha:0});
-    // gsap.to(player,0,{autoAlpha:1});
-    // gsap.to("#tilt",0,{autoAlpha:1,y:0,overwrite:true});
-    // gsap.to(instructionsTxt0,0,{display:"block"});
-    // gsap.to(playerMovements,0,{transform:"none"});
-
-    // introPlayed();
-
-    // points=0;
-
-    // tlMainGame.seek(0);
-    // tlEnding.seek(0);
-    // tlIntroScreen.seek(0);
-    // tlintro.seek(0);
-    // tlMainGame.seek(0);
-    // tlfg.seek(0);
-    // tlbg.seek(0);
-    // tlstarsBG.seek(0);
-    // tlhair.seek(0);
-    // tlramp.seek(0);
-    // tlLyrics.seek(0);
-    // tlScream.seek(0);
-
-    // tlEnding.pause();
-    // tlIntroScreen.pause();
-    // tlintro.pause();
-    // tlMainGame.pause();
-    // tlfg.pause();
-    // tlbg.pause();
-    // tlstarsBG.pause();
-    // tlhair.pause();
-    // tlramp.pause();
-    // tlLyrics.pause();
-    // tlScream.pause();
 }
