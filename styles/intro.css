@@ -46,7 +46,7 @@
     width: 100%;
     text-align: left;
 }
-#introTxt02,#introTxt03 {
+#introTxt02,#introTxt03,#introTxt05 {
     text-align: center;
     top: 220px;
     line-height: 3em;
@@ -54,10 +54,21 @@
 #introTxt02a {
     animation: colorRotateRed 1s infinite;
 }
-#introTxt03 {
+#introTxt03,#introTxt05 {
     font-size: .8em;
 }
 #introTxt03a{
+    animation: colorRotateGreen 1s 1s infinite;
+}
+@keyframes colorRotateGreen {
+    0% { color: rgb(91 182 39); }
+    50% { color: #fff; }
+    100% { color: rgb(91 182 39); }
+}
+#introTxt05a {
+    font-size: 1.2em;   
+}
+#introTxt05a{
     animation: colorRotatePink 1s 1s infinite;
 }
 @keyframes colorRotatePink {
@@ -73,35 +84,18 @@
     top: 120px;
     font-size: 0.8em;
 }
-#introTxt05 {
-    /*font-size: 1.55em;
-    color: #fed9ef;
-    text-align: center;
-    top: 85px;*/
-
-    /*top: 96px;
-    position: absolute;
-    left: 5%;
-    width: 90%; */
-
-    /*top: 66px;
-    position: absolute;
-    left: 10%;
-    width: 80%;*/
-
+#introTxtTitle {
     top: 12px;
     position: absolute;
     left: 0%;
     width: 100%;
-    animation: hueRotate 2s 0s infinite;
-
     animation: hueRotate 2s 0s infinite;
 }
 @keyframes hueRotate {
     0% { filter: hue-rotate(0deg); }
     100% { filter: hue-rotate(360deg); }
 }
-#introTxt05a{
+#introTxtLogo{
     position: absolute;
     left: 50%;
     top: 3px;

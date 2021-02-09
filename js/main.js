@@ -232,7 +232,7 @@ function playIntroScreen() {
     introPlaying=true;
 
     audio.addEventListener("timeupdate",traceAudioTime);
-    tlIntroScreen = gsap.timeline({onComplete:introPlayed});
+    tlIntroScreen = gsap.timeline({onComplete:introPlayedFully});
     
     tlIntroScreen.timeScale(introSpeed);
 
@@ -240,7 +240,7 @@ function playIntroScreen() {
 
         // move game screen down:
         .to(tilt, 0, {autoAlpha:1,scale:1.8,x:388,y:100},"<")
-        .to([bgStars1,bgToGo3,introBG,introStars,introTxt05,introTxt05a],0,{scale:1.2,transformOrigin:"left bottom"},"<")
+        .to([bgStars1,bgToGo3,introBG,introStars,introTxtTitle,introTxtLogo],0,{scale:1.2,transformOrigin:"left bottom"},"<")
 
 
         // hide 'play' button
@@ -249,18 +249,24 @@ function playIntroScreen() {
         // setup intro BGs
         .to([introStars],0,{y:0,autoAlpha:1})
         .to([introBG],0,{y:0,autoAlpha:0})
-        .to(introStars,30,{y:"-1880px",autoAlpha:0.4,rotationZ:0.01,ease:Power1.easeInOut})
-        .to(introStars,10,{autoAlpha:0.4,ease:Linear.easeNone},20)
-        .to(introBG,30,{y:"-423px",autoAlpha:1,rotationZ:0.01,ease:Power1.easeInOut},0)
+        .to(introStars,38,{y:"-1880px",autoAlpha:0.4,rotationZ:0.01,ease:Power1.easeInOut})
+        .to(introStars,18,{autoAlpha:0.4,ease:Linear.easeNone},20)
+        .to(introBG,38,{y:"-423px",autoAlpha:1,rotationZ:0.01,ease:Power1.easeInOut},0)
         
         // intro copy:
         .to(introLogo,3,{autoAlpha:1,ease:Linear.easeNone},3)
         .to(introTxt01,3,{autoAlpha:1,ease:Linear.easeNone},"<2")
         .to([introTxt01,introLogo],0.5,{autoAlpha:0,ease:Linear.easeNone},">")
 
-        .to(introTxt_volume,0.2,{autoAlpha:.5,repeatDelay:.4,ease:Linear.easeNone,repeat:7,yoyo:true},">")
+        .to(introTxt_volume,0.2,{autoAlpha:.4,repeatDelay:.4,ease:Linear.easeNone,repeat:13,yoyo:true},">")
+
+        .to(introTxt05,3,{autoAlpha:1,ease:Linear.easeNone},"<")
+        .to(introTxt05a,0,{autoAlpha:0,ease:Linear.easeNone},"<")
+        .call(typeText,["#introTxt05a",2],"<1")
+        .to(introTxt05a,3,{autoAlpha:1,ease:Linear.easeNone},"<")
+        .to([introTxt05],0.5,{autoAlpha:0,ease:Linear.easeNone},">2")
         
-        .to(introTxt02,3,{autoAlpha:1,ease:Linear.easeNone},"<")
+        .to(introTxt02,3,{autoAlpha:1,ease:Linear.easeNone},">")
         .to(introTxt02a,0,{autoAlpha:0,ease:Linear.easeNone},"<")
         .call(typeText,["#introTxt02a",2],"<1")
         .to(introTxt02a,3,{autoAlpha:1,ease:Linear.easeNone},"<")
@@ -271,44 +277,59 @@ function playIntroScreen() {
         .to(introTxt03a,0,{autoAlpha:0,ease:Linear.easeNone},"<")
         .call(typeText,["#introTxt03a",2],"<1")
         .to(introTxt03a,3,{autoAlpha:1,ease:Linear.easeNone},"<")
-        .to([introTxt03],0.5,{autoAlpha:0,ease:Linear.easeNone},">")
+        .to([introTxt03],0.5,{autoAlpha:0,ease:Linear.easeNone},">1")
 
         .to([introTxt04],3,{autoAlpha:1,ease:Linear.easeNone},">")
         .to([introLogo2],3,{autoAlpha:1,ease:Linear.easeNone},"<1")
         .to([introTxt04,introLogo2],0.5,{autoAlpha:0,ease:Linear.easeNone},">")
 
         
+
+        
         .to(tilt, 7, {y:-380,ease:Power1.easeOut},">")
 
         .to(tilt, 10, {scale:1,x:0,y:0,ease:Power1.easeInOut},">")
 
-        .to([bgStars1,bgToGo3,introBG,introStars,introTxt05,introTxt05a],10,{scale:1,ease:Power1.easeInOut},"<")
+        .to([bgStars1,bgToGo3,introBG,introStars,introTxtTitle,introTxtLogo],10,{scale:1,ease:Power1.easeInOut},"<")
         .to(introScreen,5,{scale:1,transformOrigin:"left bottom",ease:Power1.easeInOut},"<")
 
-        .to([introTxt05],3,{autoAlpha:1,ease:Linear.easeNone},"<2")
+        .to([introTxtTitle],3,{autoAlpha:1,ease:Linear.easeNone},"<2")
 
         .to(introScreen,1,{autoAlpha:0,ease:Linear.easeNone},"<4")
 
-        .to([introTxt05a],3,{autoAlpha:1,ease:Linear.easeNone},">")
+        .to([introTxtLogo],3,{autoAlpha:1,ease:Linear.easeNone},">")
         .addLabel("IntroScreen_ended");
         
 }
 
-function showTitles() {
+function showTitles(speed) {
 
     tlIntroScreen.seek("IntroScreen_ended");
 
     gsap.to(tilt, 0, {scale:1,x:0,y:0});
 
-    gsap.to([bgStars1,bgToGo3,introBG,introStars,introTxt05,introTxt05a],0,{scale:1});
+    gsap.to([bgStars1,bgToGo3,introBG,introStars,introTxtTitle,introTxtLogo],0,{scale:1});
     gsap.to(introScreen,0,{scale:1,transformOrigin:"left bottom"});
+    
+    if(speed=="slowly") {
+        gsap.to(instructionsTxt0,3,{autoAlpha:1,ease:Linear.easeNone});
+        gsap.to(instructions_optionsTxt,0,{autoAlpha:0,display:"block"});
+        gsap.to(instructions_optionsTxt,3,{autoAlpha:0.5,delay:1,ease:Linear.easeNone});
 
-    gsap.to([instructionsTxt0],0,{autoAlpha:1});
-    gsap.to([instructions_optionsTxt],0,{autoAlpha:0.5,display:"block"});
-    gsap.to([instructionsTxt0],{className:"instructionsTxtButt flashing hidden copy",delay:0});
-    gsap.to([introTxt05,introTxt05a],0,{autoAlpha:1});
+        gsap.to(instructionsTxt0,{className:"instructionsTxtButt flashing hidden copy",delay:4});
+    } else {
+        gsap.to(instructionsTxt0,0,{autoAlpha:1});
+        gsap.to(instructions_optionsTxt,0,{autoAlpha:0.5,display:"block"});
+        gsap.to(instructionsTxt0,{className:"instructionsTxtButt flashing hidden copy",delay:0});
+        gsap.to([introTxtTitle,introTxtLogo],0,{autoAlpha:1});
+    }
 }
-function introPlayed() {
+
+function introPlayedFully(){
+    introPlayed("slowly")
+}
+
+function introPlayed(slowly) {
     gsap.killTweensOf(introBindShowSkip);
     tlIntroScreen.pause();
 
@@ -317,7 +338,7 @@ function introPlayed() {
     document.body.removeEventListener('keypress', introShowSkip);
 
 
-    showTitles();
+    showTitles(slowly);
 
     gsap.to(mobileControls,0,{className:"pulseMobileControls"});
     gsap.to(skipIntro,0,{display:"none"});
@@ -397,7 +418,7 @@ function showOptions(){
 
 
     // show options screen: 
-    gsap.to([introTxt05,introTxt05a],0,{autoAlpha:0});
+    gsap.to([introTxtTitle,introTxtLogo],0,{autoAlpha:0});
     gsap.to(optionsScreen,0,{autoAlpha:1,display:"block"});
 
     optionsBike.addEventListener('click',function(){ optionsBike_chosen(0); });
@@ -414,7 +435,7 @@ function showOptions(){
 function optionsBike_chosen(bikeNo){
     if(bikeNo==undefined || bikeNo==0) {bikeNo="";}
     gsap.to("#bike-go",0,{className: "bike"+bikeNo});
-    gsap.to([introTxt05,introTxt05a],0,{autoAlpha:1});
+    gsap.to([introTxtTitle,introTxtLogo],0,{autoAlpha:1});
     gsap.to(optionsScreen,0,{autoAlpha:0,display:"none"});
 
     $('#mobileControls').removeClass("optionsShowing");
@@ -716,7 +737,7 @@ function startGame(ev,didAutoPlay){
 
         
         // reset
-        gsap.set([flame,gameover,"#rider-stopped",instructionsTxt0,instructions_optionsTxt,introTxt05,introTxt05a,optionsScreen],{autoAlpha:0,overwrite:true});
+        gsap.set([flame,gameover,"#rider-stopped",instructionsTxt0,instructions_optionsTxt,introTxtTitle,introTxtLogo,optionsScreen],{autoAlpha:0,overwrite:true});
         gsap.set([player,"#rider-go",pointstxt,jumpingtxt],{autoAlpha:1});
 
         backtoBounce();
