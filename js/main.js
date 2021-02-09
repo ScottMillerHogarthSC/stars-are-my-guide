@@ -1721,7 +1721,7 @@ function setWarningTxt(txt){
                 .to("#warningtxt",0,{autoAlpha:0,rotationZ:0,rotationY:0,z:0,scaleX:2,scaleY:2},">");
         break;
         case "updown":
-            warningtxt.innerHTML="<span>&nearr;</span><span>&searr;</span><span>&nearr;</span><span>&searr;</span>";
+            warningtxt.innerHTML="<span class='arrowUp'></span><span class='arrowDown'></span><span class='arrowUp'></span><span class='arrowDown'></span>";
             warningtxtTl.addLabel('warningtxtS')
                 .to("#warningtxt",0,{x:-60,z:0,scaleX:4,scaleY:3},"<")
                 .to("#warningtxt", 0, {autoAlpha:1},"<")

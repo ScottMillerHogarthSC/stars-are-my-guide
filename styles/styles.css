@@ -417,6 +417,19 @@ div.rampLong img.rampLong {
     top: 230px;
     left: 850px;
 }
+.arrowUp,
+.arrowDown {
+    width:18px;
+    height:18px;
+    background-size: 90% 90%;
+    background-image: url(../images/arrow.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    display: inline-block;
+}
+.arrowDown {
+    transform: scaleY(-1);
+}
 
 
 
