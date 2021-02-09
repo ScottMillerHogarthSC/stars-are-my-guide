@@ -41,10 +41,10 @@
 #introTxt_volume {
     bottom: 6px;
     top: auto;
-    left: -6px;
+    left: 6px;
     transform: scale(1);
     width: 100%;
-    text-align: right;
+    text-align: left;
 }
 #introTxt02,#introTxt03 {
     text-align: center;

@@ -258,7 +258,7 @@ function playIntroScreen() {
         .to(introTxt01,3,{autoAlpha:1,ease:Linear.easeNone},"<2")
         .to([introTxt01,introLogo],0.5,{autoAlpha:0,ease:Linear.easeNone},">")
 
-        .to(introTxt_volume,0.2,{autoAlpha:1,repeatDelay:.4,ease:Linear.easeNone,repeat:7,yoyo:true},">")
+        .to(introTxt_volume,0.2,{autoAlpha:.5,repeatDelay:.4,ease:Linear.easeNone,repeat:7,yoyo:true},">")
         
         .to(introTxt02,3,{autoAlpha:1,ease:Linear.easeNone},"<")
         .to(introTxt02a,0,{autoAlpha:0,ease:Linear.easeNone},"<")
