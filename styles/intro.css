@@ -38,6 +38,14 @@
 #introTxt01 {
     top:380px;
 }
+#introTxt_volume {
+    bottom: 6px;
+    top: auto;
+    left: -6px;
+    transform: scale(1);
+    width: 100%;
+    text-align: right;
+}
 #introTxt02,#introTxt03 {
     text-align: center;
     top: 220px;

@@ -257,8 +257,10 @@ function playIntroScreen() {
         .to(introLogo,3,{autoAlpha:1,ease:Linear.easeNone},3)
         .to(introTxt01,3,{autoAlpha:1,ease:Linear.easeNone},"<2")
         .to([introTxt01,introLogo],0.5,{autoAlpha:0,ease:Linear.easeNone},">")
+
+        .to(introTxt_volume,0.2,{autoAlpha:1,repeatDelay:.4,ease:Linear.easeNone,repeat:7,yoyo:true},">")
         
-        .to(introTxt02,3,{autoAlpha:1,ease:Linear.easeNone},">")
+        .to(introTxt02,3,{autoAlpha:1,ease:Linear.easeNone},"<")
         .to(introTxt02a,0,{autoAlpha:0,ease:Linear.easeNone},"<")
         .call(typeText,["#introTxt02a",2],"<1")
         .to(introTxt02a,3,{autoAlpha:1,ease:Linear.easeNone},"<")
@@ -661,11 +663,6 @@ function keypress(e){
                 keyDown="S";
             }
         }
-        // mute (pause) 
-        else if(e.code=="KeyM"){
-            gamePause();
-            pausedtxt.innerHTML="muted";
-        }
         // pause 
         else{
             gamePause();
@@ -796,9 +793,9 @@ function setupGamePlayTimelines() {
 
     tlbg = gsap.timeline({repeat:-1});
     tlbg.addLabel('bgLoop', '<')
-        .to([bgToGo1],0,{x:0,z:0})
-        .to([bgToGo2],0,{x:bgWidth,z:0})
-        .to([bgToGo3],0,{x:bgWidth,z:0})
+        .to([bgToGo1],0,{x:0,rotationZ:0})
+        .to([bgToGo2],0,{x:bgWidth,rotationZ:0})
+        .to([bgToGo3],0,{x:bgWidth,rotationZ:0})
         
         .to(bgToGo1,bgSpeed,{x:-bgWidth,rotationZ:0.01,ease:Linear.easeNone},">")
         .to(bgToGo2,bgSpeed,{x:0,rotationZ:0.01,ease:Linear.easeNone},"-="+bgSpeed)
@@ -808,9 +805,9 @@ function setupGamePlayTimelines() {
     
     tlstarsBG = gsap.timeline({repeat:-1});
     tlstarsBG.addLabel('starsBGLoop', '<')
-        .to([bgStars1],0,{x:0,z:0})
-        .to([bgStars2],0,{x:starsBGWidth,z:0})
-        .to([bgStars3],0,{x:starsBGWidth,z:0})
+        .to([bgStars1],0,{x:0,rotationZ:0})
+        .to([bgStars2],0,{x:starsBGWidth,rotationZ:0})
+        .to([bgStars3],0,{x:starsBGWidth,rotationZ:0})
         
         .to(bgStars1,starsBGSpeed,{x:-starsBGWidth,rotationZ:0.01,ease:Linear.easeNone},">")
         .to(bgStars2,starsBGSpeed,{x:0,rotationZ:0.01,ease:Linear.easeNone},"-="+starsBGSpeed+"")
@@ -822,8 +819,8 @@ function setupGamePlayTimelines() {
     tlfg.addLabel('fg loop', '<')
         .to([fgToGo3],0,{autoAlpha:0},">")
         
-        .to([fgToGo1],0,{x:0,z:0,},"<")
-        .to([fgToGo2],0,{x:fgWidth,z:0},"<")
+        .to([fgToGo1],0,{x:0,rotationZ:0,},"<")
+        .to([fgToGo2],0,{x:fgWidth,rotationZ:0},"<")
         
         .to([fgToGo1],fgSpeed,{x:-fgWidth,rotationZ:0.01,ease:Linear.easeNone},">")
         .to([fgToGo2],fgSpeed,{x:0,rotationZ:0.01,ease:Linear.easeNone},"<");
@@ -897,6 +894,10 @@ function gamePause() {
 
     jumpingtxt.innerHTML="paused";
     gsap.set(pausedtxt,{autoAlpha:1});
+    
+    gsap.to(instructionsTxt3,0, { top:256, left:340 });
+    gsap.to(instructionsTxt4, 0, { top:240, left:650 });
+    gsap.set([instructionsTxt3,instructionsTxt4], {autoAlpha:1,scale:1 });
 
 
     unBindButtons_gamePlay();
@@ -984,6 +985,8 @@ function gameResume(ev) {
     
     
     gsap.set(pausedtxt,{autoAlpha:0});
+    gsap.set([instructionsTxt3],{top:217,left:"50%",scale:2,autoAlpha:0});
+    gsap.set([instructionsTxt4],{top:175,left:"50%",scale:2,autoAlpha:0});
 
     BindButtons_gamePlay();
 }               
@@ -1830,6 +1833,7 @@ function playEnding(){
 }
 
 var endingComplete = false;
+var endInitialsDelay = 3;
 function tlEndingComplete(){
     endingComplete=true;
     // stop all timelines
@@ -1846,19 +1850,28 @@ function tlEndingComplete(){
 
         gsap.to(endtxt_perfBalloon,0,{autoAlpha:1,x:10});
         gsap.to(endtxt_perfBalloon,5,{top:215,ease:Linear.easeNone});
+
+        endInitialsDelay = 5;
     }
 
     if(noObstaclesHit<4) {
         $('#obstaclesHittxt').addClass('colorRotateYellow');
+        endInitialsDelay=3;
     } else {
         $('#obstaclesHittxt').addClass('colorRotateRed');
+        endInitialsDelay=2;
     }
     
     $("#pointstxt").html(points);
 
     gsap.set(endtxt,{display:"block", autoAlpha:1});
 
-    document.getElementById('initialstxt').focus();
+    gsap.delayedCall(endInitialsDelay,function(){
+        gsap.to(initailsWrap,0,{autoAlpha:1});
+        document.getElementById('initialstxt').focus();
+    });
+
+    
 
     unBindButtons_gamePlay();
     unBindButtons_gameResume();
@@ -2456,6 +2469,7 @@ function traceAudioTime(){
             }
         );
         gsap.to([tlMainGame,tlfg,tlbg,tlMountainsBG], 1, {timeScale:1.5, ease:Quad.easeIn});
+        gsap.to([tlbg], 1, {timeScale:8, ease:Quad.easeIn});
         gsap.to([tlstarsBG], 1, {timeScale:4, ease:Quad.easeIn});
 
         // make long gap ramps show
@@ -2463,7 +2477,7 @@ function traceAudioTime(){
 
         // [todo] hyperspace
         gsap.to(".bgStars",0,{className:"bg bgStars fast",delay:0.8});
-        gsap.to(".bgToGo",1,{autoAlpha:0});
+        gsap.to(".bgToGo",0,{className:"bg bgToGo fast",delay:0.8});
     }
 
     // slow back down for final chorus
@@ -2479,7 +2493,7 @@ function traceAudioTime(){
         gsap.to("#obstacle3",0,{className:"hidden ramp obstacle"});
 
         gsap.to(".bgStars",0,{className:"bg bgStars"});
-        gsap.to(".bgToGo",1,{autoAlpha:1});
+        gsap.to(".bgToGo",0,{className:"bg bgToGo"});
 
         playMountainsBG();
     }

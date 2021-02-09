@@ -121,11 +121,19 @@
             color: #fff;
         }
     </style>
-    <!-- <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/> -->
     <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
     <link rel="manifest" href="favicon/site.webmanifest">
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NKMBF439GH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-NKMBF439GH');
+    </script>
 </head>
 <body>
     <audio id="audio"></audio>
@@ -138,10 +146,10 @@
     </div>
     <div id="wrap">
         <div id="container" class="clickable">
-            
-            <img src="images/nebula_bg.png" class="bg bgToGo" id="bgToGo1">
-            <img src="images/eclipse_bg.png" class="bg bgToGo" id="bgToGo2">
-            <img src="images/nebula_bg.png" class="bg bgToGo" id="bgToGo3">
+                
+            <div class="bg bgToGo" id="bgToGo1"></div>
+            <div class="bg bgToGo" id="bgToGo2"></div>
+            <div class="bg bgToGo" id="bgToGo3"></div>
             
             <div class="bg bgStars" id="bgStars1"></div>
             <div class="bg bgStars" id="bgStars2"></div>
@@ -172,6 +180,8 @@
                 
                 <div id="introTxt04" class="copy hidden">licensed by</div>
                 <img id="introLogo2" src="images/roar-logo.png" class="intrologo hidden" />
+                
+                <div id="introTxt_volume" class="copy hidden">turn your volume up</div>
             </div>
             
             <div id="tilt" class="hidden">
@@ -325,18 +335,18 @@
 
                     <div id="lyrics22" class="lyrics chorusLyrics">Now the stars are my guide</div>
                     <div id="lyrics23" class="lyrics chorusLyrics">To the void we ride</div>
-                    <div id="lyrics24" class="lyrics chorusLyrics">On the attack, no looking back,</div>
-                    <div id="lyrics25" class="lyrics chorusLyrics">for eternal life</div>
+                    <div id="lyrics24" class="lyrics chorusLyrics colour2">On the attack, no looking back,</div>
+                    <div id="lyrics25" class="lyrics chorusLyrics colour2">for eternal life</div>
                     <div id="lyrics26" class="lyrics chorusLyrics">Now the stars are my guide.</div>
 
                     <div id="lyrics9" class="lyrics">Vengeance & anger,</div>
                     <div id="lyrics10" class="lyrics">to no one I answer</div>
-                    <div id="lyrics11" class="lyrics colour2">A lone wolf a straggler,</div>
-                    <div id="lyrics12" class="lyrics colour2">now I’m my own master</div>
+                    <div id="lyrics11" class="lyrics colour1">A lone wolf a straggler,</div>
+                    <div id="lyrics12" class="lyrics colour1">now I’m my own master</div>
                     <div id="lyrics13" class="lyrics">Out of the storm into the void,</div>
                     <div id="lyrics14" class="lyrics">a sea of moons & asteroids</div>
-                    <div id="lyrics15" class="lyrics colour2">All in my path I will destroy,</div>
-                    <div id="lyrics16" class="lyrics colour2">my weapons I deploy</div>
+                    <div id="lyrics15" class="lyrics colour1">All in my path I will destroy,</div>
+                    <div id="lyrics16" class="lyrics colour1">my weapons I deploy</div>
 
                     <div id="lyrics17" class="lyrics">(Guitar solo by @chekogiron)</div>
 
@@ -344,8 +354,8 @@
 
                     <div id="lyrics18" class="lyrics colour3">No last goodbye,</div>
                     <div id="lyrics19" class="lyrics colour3">I sail into the astral plains</div>
-                    <div id="lyrics20" class="lyrics">To fight, defy,</div>
-                    <div id="lyrics21" class="lyrics">I’ll set the galaxy ablaze</div>
+                    <div id="lyrics20" class="lyrics colour3">To fight, defy,</div>
+                    <div id="lyrics21" class="lyrics colour3">I’ll set the galaxy ablaze</div>
                 </div>
 
 

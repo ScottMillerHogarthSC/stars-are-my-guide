@@ -45,7 +45,24 @@ body{
 }
 .bg {
     width:1800px;
+    height: 470px;
+    background-size: 100% 100%;
 }
+#bgToGo1,#bgToGo3{
+    background-image: url(../images/nebula_bg.png);
+}
+#bgToGo2{
+    background-image: url(../images/eclipse_bg.png);
+}
+#bgToGo1.fast,
+#bgToGo2.fast,
+#bgToGo3.fast{
+    background-image: url(../images/stars_1-fast.gif);
+    opacity: 1!important;
+    background-size: 100% 200%;
+}
+
+
 .bgStars {
     width: 1300px;
     height: 475px;
@@ -65,7 +82,7 @@ body{
 #bgStars2.fast,
 #bgStars3.fast{
     background-image: url(../images/stars_1-fast.gif);
-    opacity: .8!important;
+    opacity: .5!important;
 }
 
 
@@ -537,9 +554,10 @@ div.rampLong img.rampLong {
 #pausedtxt {
     transform: scale(3.5) translate(-50%, -50%);
     transform-origin: left top;
-    /*background-color: rgba(84,36,84,.9);*/
+    background-color: rgba(84,36,84,.6);
     /*border: dashed #fff 2px;*/
-    padding: 1%;
+    padding: 1% 4.5% 4%;
+    top: 208px;
     z-index: 1;
     color: #fed9ef;
     text-shadow: 1px 1px 0px #000;
@@ -593,9 +611,11 @@ div.rampLong img.rampLong {
 }
 #instructionsTxt3 {
     top: 217px;
+    z-index: 1;
 }
 #instructionsTxt4 {
     top: 175px;
+    z-index: 1;
 }
 
 #endtxt {
@@ -657,6 +677,7 @@ div.rampLong img.rampLong {
     top: 80px;
     position: absolute;
     width: 100%;
+    opacity: 0;
 }
 #initialstxt {
     padding: 0;
