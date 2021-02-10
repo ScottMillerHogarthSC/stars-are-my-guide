@@ -538,7 +538,7 @@ div.rampLong img.rampLong {
     right: -15px;
     position: absolute;
 }
-.speechtxt {
+#speechtxt {
     color: #000;
     position: relative;
     width: 100%;
@@ -572,30 +572,56 @@ div.rampLong img.rampLong {
     display: inline-block;
     position: relative;
 }
-#introBtn img,
-#introBtnK img,
-#introBtnJ img {
-    position: absolute;
-    top: 0;
-    width: 80px;
+#introBtn {
+    background-image: url(../images/mobileControls.gif); 
+    background-size: 100% auto;
+    background-position: center top;
+    height: 52px;
+    width: 52px;
+    vertical-align: middle;
 }
-#introBtn.pressedA img { top: -52px; }
-#introBtn.pressedS img { top: -104px; }
-#introBtn.pressedD img { top: -156px; }
-#introBtn.pressedW img { top: -208px; }
-#introBtnK.pressed img,
-#introBtnJ.pressed img {top: -52px;}
+#introBtn.pressedD { background-position: center -53px; }
+#introBtn.pressedA { background-position: center -107px; }
+#introBtn.pressedW { background-position: center -159px; }
+#introBtn.pressedS { background-position: center -210px; height:50px; }
 
-#introBtnJ img,
-#introBtnJ,
-#introBtnK img,
-#introBtnK,
+#introBtnK,#introBtnJ{
+    background-size: 100% auto;
+    background-position: center top;
+    height: 32px;
+    width: 32px;
+    vertical-align: middle;
+    overflow: hidden;
+}
+#introBtnK{
+    background-image: url(../images/introBtnJump.png); 
+}
+#introBtnJ {
+    background-image: url(../images/introBtnWheelie.png); 
+}
+
+#introBtnK.pressed,
+#introBtnJ.pressed {background-position: center -32px;}
+
+
 #introBtnS,
 #introBtnOptions {
     width: 26px;
+    height: 50px;
+    display: inline-block;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom;
 }
+#introBtnS {
+    background-image: url('../images/introBtnWheelie.png');
+    background-size: 100% auto;
+    height: 26px;
+    vertical-align: middle;
+}
+
 #instructionsTxt0 {
-     top: 180px;
+     top: 215px;
 }
 .flashing {
     animation: flash 1s infinite linear;
@@ -614,8 +640,9 @@ div.rampLong img.rampLong {
     z-index: 1;
 }
 #instructionsTxt4 {
-    top: 175px;
+    top: 225px;
     z-index: 1;
+    line-height: 3em;
 }
 
 #endtxt {
@@ -1012,7 +1039,7 @@ div.rampLong img.rampLong {
     z-index: 100;
     padding: 0;
     opacity: .5;
-    filter: invert(1);
+    /*filter: invert(1);*/
     user-select: none;
 }
 .pulseMobileControls {
@@ -1039,35 +1066,36 @@ div.rampLong img.rampLong {
 
 }
 #btnsMove {
-    bottom: 20px;
-    left: 20px;
-    width: 160px;
-    height: 104px;
-    background-image: url(../images/introBtn.png);
-    background-size: 160px auto;
+    bottom: 10px;
+    left: 6px;
+    width: 150px;
+    height: 150px;
+    background-image: url(../images/mobileControls.gif);
+    background-size: 100% auto;
+    background-position: 0 0;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    transform: scale(1.2) translateX(10px);
 }
 #btnsMove.backwards{
-    background-position-y: -104px;
+    background-position-y: 52%;
 }
 #btnsMove.down{
-    background-position-y: -208px;
+    background-position-y: 101%;
 }
 #btnsMove.up{
-    background-position-y: -416px;
+    background-position-y: 76%;
+    height: 147px;
 }
 #btnsMove.forwards{
-    background-position-y: -312px;
+    background-position-y: 25%;
 }
 .btnMove,#btnJump,#btnWheelie, #btnOption{
     width: 50px;
-    height: 50px;
+    height: 56px;
     position: absolute;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -1077,44 +1105,57 @@ div.rampLong img.rampLong {
     user-select: none;
 }
 #btnMoveUp {
-    top: 0px;
-    left: 55px;
+    top: -6px;
+    left: 50px;
 }
 #btnMoveForwards {
-    top: 55px;
-    left: 110px;
+    top: 47px;
+    left: 100px;
 }
 #btnMoveBackwards {
-    top: 55px;
+    top: 47px;
     left: 0px;
 }
 #btnMoveDown {
-    top: 55px;
-    left: 55px;
+    top: 103px;
+    left: 50px;
+}
+#btns{
+    background-image: url(../images/btns.png);
+    background-size: 100% auto;
+    background-position: 0 0;
+    width: 168px;
+    height: 150px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-repeat: no-repeat; 
 }
 #btnWheelie,
 #btnJump,
 #btnOption {
-    bottom: 20px;
-    right: 20px; 
-    height: 55px;   
-    background-position: 0px -47px;
-    background-image: url(../images/introBtnK.png);
-    transform: scale(1.2) translateX(0px);
+    bottom: 71px;
+    right: 10px;
+    height: 70px;
+    width: 70px;
 }
 #btnWheelie {
-    right: 80px;
-    background-image: url(../images/introBtnJ.png);   
-    transform: scale(1.2) translateX(-10px);
+    right: 91px;
+    bottom: 8px;
 }
 #btnOption {
     right: 485px;
+    bottom: 0px;
+    width: 50px;
     background-image: url(../images/introBtnO.png);
     background-size: 100% auto;
+    transform: scale(1.2) translateX(0px);
     background-position: center -43px;
 }
-#btnWheelie.pressed,
-#btnJump.pressed {
+#btns.pressedWheelie {
+    background-position: 0px -150px;
+}
+#btns.pressedJump {
     background-position: 0px bottom;
 }
 

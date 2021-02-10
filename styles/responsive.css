@@ -11,6 +11,49 @@
     #mobileControls {
         display: none;
     }
+    #introBtnS {
+        background-image: url('../images/introBtnS.png');
+        height: 50px;
+        vertical-align: text-bottom;
+        background-size: contain;
+    }
+    #introBtn {
+        background-image: url(../images/introBtn.png); 
+        background-size: 100% auto;
+        background-position: center top;
+        height: 52px;
+        width: 80px;
+        vertical-align: text-bottom;
+    }
+    #introBtn.pressedA { background-position: center -52px; }
+    #introBtn.pressedS { background-position: center -104px; height:52px; }
+    #introBtn.pressedD { background-position: center -156px; }
+    #introBtn.pressedW { background-position: center -208px; }
+
+    #introBtnK,
+    #introBtnJ {
+        vertical-align: text-bottom;
+        width: 26px;
+        height: 52px;
+        background-repeat: no-repeat;
+    }
+    #introBtnK{
+        background-image: url(../images/introBtnK.png); 
+    }
+    #introBtnJ {
+        background-image: url(../images/introBtnJ.png); 
+    }
+    #introBtnK.pressed,
+    #introBtnJ.pressed {background-position: center -52px;}
+    
+
+    #instructionsTxt0 {
+        top: 180px;
+    }
+    #instructionsTxt4 {
+        line-height: 1em;
+        top: 175px;
+    }
 }
 @media screen and (min-height: 550px) {
     #footer {

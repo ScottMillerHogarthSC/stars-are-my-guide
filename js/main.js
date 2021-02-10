@@ -358,14 +358,14 @@ function introPlayed(slowly) {
 function BindButtons_gameResume(){
     // console.log("BindButtons_gameResume");
     
-    btnMoveDown.addEventListener('touchend', gameResume);
+    btnWheelie.addEventListener('touchend', gameResume);
     document.body.addEventListener('keypress', gameResume);
 }
 
 function unBindButtons_gameResume(){
     // console.log("unBindButtons_gameResume");
 
-    btnMoveDown.removeEventListener('touchend', gameResume);
+    btnWheelie.removeEventListener('touchend', gameResume);
     document.body.removeEventListener('keypress', gameResume);
 }
 
@@ -373,7 +373,7 @@ function BindButtons_startGame(){
     // console.log("BindButtons_startGame");
 
      // mobile
-    btnMoveDown.addEventListener('touchend', startGame);
+    btnWheelie.addEventListener('touchend', startGame);
     btnOption.addEventListener('touchend', showOptions);
 
      //keyboard
@@ -447,7 +447,7 @@ function optionsBike_chosen(bikeNo){
 function unBindButtons_startGame(){
     // console.log("unBindButtons_startGame");
 
-    btnMoveDown.removeEventListener('touchend', startGame);
+    btnWheelie.removeEventListener('touchend', startGame);
     document.body.removeEventListener('keypress', startGame);
 }
 
@@ -565,13 +565,13 @@ function mobileBtnPressed(ev){
             gsap.killTweensOf(backtoBounce);
             jump();
             $('#introBtnK').addClass('pressed');
-            $('#btnJump').addClass('pressed');
+            $('#btns').addClass('pressedJump');
         }
         if(this.id=="btnWheelie") {
             gsap.killTweensOf(backtoBounce);
             wheelie();
             $('#introBtnJ').addClass('pressed');
-            $('#btnWheelie').addClass('pressed');
+            $('#btns').addClass('pressedWheelie');
         }
         if(this.id=="btnMoveForwards") {
             forwards();
@@ -620,11 +620,11 @@ function mobileBtnReleased(ev) {
     }
     if(this.id=="btnJump") {
         $('#introBtnK').removeClass('pressed');
-        $('#btnJump').removeClass('pressed');
+        $('#btns').removeClass('pressedJump');
     }
     if(this.id=="btnWheelie") {
         $('#introBtnJ').removeClass('pressed');
-        $('#btnWheelie').removeClass('pressed');
+        $('#btns').removeClass('pressedWheelie');
     }
     
 }
@@ -855,10 +855,26 @@ function setupGamePlayTimelines() {
 
     tlCruisePast = gsap.timeline({paused:true});
     tlCruisePast.addLabel('cruisepast','<')
+    .add(function(){
+        speakingLocked = true;
+        console.log("speakingLocked");
+    },"<")
     .to(flyPast,0,{x:0,z:0.01},'<')
     .to(flyPast,3,{x:1220,z:-0.01,ease:Linear.easeNone},'>')
-    .to(flyPast,0.7,{y:"-70",scale:0.65,ease:Power1.easeInOut},'>-1.7');
-
+    .add(function(){
+        speechtxt.innerHTML="what the hell?";
+        console.log('wth');
+    }, "<1")
+    .to(speechbub,0,{autoAlpha:1},"<")
+    .to(flyPast,0.7,{y:"-70",scale:0.65,ease:Power1.easeInOut},'>.7')
+    .add(function(){
+        gsap.to(speechbub,0,{autoAlpha:0})
+        speechtxt.innerHTML="";
+        speakingLocked = false;
+        console.log('speakingLocked false')
+    },">");
+    
+        
     tlScream = gsap.timeline({paused:true});
     tlScream.addLabel('scream')
     .to(".rider-scream",0,{autoAlpha:1},0)
@@ -1417,19 +1433,7 @@ function doFlyPast(which) {
     
     if(which=="toad"){
         gsap.to(flyPast,0,{className:"+=toad"});
-        tlCruisePast.restart();
-
-        speechtxt.innerHTML="what the hell?";
-        gsap.set(speechbub,{autoAlpha:1,delay:1});
-        gsap.set(speechbub,{autoAlpha:0,delay:1.7});
-
-        speakingLocked = true;
-
-        
-        gsap.delayedCall(2.7,function(){
-            speechtxt.innerHTML="";
-            speakingLocked=false;
-        });
+        tlCruisePast.play("cruisepast");
 
     } else if(which=="sergio"){
         gsap.to(flyPast,0,{className:"+=sergio"}); 
@@ -1906,8 +1910,8 @@ function tlEndingComplete(){
     // tlstarsBG.pause();
     tlhair.pause();
     tlLyrics.pause();
-    tlFlyPast.pause();
-    tlCruisePast.pause();
+    // tlFlyPast.pause();
+    // tlCruisePast.pause();
 
 }
 

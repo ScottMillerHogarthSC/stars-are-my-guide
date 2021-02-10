@@ -248,7 +248,7 @@
 
                                 
                             <div id="speechbub">
-                                <div id="speechtxt" class="speechtxt jumpingtxt">...</div>
+                                <div id="speechtxt">...</div>
                             </div>
                         </div>
 
@@ -284,17 +284,17 @@
 
 
             <div id="copyWrap">
-                <div id="instructionsTxt0" class="instructionsTxtButt hidden copy">press <img id="introBtnS" src="images/introBtnS.png"> to start</div>
+                <div id="instructionsTxt0" class="instructionsTxtButt hidden copy">press <span id="introBtnS"></span> to start</div>
 
                 <div id="instructions_optionsTxt" class="instructionsTxtButt hidden copy">or <img id="introBtnOptions" src="images/introBtnO.png"> for options</div>
 
                 <div id="gameover" class="copy hidden">game over</div>
                 <div id="warningtxt" class="copy hidden"></div>
                 <div id="pausedtxt" class="copy hidden">paused</div>
-                <div id="resumetxt" class="copy hidden">press <img id="introBtnS" src="images/introBtnS.png"> to continue</div>
+                <div id="resumetxt" class="copy hidden">press <span id="introBtnS"></span> to continue</div>
                 
-                <div id="instructionsTxt3" class="copy instructionsTxt instructionsTxtButt hidden">use <span id="introBtn"><img src="images/introBtn.png"></span> to move</div>
-                <div id="instructionsTxt4" class="copy instructionsTxt instructionsTxtButt hidden">use <span id="introBtnK"><img src="images/introBtnK.png"></span> to jump<br>use <span id="introBtnJ"><img src="images/introBtnJ.png"></span> to wheelie</div>
+                <div id="instructionsTxt3" class="copy instructionsTxt instructionsTxtButt hidden">use <span id="introBtn"></span> to move</div>
+                <div id="instructionsTxt4" class="copy instructionsTxt instructionsTxtButt hidden">use <span id="introBtnK"></span> to jump<br>use <span id="introBtnJ"></span> to wheelie</div>
                 
                 <div id="endtxt" class="copy hidden">
                     <div id="endtxt_obs">
@@ -386,9 +386,11 @@
                     <button id="btnMoveBackwards" class="btnMove" />
                     <button id="btnMoveDown" class="btnMove" />
                 </div>
-                <button id="btnOption" class="mobileControl" />
-                <button id="btnJump" class="mobileControl" />
-                <button id="btnWheelie" class="mobileControl" />
+                <button id="btnOption" class="mobileControl"></button>
+                <div id="btns">
+                    <button id="btnJump" class="mobileControl" />
+                    <button id="btnWheelie" class="mobileControl" />
+                </div>
             </div>
 
             <button id="skipIntro">skip intro</button>
