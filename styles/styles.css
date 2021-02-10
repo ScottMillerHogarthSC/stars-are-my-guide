@@ -28,13 +28,33 @@ body{
     background-size: cover;
     background-position: center;
 }
-#container {
+#controller{
+    width: 1140px;
+    height: 890px;
+    position: absolute;
+    top: -321px;
+    left: -112px;
+    opacity: 0;
+    display: none;
+}
+#controller.pulseController{
+    animation: controllerPulse 2s ease-out forwards;
+}
+@keyframes controllerPulse {
+    0% { opacity: 0 }
+    100% { opacity: .7 }
+}
+#container,#controllerWrap {
     background-color: #000;
     overflow:hidden;
     width: 970px;
     height: 475px;
-    position: absolute;
+    /*position: absolute;*/
     user-select: none;
+    perspective: 1px;
+}
+#controllerWrap{
+    overflow: visible;
 }
 .hidden {
     opacity: 0;
@@ -380,12 +400,12 @@ img.hole {
     margin-left: -60px;
 }
 
-div.asteroid {
+div.obstacleAsteroid {
     top: 160px;
     width: 180px;
     height: 100%;
 }
-img.asteroid {
+img.obstacleAsteroid {
     width: 180px;
     animation: spin 1s infinite linear;
 }
@@ -431,9 +451,81 @@ div.rampLong img.rampLong {
     /*background-color: rgba(255,0,0,0.2);*/
 }
 #warningtxt {
+    transform: translate(-50%,-50%) scale(2) rotate(0);
     top: 230px;
     left: 850px;
 }
+#warningtxt.down {
+    transform: translate3d(-50%,260%,-70px) translateZ(0) rotateZ(-90deg) rotateX(10deg) rotateY(90deg) scaleX(4) scaleY(5);
+}
+#warningtxt.down div {
+    animation: warningBounceDown .3s ease-out 7;
+}
+@keyframes warningBounceDown {
+    0% {
+        transform: translateX(-10px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+#warningtxt.up {
+    transform: translate3d(-50%,260%,-50px) translateZ(0) rotateZ(90deg) rotateX(-10deg) rotateY(90deg) scaleX(4) scaleY(5);
+}
+#warningtxt.up div {
+    animation: warningBounceUp .3s ease-out 7;
+}
+@keyframes warningBounceUp {
+    0% {
+        transform: translateX(-10px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+#warningtxt.updown {
+    transform: translate(-85%,10px) scaleX(4) scaleY(3);
+}
+#warningtxt.asteroid {
+    transform: translate(-85%,10px) scaleX(2) scaleY(2) rotate(90deg);
+}
+#warningtxt.hole {
+    transform: scaleX(6) scaleY(5) rotateX(60deg) rotateZ(0deg);
+    width: 16px;
+    height: 16px;
+}
+#warningtxt.hole div {
+    animation: warningHole 3s linear;
+    width: 16px;
+    height: 16px;
+}
+@keyframes warningHole {
+    0% { 
+        transform: rotate(0deg) scale(1);
+    }
+    100% {
+        transform: rotate(1080deg) scale(.2);
+    }
+}
+#warningtxt.ramp {
+    transform: translate(-85%,10px) scaleX(3) scaleY(2);
+    width: 64px;
+    height: 16px;
+}
+#warningtxt.ramp div {
+    animation: warningRamp .3s linear 7;
+    width: 64px;
+    height: 16px;
+}
+@keyframes warningRamp {
+    0% { 
+        transform: translateX(0px);
+    }
+    100% {
+        transform: translateX(10px);
+    }
+}
+
 .arrowUp,
 .arrowDown {
     width:18px;
@@ -473,8 +565,19 @@ div.rampLong img.rampLong {
 
 /*/// */
 #copyWrap {
-    perspective: 100px;
-    perspective-origin: 870px center;
+    perspective: 200px;
+    perspective-origin: 870px 175px;
+    overflow: hidden;
+}
+#copyWrap {
+    /*perspective: 100px;*/
+    /*perspective-origin: 870px center;*/
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 970px;
+    height: 475px;
+    position: absolute;
 }
 .copy {
     position: absolute;
@@ -554,15 +657,14 @@ div.rampLong img.rampLong {
 #pausedtxt {
     transform: scale(3.5) translate(-50%, -50%);
     transform-origin: left top;
-    background-color: rgba(84,36,84,.6);
+    /*background-color: rgba(84,36,84,.6);*/
     /*border: dashed #fff 2px;*/
     padding: 1% 4.5% 4%;
-    top: 208px;
+    top: 148px;
     z-index: 1;
     color: #fed9ef;
     text-shadow: 1px 1px 0px #000;
 }
-
 #introBtn,
 #introBtnK,
 #introBtnJ {
@@ -619,10 +721,6 @@ div.rampLong img.rampLong {
     height: 26px;
     vertical-align: middle;
 }
-
-#instructionsTxt0 {
-     top: 215px;
-}
 .flashing {
     animation: flash 1s infinite linear;
 }
@@ -639,11 +737,38 @@ div.rampLong img.rampLong {
     top: 217px;
     z-index: 1;
 }
+#instructionsTxt3.paused {
+    left: 219px;
+    top: 284px;
+    transform: translate(-50%, -50%) scale(1.4);
+}
 #instructionsTxt4 {
     top: 235px;
     z-index: 1;
     line-height: 3em;
 }
+#instructionsTxt4.paused {
+    left: 730px;
+    top: 238px;
+    width: 290px;
+}
+#instructionsTxt3.paused,
+#instructionsTxt4.paused {
+    opacity: 1!important;
+    visibility: visible!important;
+    display: block;
+}
+#instructionsTxt0 {
+    top: 215px;
+}
+#instructionsTxt3.paused {
+    top: 240px;
+    left: 280px;
+}
+#instructionsTxt3.paused,#instructionsTxt4.paused{
+    transform: translate(-50%, -50%) scale(1.4) rotate(0deg)
+}
+
 
 #endtxt {
     text-align: center;

@@ -1,13 +1,18 @@
 @charset "UTF-8";
 /* CSS Document */
-
-#container {
+#controllerWrap{
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);    
     transform-origin: left top;
+    position: absolute;
 }
-@media screen and (min-width: 982px) {
+@media screen and (min-width: 1088px) and (min-height: 666px) {
+    #controller.pulseController {
+        display: block;
+    }
+/*}
+@media screen and (min-width: 982px) {*/
     #mobileControls {
         display: none;
     }
@@ -44,15 +49,23 @@
         background-image: url(../images/introBtnJ.png); 
     }
     #introBtnK.pressed,
-    #introBtnJ.pressed {background-position: center -52px;}
+    #introBtnJ.pressed {background-position: center -63px;}
     
 
     #instructionsTxt0 {
-        top: 180px;
+        top: 182px;
     }
-    #instructionsTxt4 {
+    
+    #instructionsTxt3.paused,#instructionsTxt4.paused{
+        transform: translate(-50%, -50%) scale(1.4) rotate(-1deg)
+    }
+    #instructionsTxt4{
         line-height: 1em;
-        top: 175px;
+        top: 170px;
+    }
+    #instructionsTxt4.paused {
+        top: 215px;
+        left: 770px;
     }
 }
 @media screen and (min-height: 550px) {

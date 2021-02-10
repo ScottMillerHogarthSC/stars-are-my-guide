@@ -5,7 +5,7 @@ var isCheat = false;
 
 
 
-var container,jumpingtxt,speechtxt,audio,oww,pointstxt,points=0;
+var container,controllerWrap,jumpingtxt,speechtxt,audio,oww,pointstxt,points=0;
 var body = document.body,
 html = document.documentElement;
 var pageHeight = Math.max( body.scrollHeight, body.offsetHeight, 
@@ -83,6 +83,7 @@ function init()
 
     // main content
     container = document.getElementById("container");
+    controllerWrap = document.getElementById("controllerWrap");
     jumpingtxt = document.getElementById("jumpingtxt");
     speechtxt = document.getElementById("speechtxt");
     pointstxt = document.getElementById("pointstxt");
@@ -182,16 +183,16 @@ function loadedAudio(){
         
         container.style.display = "block";
     
-        container.addEventListener('touchend', playIntroScreen);
-        container.addEventListener('click', playIntroScreen);
+        controllerWrap.addEventListener('touchend', playIntroScreen);
+        controllerWrap.addEventListener('click', playIntroScreen);
         document.body.addEventListener('keypress', playIntroScreen);
     }
 }
 
 
 function introBindShowSkip(){
-    container.addEventListener('touchend', introShowSkip);
-    container.addEventListener('click', introShowSkip);
+    controllerWrap.addEventListener('touchend', introShowSkip);
+    controllerWrap.addEventListener('click', introShowSkip);
     document.body.addEventListener('keypress', introShowSkip);
 
     btns.addEventListener('touchstart', mobileBtnDoNothing);
@@ -199,8 +200,8 @@ function introBindShowSkip(){
 }
 
 function introShowSkip() {
-    container.removeEventListener('touchend', introShowSkip);
-    container.removeEventListener('click', introShowSkip);
+    controllerWrap.removeEventListener('touchend', introShowSkip);
+    controllerWrap.removeEventListener('click', introShowSkip);
     document.body.removeEventListener('keypress', introShowSkip);
 
     gsap.to(skipIntro,0,{display:"block"});
@@ -216,8 +217,8 @@ var introPlaying = false;
 function playIntroScreen() {
 
 
-    container.removeEventListener('touchend', playIntroScreen);
-    container.removeEventListener('click', playIntroScreen);
+    controllerWrap.removeEventListener('touchend', playIntroScreen);
+    controllerWrap.removeEventListener('click', playIntroScreen);
     document.body.removeEventListener('keypress', playIntroScreen);
 
 
@@ -341,8 +342,8 @@ function introPlayed(slowly) {
     gsap.killTweensOf(introBindShowSkip);
     tlIntroScreen.pause();
 
-    container.removeEventListener('touchend', introShowSkip);
-    container.removeEventListener('click', introShowSkip);
+    controllerWrap.removeEventListener('touchend', introShowSkip);
+    controllerWrap.removeEventListener('click', introShowSkip);
     document.body.removeEventListener('keypress', introShowSkip);
 
 
@@ -745,6 +746,10 @@ function startGame(ev,didAutoPlay){
         tlIntroScreen.pause();
 
         gsap.to("#mobileControls",0,{className:""});
+
+        gsap.from("#mobileControls",3,{autoAlpha:0},"<1")
+        gsap.to("#mobileControls",0,{display:"block"},"<");
+
         gsap.to([introScreen,btnOption],0,{display:"none"});
 
         gsap.to("#tilt",0,{y:0});
@@ -921,7 +926,7 @@ function showIntructions(){
             .to(instructionsTxt4,0,{autoAlpha:0},"+=4")
             .add(playObstaclesTL,">")
             .from("#mobileControls",3,{autoAlpha:0},"<1")
-            .to("#mobileControls",0,{display:"block"},"<")
+            .to("#mobileControls",0,{display:"block"},"<");
 
     } else {
         playObstaclesTL();
@@ -948,6 +953,8 @@ function gamePause() {
     tlramp.pause();
     tlhair.pause();
 
+    gsap.set(lyricstxt,{autoAlpha:0});
+
     $('#rider').removeClass('riderBounce');
     $('#rider').removeClass('riderFly');
     $('#shadow').removeClass('shadowBounce');
@@ -959,10 +966,11 @@ function gamePause() {
 
     jumpingtxt.innerHTML="paused";
     gsap.set(pausedtxt,{autoAlpha:1});
+
+
+    gsap.set(controller,{className:"pulseController"});
     
-    gsap.to(instructionsTxt3,0, { top:256, left:340 });
-    gsap.to(instructionsTxt4, 0, { top:240, left:650 });
-    gsap.set([instructionsTxt3,instructionsTxt4], {autoAlpha:1,scale:1 });
+    gsap.set([instructionsTxt3,instructionsTxt4], {className:"copy instructionsTxt instructionsTxtButt hidden paused" });
 
 
     unBindButtons_gamePlay();
@@ -1009,6 +1017,12 @@ function gameResume(ev) {
 
         gsap.delayedCall(1,detectCollision);
     } else {
+
+        // reumsing after pause: 
+        gsap.set(controller,{className:""});
+        gsap.set([instructionsTxt3,instructionsTxt4], {className:"copy instructionsTxt instructionsTxtButt hidden" });
+
+        gsap.set(lyricstxt,{autoAlpha:1});
         gsap.delayedCall(0.01,detectCollision);
     }
     collideAll="";
@@ -1050,8 +1064,8 @@ function gameResume(ev) {
     
     
     gsap.set(pausedtxt,{autoAlpha:0});
-    gsap.set([instructionsTxt3],{top:217,left:"50%",scale:2,autoAlpha:0});
-    gsap.set([instructionsTxt4],{top:175,left:"50%",scale:2,autoAlpha:0});
+    
+    
 
     BindButtons_gamePlay();
 }               
@@ -1758,57 +1772,49 @@ function tlMainGameComplete() {
 
 function setWarningTxt(txt){
     // console.log('setWarningTxt')
-    var warningtxtTl = gsap.timeline();
+    warningtxt.className = "copy hidden "+txt;
+
+    var warningtxtTl = gsap.timeline({onComplete:function(){
+        warningtxt.className = "copy hidden";
+    }});
     switch(txt) {
         case "down":
-            warningtxt.innerHTML="<<";
+            warningtxt.innerHTML="<div><<</div>";
             warningtxtTl.addLabel('warningtxtDown')
-                .to("#warningtxt",0,{rotationZ:-90,rotationY:150,z:0,scaleX:4,scaleY:5},"<")
-                .to("#warningtxt",{autoAlpha:1},"<")
-                .to("#warningtxt",0.3,{z:10,ease:Linear.easeNone,repeat:3},"<")
-                .to("#warningtxt",0,{autoAlpha:0,rotationZ:0,rotationY:0,z:0,scaleX:2,scaleY:2},">");
+                .to("#warningtxt",0,{autoAlpha:1},"<")
+                .to("#warningtxt",0,{autoAlpha:0},">1");
         break;
         case "up":
-            warningtxt.innerHTML=">>";
+            warningtxt.innerHTML="<div>>></div>";
             warningtxtTl.addLabel('warningtxtUp')
-                .to("#warningtxt",0,{rotationZ:-90,rotationY:150,z:0,scaleX:4,scaleY:5},"<")
-                .to("#warningtxt",{autoAlpha:1},"<")
-                .to("#warningtxt",0.3,{z:-10,ease:Linear.easeNone,repeat:3},"<")
-                .to("#warningtxt",0,{autoAlpha:0,rotationZ:0,rotationY:0,z:0,scaleX:2,scaleY:2},">");
+                .to("#warningtxt",0,{autoAlpha:1},"<")
+                .to("#warningtxt",0,{autoAlpha:0},">1");
         break;
         case "updown":
             warningtxt.innerHTML="<span class='arrowUp'></span><span class='arrowDown'></span><span class='arrowUp'></span><span class='arrowDown'></span>";
             warningtxtTl.addLabel('warningtxtS')
-                .to("#warningtxt",0,{x:-60,z:0,scaleX:4,scaleY:3},"<")
                 .to("#warningtxt", 0, {autoAlpha:1},"<")
                 .to("#warningtxt span", 0, {autoAlpha:0},"<")
                 .staggerTo("#warningtxt span",0.3,{autoAlpha:1,stagger:0.2},"<")
-                .staggerTo("#warningtxt span", 0, {autoAlpha:0,stagger:0.2},"<.5")
-                .to("#warningtxt",0,{autoAlpha:0,scaleX:2,scaleY:2},">4");
+                .staggerTo("#warningtxt span", 0, {autoAlpha:0,stagger:0.2},"<.5");
         break;
         case "asteroid":
             warningtxt.innerHTML=">|";
             warningtxtTl.addLabel('warningtxtAsteroid')
-                .to("#warningtxt",0,{rotation:90,scaleY:2,scaleX:2},"<")
-                .to("#warningtxt",0.1,{autoAlpha:1,yoyo:true,repeat:9},"<")
-                .to("#warningtxt",0,{autoAlpha:0,y:0,rotation:0,scaleY:2,scaleX:2},"+=1");
+            .to("#warningtxt",0.1,{autoAlpha:1,yoyo:true,repeat:9},"<")
+            .to("#warningtxt",0,{autoAlpha:0},">1");
         break;
         case "hole":
             warningtxt.innerHTML="<div>@</div>";
             warningtxtTl.addLabel('warningtxtHole')
-                .to("#warningtxt",0,{rotationZ:90,rotationY:41,scaleX:3,scaleY:4},"<")
-                .to("#warningtxt div",2,{rotation:720,ease:Linear.easeNone},"<")
-                .to("#warningtxt",{autoAlpha:1},"<")
-                .to("#warningtxt",1,{autoAlpha:0},".5")
-                .to("#warningtxt",0,{y:0,rotationZ:0,rotationY:0,scaleX:2,scaleY:2},">")
-                .to("#warningtxt div",0,{rotation:0},">");
+                .to("#warningtxt",0,{autoAlpha:1},"<")
+                .to("#warningtxt",1,{autoAlpha:0},">1");
         break;
         case "ramp":
-            warningtxt.innerHTML=">>>>";
+            warningtxt.innerHTML="<div>>>>></div>";
             warningtxtTl.addLabel('warningtxtRamp')
-                .to("#warningtxt",{autoAlpha:1,scaleX:2,scaleY:2},"<")
-                .to("#warningtxt",0.3,{x:50,ease:Power1.easeIn,repeat:3},"<")
-                .to("#warningtxt",0,{autoAlpha:0,x:0,scaleX:2,scaleY:2},">");
+                .to("#warningtxt",{autoAlpha:1},"<")
+                .to("#warningtxt",1,{autoAlpha:0},">1");
         break;
     }
     
@@ -1997,8 +2003,6 @@ function highScoreEntered(e) {
 
         // share button
         shareBtn.href="mailto:everyone.i.know?&subject=amazing game by this band called primitai&body=this game made by this band primitai is absolutely brilliant, i crashed "+obstaclesHittxt.innerHTML+" times and scored "+scoretxt.innerHTML+" points: http://www.primitai.com";
-
-
 
     }
 }

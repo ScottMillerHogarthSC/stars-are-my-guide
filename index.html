@@ -144,145 +144,163 @@
             loading...  please wait.
         </div>
     </div>
-    <div id="wrap">
-        <div id="container" class="clickable">
+    <div id="wrap" class="paused">
+        <div id="controllerWrap">
+            <div id="container" class="clickable">
+                    
+                <div class="bg bgToGo" id="bgToGo1"></div>
+                <div class="bg bgToGo" id="bgToGo2"></div>
+                <div class="bg bgToGo" id="bgToGo3"></div>
                 
-            <div class="bg bgToGo" id="bgToGo1"></div>
-            <div class="bg bgToGo" id="bgToGo2"></div>
-            <div class="bg bgToGo" id="bgToGo3"></div>
-            
-            <div class="bg bgStars" id="bgStars1"></div>
-            <div class="bg bgStars" id="bgStars2"></div>
-            <div class="bg bgStars" id="bgStars3"></div>
+                <div class="bg bgStars" id="bgStars1"></div>
+                <div class="bg bgStars" id="bgStars2"></div>
+                <div class="bg bgStars" id="bgStars3"></div>
 
-            <div id="bgMountains">
-                <div class="bg bgMountains" id="bgMountains1"></div>
-                <div class="bg bgMountains" id="bgMountains2"></div>
-                <div class="bg bgMountains" id="bgMountains3"></div>
-                <div class="bg bgMountains" id="bgMountains4"></div>
-                <div class="bg bgMountains" id="bgMountains5"></div>
-                <div class="bg bgMountains" id="bgMountains6"></div>
-            </div>
-
-            
-            
-            <div class="lightning" id="lightning"></div>
-
-            <div id="introScreen">
-                <div class="copy" id="introPlay">play ></div>
-                <div id="introBG" class="hidden"></div>
-                <div id="introStars"></div>
-                <img id="introLogo" src="images/primitai-logo.png" class="intrologo hidden" />
-                <div id="introTxt01" class="copy hidden">presents</div>
-
-                <div id="introTxt05" class="copy hidden">from their 2021 album<br><span id="introTxt05a">Violence of the Skies</span></div>
-
-                <div id="introTxt02" class="copy hidden">a<br><span id="introTxt02a">@scottoftheriver</span><br><span id="introTxt02b" class="hidden">production</div>
-                
-                <div id="introTxt03" class="copy hidden">with inspiration from<br><span id="introTxt03a">Battletoads in Battlemaniacs</span><br><span id="introTxt03b" class="hidden">(SNES 1993)</span></div>
-                
-                <div id="introTxt04" class="copy hidden">licensed by</div>
-                <img id="introLogo2" src="images/roar-logo.png" class="intrologo hidden" />
-
-                
-                <div id="introTxt_volume" class="copy hidden">turn your volume up</div>
-            </div>
-            
-            <div id="tilt" class="hidden">
-
-                <img src="images/title_w.png" id="introTxtTitle" class="hidden">
-                <img src="images/primitai-intro-logo.png" id="introTxtLogo" class="hidden">
-
-
-                <img src="images/fg-intro.png" class="fg" id="fg-intro">
-                
-                <div id="fgs">
-                    <img src="images/newmoon_fg.png" class="fg fgToGo" id="fgToGo3">
-                    <img src="images/newmoon_fg.png" class="fg fgToGo" id="fgToGo1">
-                    <img src="images/newmoon_fg.png" class="fg fgToGo" id="fgToGo2">
+                <div id="bgMountains">
+                    <div class="bg bgMountains" id="bgMountains1"></div>
+                    <div class="bg bgMountains" id="bgMountains2"></div>
+                    <div class="bg bgMountains" id="bgMountains3"></div>
+                    <div class="bg bgMountains" id="bgMountains4"></div>
+                    <div class="bg bgMountains" id="bgMountains5"></div>
+                    <div class="bg bgMountains" id="bgMountains6"></div>
                 </div>
 
-                <div id="area">
+                
+                
+                <div class="lightning" id="lightning"></div>
 
-                    <div id="obstacle1" class="hidden hole obstacle">
-                        <img src="images/obstacle_hole.png" class="hole">
-                    </div>
-                    <div id="obstacle2" class="hidden rockL obstacle">
-                        <img src="images/obstacle_rock.png" class="rockL">
-                    </div>
+                <div id="introScreen">
+                    <div class="copy" id="introPlay">play ></div>
+                    <div id="introBG" class="hidden"></div>
+                    <div id="introStars"></div>
+                    <img id="introLogo" src="images/primitai-logo.png" class="intrologo hidden" />
+                    <div id="introTxt01" class="copy hidden">presents</div>
 
-                    <div id="obstacle2a" class="hidden rockL obstacle">
-                        <img src="images/obstacle_rock.png" class="rockL">
-                    </div>
+                    <div id="introTxt05" class="copy hidden">from their 2021 album<br><span id="introTxt05a">Violence of the Skies</span></div>
+
+                    <div id="introTxt02" class="copy hidden">a<br><span id="introTxt02a">@scottoftheriver</span><br><span id="introTxt02b" class="hidden">production</div>
                     
-                    <div id="obstacle3" class="hidden ramp obstacle">
-                        <img src="images/obstacle_ramp.png" class="ramp">
-                        <img src="images/obstacle_rampLong.png" class="rampLong">
+                    <div id="introTxt03" class="copy hidden">with inspiration from<br><span id="introTxt03a">Battletoads in Battlemaniacs</span><br><span id="introTxt03b" class="hidden">(SNES 1993)</span></div>
+                    
+                    <div id="introTxt04" class="copy hidden">licensed by</div>
+                    <img id="introLogo2" src="images/roar-logo.png" class="intrologo hidden" />
+
+                    
+                    <div id="introTxt_volume" class="copy hidden">turn your volume up</div>
+                </div>
+                
+                <div id="tilt" class="hidden">
+
+                    <img src="images/title_w.png" id="introTxtTitle" class="hidden">
+                    <img src="images/primitai-intro-logo.png" id="introTxtLogo" class="hidden">
+
+
+                    <img src="images/fg-intro.png" class="fg" id="fg-intro">
+                    
+                    <div id="fgs">
+                        <img src="images/newmoon_fg.png" class="fg fgToGo" id="fgToGo3">
+                        <img src="images/newmoon_fg.png" class="fg fgToGo" id="fgToGo1">
+                        <img src="images/newmoon_fg.png" class="fg fgToGo" id="fgToGo2">
                     </div>
 
-                    <div id="player" class="forwards forwards2">
-                        <div id="playerMovements">
-                            <img src="images/shadow.png" class="player shadow" id="shadow">
-                              <img src="images/car-shadow.png" class="player hidden" id="car-shadow">
-                            <div id="rider">
-                                <img src="images/carBack.png" class="player car hidden" id="carBack">
-                                <div id="car-jets2" class="car car-jets player"></div>
+                    <div id="area">
 
-                                
-                                <div id="bike-go"></div>
-                                <img src="images/rider-stopped.png" class="player" id="rider-stopped">
-                                <div id="rider-go" class="player hidden">    
-                                    <div class="rider-go"></div>
-                                    <img src="images/rider-scream.png" class="rider-scream">
-                                    <img src="images/rider-scream2.png" class="rider-scream2">
-                                    <img src="images/hair-go1.png" class="hair-go" id="hair-go1">
-                                    <img src="images/hair-go2.png" class="hair-go" id="hair-go2">
-                                    <img src="images/hair-go3.png" class="hair-go" id="hair-go3">
-                                </div>
-                                
-                                <div id="rider-jets" class="player"></div>
-
-                                <img src="images/carFront.png" class="player car hidden" id="carFront">
-                                <div id="car-jets1" class="car car-jets player"></div>
-                                
-                                <img src="images/flame.gif" class="player hidden" id="flame">
-                            </div>
-
-                                
-                            <div id="speechbub">
-                                <div id="speechtxt">...</div>
-                            </div>
+                        <div id="obstacle1" class="hidden hole obstacle">
+                            <img src="images/obstacle_hole.png" class="hole">
+                        </div>
+                        <div id="obstacle2" class="hidden rockL obstacle">
+                            <img src="images/obstacle_rock.png" class="rockL">
                         </div>
 
-                    </div>
+                        <div id="obstacle2a" class="hidden rockL obstacle">
+                            <img src="images/obstacle_rock.png" class="rockL">
+                        </div>
+                        
+                        <div id="obstacle3" class="hidden ramp obstacle">
+                            <img src="images/obstacle_ramp.png" class="ramp">
+                            <img src="images/obstacle_rampLong.png" class="rampLong">
+                        </div>
 
-                                        
-                    <div id="obstacle4" class="hidden asteroid obstacle">
-                        <img src="images/obstacle_asteroid.png" class="asteroid">
-                        <img src="images/car-shadow.png" class="asteroid-shadow" id="asteroid-shadow">
+                        <div id="player" class="forwards forwards2">
+                            <div id="playerMovements">
+                                <img src="images/shadow.png" class="player shadow" id="shadow">
+                                  <img src="images/car-shadow.png" class="player hidden" id="car-shadow">
+                                <div id="rider">
+                                    <img src="images/carBack.png" class="player car hidden" id="carBack">
+                                    <div id="car-jets2" class="car car-jets player"></div>
+
+                                    
+                                    <div id="bike-go"></div>
+                                    <img src="images/rider-stopped.png" class="player" id="rider-stopped">
+                                    <div id="rider-go" class="player hidden">    
+                                        <div class="rider-go"></div>
+                                        <img src="images/rider-scream.png" class="rider-scream">
+                                        <img src="images/rider-scream2.png" class="rider-scream2">
+                                        <img src="images/hair-go1.png" class="hair-go" id="hair-go1">
+                                        <img src="images/hair-go2.png" class="hair-go" id="hair-go2">
+                                        <img src="images/hair-go3.png" class="hair-go" id="hair-go3">
+                                    </div>
+                                    
+                                    <div id="rider-jets" class="player"></div>
+
+                                    <img src="images/carFront.png" class="player car hidden" id="carFront">
+                                    <div id="car-jets1" class="car car-jets player"></div>
+                                    
+                                    <img src="images/flame.gif" class="player hidden" id="flame">
+                                </div>
+
+                                    
+                                <div id="speechbub">
+                                    <div id="speechtxt">...</div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                                            
+                        <div id="obstacle4" class="hidden obstacleAsteroid obstacle">
+                            <img src="images/obstacle_asteroid.png" class="obstacleAsteroid">
+                            <img src="images/car-shadow.png" class="asteroid-shadow" id="asteroid-shadow">
+                        </div>
+                        <div id="obstacle5" class="hidden rockR obstacle">
+                            <img src="images/obstacle_rock2.png" class="rockR">
+                        </div>
+                        <div id="obstacle5a" class="hidden rockR obstacle">
+                            <img src="images/obstacle_rock2.png" class="rockR">
+                        </div>
+                        
                     </div>
-                    <div id="obstacle5" class="hidden rockR obstacle">
-                        <img src="images/obstacle_rock2.png" class="rockR">
-                    </div>
-                    <div id="obstacle5a" class="hidden rockR obstacle">
-                        <img src="images/obstacle_rock2.png" class="rockR">
-                    </div>
-                    
                 </div>
+                
+                <div id="bgClouds">
+                    <div class="bg bgClouds" id="bgClouds1"></div>
+                    <div class="bg bgClouds" id="bgClouds2"></div>
+                    <div class="bg bgClouds" id="bgLightning"></div>
+                    <div class="bg bgClouds" id="bgClouds3"></div>
+                </div>
+                
+                
+
+
+
+
+
+
+                <div id="flyPast">
+                    <div id="flyPast-jets"></div>
+                    <div id="flyPast-fzero"></div>
+                    <div id="flyPast-sergio"></div>
+                    <div id="flyPast-toad">
+                        <img src="images/shadow.png" id="toad-shadow">
+                    </div>
+                </div>
+                
+                <div id="jumpingtxt" class="jumpingtxt hidden">...</div>
+                <div id="cheatstxt"></div>
+                <div id="pointstxt" class="pointstxt hidden">0</div>
             </div>
-            
-            <div id="bgClouds">
-                <div class="bg bgClouds" id="bgClouds1"></div>
-                <div class="bg bgClouds" id="bgClouds2"></div>
-                <div class="bg bgClouds" id="bgLightning"></div>
-                <div class="bg bgClouds" id="bgClouds3"></div>
-            </div>
-            
-            
-
-
-
-
+            <img src="images/snes-controller.png" id="controller">
+                
 
 
             <div id="copyWrap">
@@ -368,19 +386,6 @@
                 </div>
             </div>
 
-            <div id="flyPast">
-                <div id="flyPast-jets"></div>
-                <div id="flyPast-fzero"></div>
-                <div id="flyPast-sergio"></div>
-                <div id="flyPast-toad">
-                    <img src="images/shadow.png" id="toad-shadow">
-                </div>
-            </div>
-            
-            <div id="jumpingtxt" class="jumpingtxt hidden">...</div>
-            <div id="cheatstxt"></div>
-            <div id="pointstxt" class="pointstxt hidden">0</div>
-
             <div id="mobileControls" class="off">
                 <div id="mobilePause"></div>
                 <div id="btnsMove" class="mobileControl">
@@ -397,8 +402,6 @@
             </div>
 
             <button id="skipIntro">skip intro</button>
-
-
 
 
         </div>
