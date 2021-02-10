@@ -919,7 +919,9 @@ function showIntructions(){
 
             .to(instructionsTxt4,0,{autoAlpha:1},"<.75")
             .to(instructionsTxt4,0,{autoAlpha:0},"+=4")
-            .add(playObstaclesTL,">");
+            .add(playObstaclesTL,">")
+            .from("#mobileControls",3,{autoAlpha:0},"<1")
+            .to("#mobileControls",0,{display:"block"},"<")
 
     } else {
         playObstaclesTL();
