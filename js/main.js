@@ -14,6 +14,7 @@ html.clientHeight, html.scrollHeight, html.offsetHeight );
 var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 
 var btnMoveUp, btnMoveForwards, btnMoveBackwards, btnMoveDown, btnJump, btnOption, replayBtn, shareBtn;
+var mobileControls;
 
 var tlIntroScreen = gsap.timeline(),
     tlintro = gsap.timeline(),
@@ -97,6 +98,8 @@ function init()
     audio = document.getElementById("audio");
     // oww = document.getElementById("oww");
     
+
+    mobileControls = document.getElementById("mobileControls");
     btnMoveUp = document.getElementById("btnMoveUp");
     btnMoveForwards = document.getElementById("btnMoveForwards");
     btnMoveBackwards = document.getElementById("btnMoveBackwards");
@@ -340,7 +343,7 @@ function introPlayed(slowly) {
 
     showTitles(slowly);
 
-    gsap.to(mobileControls,0,{className:"pulseMobileControls"});
+    gsap.to("#mobileControls",0,{className:"pulseMobileControls"});
     gsap.to(skipIntro,0,{display:"none"});
     // reset intro stuff:
     gsap.to(["#bgStars1","#bgToGo3"],0,{scale:1});
@@ -458,6 +461,10 @@ function BindButtons_gamePlay(){
     // remove StartGame Event Listeners 
     unBindButtons_startGame();
     unBindButtons_gameResume();
+
+            mobileControls.addEventListener("touchstart", mobileBtnDoNothing);
+            mobileControls.addEventListener("touchend", mobileBtnDoNothing);
+
 
 
         // unbind the "do nothing" events of mobile buttons:
@@ -640,6 +647,7 @@ function keypress(e){
 
                 keyDown = "J";
                 $('#introBtnJ').addClass('pressed');
+                $('#btns').addClass('pressedWheelie');
             }
         }
         else if(e.code=="KeyK") {
@@ -650,6 +658,7 @@ function keypress(e){
 
                 keyDown = "K";
                 $('#introBtnK').addClass('pressed');
+                $('#btns').addClass('pressedJump');
             }
         }
         else if(e.code=="KeyD") {
@@ -658,6 +667,7 @@ function keypress(e){
 
                 keyDown = "D";
                 $('#introBtn').addClass('pressedD');
+                $('#btnsMove').addClass('forwards');
             }
         }
         else if(e.code=="KeyA") {            
@@ -666,12 +676,14 @@ function keypress(e){
 
                 keyDown = "A";
                 $('#introBtn').addClass('pressedA');
+                $('#btnsMove').addClass('backwards');
             }
         }
         else if(e.code=="KeyW") {
             if(keyDown!="W"){
                 upwards();
                 $('#introBtn').addClass('pressedW');
+                $('#btnsMove').addClass('up');
 
                 keyDown="W";
             }
@@ -680,6 +692,7 @@ function keypress(e){
             if(keyDown!="S"){
                 downwards();
                 $('#introBtn').addClass('pressedS');
+                $('#btnsMove').addClass('down');
 
                 keyDown="S";
             }
@@ -695,6 +708,9 @@ function keyUp(){
     keyDown = "";
 
     $('#introBtn,#introBtnK,#introBtnJ').removeClass();
+    $('#btnsMove').removeClass('backwards').removeClass('forwards').removeClass('up').removeClass('down');
+    $('#btns').removeClass('pressedWheelie');
+    $('#btns').removeClass('pressedJump');
 }
 
 
@@ -718,7 +734,7 @@ function startGame(ev,didAutoPlay){
 
         tlIntroScreen.pause();
 
-        gsap.to(mobileControls,0,{className:""});
+        gsap.to("#mobileControls",0,{className:""});
         gsap.to([introScreen,btnOption],0,{display:"none"});
 
         gsap.to("#tilt",0,{y:0});
@@ -1822,6 +1838,8 @@ function playEnding(){
     tlMainGame.pause();
 
     gsap.set([pointstxt,jumpingtxt],{autoAlpha:0});
+    gsap.to([".mobileControl"],0,{display:"none"});
+
 
     
     $('#shadow').removeClass('shadowBounce');
@@ -1961,9 +1979,9 @@ function highScoreEntered(e) {
 
         $("#highscorestxt").html(highScoreListLower);
         
-        gsap.to(["#mobileControls"],0,{display:"none"});
         gsap.to(["#highscorestxt","#endScreenBtns"],0,{autoAlpha:1});
         gsap.to(["#endScreenBtns"],0,{display:"block"});
+        gsap.to(["#mobileControls"],0,{display:"none"});
 
         // share button
         shareBtn.href="mailto:everyone.i.know?&subject=amazing game by this band called primitai&body=this game made by this band primitai is absolutely brilliant, i crashed "+obstaclesHittxt.innerHTML+" times and scored "+scoretxt.innerHTML+" points: http://www.primitai.com";

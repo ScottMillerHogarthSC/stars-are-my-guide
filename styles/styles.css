@@ -1087,7 +1087,7 @@ div.rampLong img.rampLong {
     background-position-y: 101%;
 }
 #btnsMove.up{
-    background-position-y: 76%;
+    background-position-y: -459px;
     height: 147px;
 }
 #btnsMove.forwards{
