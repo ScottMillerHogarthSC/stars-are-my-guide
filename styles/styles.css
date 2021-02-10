@@ -640,7 +640,7 @@ div.rampLong img.rampLong {
     z-index: 1;
 }
 #instructionsTxt4 {
-    top: 225px;
+    top: 235px;
     z-index: 1;
     line-height: 3em;
 }
@@ -1038,7 +1038,7 @@ div.rampLong img.rampLong {
     height: 100%;
     z-index: 100;
     padding: 0;
-    opacity: .5;
+    opacity: .7;
     /*filter: invert(1);*/
     user-select: none;
 }
@@ -1047,9 +1047,14 @@ div.rampLong img.rampLong {
 }
 @keyframes pulseMobileControls {
     0% { opacity: 0 }
-    50% { opacity: .4 }
+    50% { opacity: .7 }
     100% { opacity: 0 }
 
+}
+#mobilePause {
+    position: absolute;
+    width: 100%;
+    height: 220px;
 }
 #mobileControls.optionsShowing,
 #mobileControls.off{
