@@ -14,7 +14,7 @@ html.clientHeight, html.scrollHeight, html.offsetHeight );
 var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 
 var btnMoveUp, btnMoveForwards, btnMoveBackwards, btnMoveDown, btnJump, btnOption, replayBtn, shareBtn;
-var mobileControls;
+var mobileControls, btns, mobilePause;
 
 var tlIntroScreen = gsap.timeline(),
     tlintro = gsap.timeline(),
@@ -99,6 +99,8 @@ function init()
     // oww = document.getElementById("oww");
     
 
+    btns = document.getElementById("btns");
+    mobilePause = document.getElementById("mobilePause");
     mobileControls = document.getElementById("mobileControls");
     btnMoveUp = document.getElementById("btnMoveUp");
     btnMoveForwards = document.getElementById("btnMoveForwards");
@@ -192,6 +194,8 @@ function introBindShowSkip(){
     container.addEventListener('click', introShowSkip);
     document.body.addEventListener('keypress', introShowSkip);
 
+    btns.addEventListener('touchstart', mobileBtnDoNothing);
+    btns.addEventListener('touchend', mobileBtnDoNothing);
 }
 
 function introShowSkip() {
@@ -364,6 +368,9 @@ function BindButtons_gameResume(){
     
     btnWheelie.addEventListener('touchend', gameResume);
     document.body.addEventListener('keypress', gameResume);
+
+    mobileControls.removeEventListener("touchstart", mobileBtnDoNothing);
+    mobileControls.removeEventListener("touchend", mobileBtnDoNothing);
 }
 
 function unBindButtons_gameResume(){
@@ -466,6 +473,8 @@ function BindButtons_gamePlay(){
             mobileControls.addEventListener("touchstart", mobileBtnDoNothing);
             mobileControls.addEventListener("touchend", mobileBtnDoNothing);
 
+            mobilePause.addEventListener("touchstart", gamePause);
+
 
 
         // unbind the "do nothing" events of mobile buttons:
@@ -547,13 +556,13 @@ function unBindButtons_gamePlay(){
             btnMoveUp.addEventListener("touchstart", mobileBtnDoNothing);
             btnMoveForwards.addEventListener("touchstart", mobileBtnDoNothing);
             btnMoveBackwards.addEventListener("touchstart", mobileBtnDoNothing);
-            btnJump.addEventListener("touchstart", mobileBtnPressed);
+            btnJump.addEventListener("touchstart", mobileBtnDoNothing);
             btnWheelie.addEventListener("touchstart", mobileBtnDoNothing);
 
             btnMoveUp.addEventListener("touchend", mobileBtnDoNothing);
             btnMoveForwards.addEventListener("touchend", mobileBtnDoNothing);
             btnMoveBackwards.addEventListener("touchend", mobileBtnDoNothing);
-            btnJump.addEventListener("touchend", mobileBtnPressed);
+            btnJump.addEventListener("touchend", mobileBtnDoNothing);
             btnWheelie.addEventListener("touchend", mobileBtnDoNothing);
 }
 
