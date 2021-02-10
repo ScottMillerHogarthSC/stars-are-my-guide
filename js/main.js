@@ -280,6 +280,7 @@ function playIntroScreen() {
         .to(introTxt03a,0,{autoAlpha:0,ease:Linear.easeNone},"<")
         .call(typeText,["#introTxt03a",2],"<1")
         .to(introTxt03a,3,{autoAlpha:1,ease:Linear.easeNone},"<")
+        .to(introTxt03b,3,{autoAlpha:1,ease:Linear.easeNone},"<1")
         .to([introTxt03],0.5,{autoAlpha:0,ease:Linear.easeNone},">1")
 
         .to([introTxt04],3,{autoAlpha:1,ease:Linear.easeNone},">")

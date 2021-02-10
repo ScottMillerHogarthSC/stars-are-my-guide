@@ -573,7 +573,7 @@ div.rampLong img.rampLong {
     position: relative;
 }
 #introBtn {
-    background-image: url(../images/mobileControls.gif); 
+    background-image: url(../images/mobileControls.png); 
     background-size: 100% auto;
     background-position: center top;
     height: 52px;
@@ -1070,7 +1070,7 @@ div.rampLong img.rampLong {
     left: 6px;
     width: 150px;
     height: 150px;
-    background-image: url(../images/mobileControls.gif);
+    background-image: url(../images/mobileControls.png);
     background-size: 100% auto;
     background-position: 0 0;
     -webkit-touch-callout: none;
@@ -1082,6 +1082,8 @@ div.rampLong img.rampLong {
 }
 #btnsMove.backwards{
     background-position-y: 52%;
+    left: 8px;
+    bottom: 8px;
 }
 #btnsMove.down{
     background-position-y: 101%;
