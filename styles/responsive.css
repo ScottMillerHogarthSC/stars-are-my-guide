@@ -8,11 +8,16 @@
     position: absolute;
 }
 @media screen and (min-width: 1088px) and (min-height: 666px) {
-    #controller.pulseController {
-        display: block;
+    #controller {
+        max-width: 1140px;
+        max-height: 890px;
+        top: -321px;
+        left: -112px;
+        background-position: center;
+        transform: none;
     }
-/*}
-@media screen and (min-width: 982px) {*/
+}
+@media screen and (min-width: 982px) {
     #mobileControls {
         display: none;
     }
@@ -49,7 +54,7 @@
         background-image: url(../images/introBtnJ.png); 
     }
     #introBtnK.pressed,
-    #introBtnJ.pressed {background-position: center -63px;}
+    #introBtnJ.pressed {background-position: center -51px;}
     
 
     #instructionsTxt0 {
