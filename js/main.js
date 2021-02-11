@@ -549,7 +549,9 @@ function unBindButtons_gamePlay(){
             btnWheelie.removeEventListener("touchend", mobileBtnReleased);
 
             
-    // bind the mobile buttons to do nothing! (except down as that is in use)
+            mobilePause.removeEventListener("touchstart", gamePause);
+
+    // bind the mobile buttons to do nothing! 
             btnsMove.addEventListener("touchstart", mobileBtnDoNothing);
             btnsMove.addEventListener("touchend", mobileBtnDoNothing);
 
@@ -1839,6 +1841,9 @@ function fgTimeLineComplete() {
 function playEnding(){
     endingPlayed=true;
 
+    unBindButtons_gamePlay();
+    unBindButtons_gameResume();
+
     
     // play ending!!
     gsap.killTweensOf(detectCollision);
@@ -1931,9 +1936,6 @@ function tlEndingComplete(){
     });
 
     
-
-    unBindButtons_gamePlay();
-    unBindButtons_gameResume();
 
     document.getElementById('initialstxt').addEventListener('keypress',highScoreEntered);
 

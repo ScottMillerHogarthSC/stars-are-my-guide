@@ -30,7 +30,7 @@ body{
     overflow: hidden;
 }
 #controller{
-    width: 1140px;
+    width: 1145px;
     height: 890px;
     position: absolute;
     top: 50%;
@@ -38,8 +38,8 @@ body{
     transform: translate(-50%, -50%);
     display: none;
     background-image: url(../images/snes-controller.png);
-    background-size: 1140px 890px;
-    background-position: -116px -320px;
+    background-size: 1145px 890px;
+    background-position: -115px -316px;
     max-width: 970px;
     max-height: 475px;
 }
