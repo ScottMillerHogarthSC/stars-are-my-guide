@@ -191,7 +191,8 @@
                 
                 <div id="tilt" class="hidden">
 
-                    <img src="images/title_w.png" id="introTxtTitle" class="hidden">
+                    <!-- <img src="images/title_w.png" id="introTxtTitle" class="hidden"> -->
+                    <img src="images/title_px.png" id="introTxtTitle" class="hidden">
                     <img src="images/primitai-intro-logo.png" id="introTxtLogo" class="hidden">
 
 
@@ -221,7 +222,7 @@
                             <img src="images/obstacle_rampLong.png" class="rampLong">
                         </div>
 
-                        <div id="player" class="forwards forwards2">
+                        <div id="player" class="forwards forwards_start">
                             <div id="playerMovements">
                                 <img src="images/shadow.png" class="player shadow" id="shadow">
                                   <img src="images/car-shadow.png" class="player hidden" id="car-shadow">
@@ -304,14 +305,14 @@
 
 
             <div id="copyWrap">
-                <div id="instructionsTxt0" class="instructionsTxtButt hidden copy">press <span id="introBtnS"></span> to start</div>
+                <div id="instructionsTxt0" class="instructionsTxtButt hidden copy">press<span class="instructions_desktop">&nbsp;<img src="images/introBtnS.png"> to</span> start</div>
 
-                <div id="instructions_optionsTxt" class="instructionsTxtButt hidden copy">or <img id="introBtnOptions" src="images/introBtnO.png"> for options</div>
+                <div id="instructions_optionsTxt" class="instructionsTxtButt hidden copy">or<span class="instructions_desktop">&nbsp;<img src="images/introBtnO.png"></span> <span class="instructions_mobile">select</span> for options</div>
 
                 <div id="gameover" class="copy hidden">game over</div>
                 <div id="warningtxt" class="copy hidden"></div>
                 <div id="pausedtxt" class="copy hidden">paused</div>
-                <div id="resumetxt" class="copy hidden">press <span id="introBtnS"></span> to continue</div>
+                <div id="resumetxt" class="copy hidden"><span class="instructions_desktop">press <img src="images/introBtnS.png"> to&nbsp;</span>continue<span class="instructions_mobile">?</span></div>
                 
                 <div id="instructionsTxt3" class="copy instructionsTxt instructionsTxtButt hidden">use <span id="introBtn"></span> to move</div>
                 <div id="instructionsTxt4" class="copy instructionsTxt instructionsTxtButt hidden">use <span id="introBtnK"></span> to jump<br>use <span id="introBtnJ"></span> to wheelie</div>
@@ -388,13 +389,17 @@
 
             <div id="mobileControls" class="off">
                 <div id="mobilePause"></div>
+                <div id="mobilePause2"></div>
                 <div id="btnsMove" class="mobileControl">
                     <button id="btnMoveUp" class="btnMove" />
                     <button id="btnMoveForwards" class="btnMove" />
                     <button id="btnMoveBackwards" class="btnMove" />
                     <button id="btnMoveDown" class="btnMove" />
                 </div>
-                <button id="btnOption" class="mobileControl"></button>
+                <div id="start-select" class="mobileControl">
+                    <button id="btnOption" class="mobileControl"></button>
+                    <button id="btnStart" class="mobileControl"></button>
+                </div>
                 <div id="btns" class="mobileControl">
                     <button id="btnJump" class="mobileControl" />
                     <button id="btnWheelie" class="mobileControl" />

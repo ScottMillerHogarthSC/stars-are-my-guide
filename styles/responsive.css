@@ -23,7 +23,12 @@
     }
     #introBtnS {
         background-image: url('../images/introBtnS.png');
+        width: 26px;
         height: 50px;
+        display: inline-block;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: bottom;
         vertical-align: text-bottom;
         background-size: contain;
     }
@@ -43,8 +48,8 @@
     #introBtnK,
     #introBtnJ {
         vertical-align: text-bottom;
-        width: 26px;
-        height: 52px;
+        width: 24px;
+        height: 24px;
         background-repeat: no-repeat;
     }
     #introBtnK{
@@ -54,23 +59,51 @@
         background-image: url(../images/introBtnJ.png); 
     }
     #introBtnK.pressed,
-    #introBtnJ.pressed {background-position: center -51px;}
+    #introBtnJ.pressed {background-position: center 100%;}
     
 
     #instructionsTxt0 {
-        top: 182px;
+        top: 213px;
+    }
+    #instructions_optionsTxt {
+        top: 275px;
+    }
+    .instructions_desktop {
+        display: inline-block;
+    }
+    .instructions_mobile {
+        display: none;
+    }
+    .instructions_desktop img{
+        vertical-align: text-bottom;
+        width:24px;
     }
     
     #instructionsTxt3.paused,#instructionsTxt4.paused{
         transform: translate(-50%, -50%) scale(1.4) rotate(-1deg)
     }
+    #instructionsTxt4.paused {
+        left: 730px;
+        top: 238px;
+        width: 290px;
+    }
+    #instructionsTxt4.paused,
+    #instructionsTxt3.paused {
+        opacity: 1!important;
+        visibility: visible!important;
+    }
     #instructionsTxt4{
-        line-height: 1em;
-        top: 170px;
+        line-height: 2em;
+        top: 221px;
     }
     #instructionsTxt4.paused {
-        top: 215px;
+        top: 232px;
         left: 770px;
+    }
+    #resumetxt {
+        top: 345px;
+        transform: translate(-50%,-50%) scale(2);
+        text-shadow: 0 0 8px black;
     }
 }
 @media screen and (min-height: 550px) {

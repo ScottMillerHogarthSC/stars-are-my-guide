@@ -13,8 +13,8 @@ html.clientHeight, html.scrollHeight, html.offsetHeight );
 
 var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 
-var btnMoveUp, btnMoveForwards, btnMoveBackwards, btnMoveDown, btnJump, btnOption, replayBtn, shareBtn;
-var mobileControls, btns, mobilePause;
+var btnMoveUp, btnMoveForwards, btnMoveBackwards, btnMoveDown, btnJump, btnOption, btnStart, replayBtn, shareBtn;
+var mobileControls, btns, mobilePause, mobilePause2, startSelect;
 
 var tlIntroScreen = gsap.timeline(),
     tlintro = gsap.timeline(),
@@ -102,6 +102,8 @@ function init()
 
     btns = document.getElementById("btns");
     mobilePause = document.getElementById("mobilePause");
+    mobilePause2 = document.getElementById("mobilePause2");
+    startSelect = document.getElementById("start-select");
     mobileControls = document.getElementById("mobileControls");
     btnMoveUp = document.getElementById("btnMoveUp");
     btnMoveForwards = document.getElementById("btnMoveForwards");
@@ -109,6 +111,8 @@ function init()
     btnMoveDown = document.getElementById("btnMoveDown");
     btnJump = document.getElementById("btnJump");
     btnOption = document.getElementById("btnOption");
+    btnStart = document.getElementById("btnStart");
+
     
     resizeWindow();
 
@@ -168,7 +172,7 @@ function loadedAudio(){
     
     
         $(document).on('show.visibility', function() {
-            if(tlbg.isActive() || introPlaying && !endingComplete){
+            if((tlbg.isActive() || introPlaying) && !endingComplete){
                 audio.play();    
             }
         });
@@ -197,6 +201,7 @@ function introBindShowSkip(){
 
     btns.addEventListener('touchstart', mobileBtnDoNothing);
     btns.addEventListener('touchend', mobileBtnDoNothing);
+    startSelect.addEventListener('touchend', mobileBtnDoNothing);
 }
 
 function introShowSkip() {
@@ -367,17 +372,43 @@ function introPlayed(slowly) {
 function BindButtons_gameResume(){
     // console.log("BindButtons_gameResume");
     
-    btnWheelie.addEventListener('touchend', gameResume);
-    document.body.addEventListener('keypress', gameResume);
+    // bind buttons to make gameplay resume:
 
-    mobileControls.removeEventListener("touchstart", mobileBtnDoNothing);
-    mobileControls.removeEventListener("touchend", mobileBtnDoNothing);
+        btnWheelie.addEventListener('touchend', gameResume);
+        btnJump.addEventListener('touchend', gameResume);
+
+        btnWheelie.addEventListener('click', gameResume);
+        btnJump.addEventListener('click', gameResume);
+
+        mobilePause.addEventListener("touchend", gameResume);
+        mobilePause2.addEventListener("touchend", gameResume);
+
+        mobilePause.addEventListener("click", gameResume);
+        mobilePause2.addEventListener("click", gameResume);
+        
+        document.body.addEventListener('keypress', gameResume);
+
+
+        // stop mobile controls area doing nothing: [todo] is this necessary?
+        mobileControls.removeEventListener("touchstart", mobileBtnDoNothing);
+        mobileControls.removeEventListener("touchend", mobileBtnDoNothing);
 }
 
 function unBindButtons_gameResume(){
     // console.log("unBindButtons_gameResume");
 
     btnWheelie.removeEventListener('touchend', gameResume);
+    btnJump.removeEventListener('touchend', gameResume);
+
+    btnWheelie.removeEventListener('click', gameResume);
+    btnJump.removeEventListener('click', gameResume);
+
+    mobilePause.removeEventListener("touchend", gameResume);
+    mobilePause2.removeEventListener("touchend", gameResume);
+
+    mobilePause.removeEventListener("click", gameResume);
+    mobilePause2.removeEventListener("click", gameResume);
+    
     document.body.removeEventListener('keypress', gameResume);
 }
 
@@ -385,6 +416,7 @@ function BindButtons_startGame(){
     // console.log("BindButtons_startGame");
 
      // mobile
+    btnStart.addEventListener('touchend', startGame);
     btnWheelie.addEventListener('touchend', startGame);
     btnOption.addEventListener('touchend', showOptions);
 
@@ -422,7 +454,11 @@ function introScreenBtnPressed(e){
 
 
 
-function showOptions(){
+function showOptions(ev){
+    if(ev.cancelable) {
+        ev.preventDefault();
+    }
+
     btnOption.removeEventListener('touchend',showOptions);
     unBindButtons_startGame();
 
@@ -460,6 +496,7 @@ function unBindButtons_startGame(){
     // console.log("unBindButtons_startGame");
 
     btnWheelie.removeEventListener('touchend', startGame);
+    btnStart.removeEventListener('touchend', startGame);
     document.body.removeEventListener('keypress', startGame);
 }
 
@@ -471,11 +508,16 @@ function BindButtons_gamePlay(){
     unBindButtons_startGame();
     unBindButtons_gameResume();
 
+        // stop unwanted touches of button area:
             mobileControls.addEventListener("touchstart", mobileBtnDoNothing);
             mobileControls.addEventListener("touchend", mobileBtnDoNothing);
 
-            mobilePause.addEventListener("touchstart", gamePause);
+        // add mobile Pause:
+            mobilePause.addEventListener("touchend", gamePause);
+            mobilePause2.addEventListener("touchend", gamePause);
 
+            mobilePause.addEventListener("click", gamePause);
+            mobilePause2.addEventListener("click", gamePause);
 
 
         // unbind the "do nothing" events of mobile buttons:
@@ -483,17 +525,28 @@ function BindButtons_gamePlay(){
             btnsMove.removeEventListener("touchend", mobileBtnDoNothing);
 
 
+        // remove "do nothing" from all mobile buttons:
             btnMoveUp.removeEventListener("touchstart", mobileBtnDoNothing);
-            btnMoveForwards.removeEventListener("touchstart", mobileBtnDoNothing);
-            btnMoveBackwards.removeEventListener("touchstart", mobileBtnDoNothing);
-            btnJump.removeEventListener("touchstart", mobileBtnPressed);
-            btnWheelie.removeEventListener("touchstart", mobileBtnDoNothing);
-
             btnMoveUp.removeEventListener("touchend", mobileBtnDoNothing);
+            btnMoveForwards.removeEventListener("touchstart", mobileBtnDoNothing);
             btnMoveForwards.removeEventListener("touchend", mobileBtnDoNothing);
+            btnMoveBackwards.removeEventListener("touchstart", mobileBtnDoNothing);
             btnMoveBackwards.removeEventListener("touchend", mobileBtnDoNothing);
+            btnJump.removeEventListener("touchstart", mobileBtnPressed);
             btnJump.removeEventListener("touchend", mobileBtnPressed);
+            btnWheelie.removeEventListener("touchstart", mobileBtnDoNothing);
             btnWheelie.removeEventListener("touchend", mobileBtnDoNothing);
+
+            btnMoveUp.removeEventListener("mousedown", mobileBtnDoNothing);
+            btnMoveUp.removeEventListener("mouseup", mobileBtnDoNothing);
+            btnMoveForwards.removeEventListener("mousedown", mobileBtnDoNothing);
+            btnMoveForwards.removeEventListener("mouseup", mobileBtnDoNothing);
+            btnMoveBackwards.removeEventListener("mousedown", mobileBtnDoNothing);
+            btnMoveBackwards.removeEventListener("mouseup", mobileBtnDoNothing);
+            btnJump.removeEventListener("mousedown", mobileBtnPressed);
+            btnJump.removeEventListener("mouseup", mobileBtnPressed);
+            btnWheelie.removeEventListener("mousedown", mobileBtnDoNothing);
+            btnWheelie.removeEventListener("mouseup", mobileBtnDoNothing);
         
 
     // add Key Press listeners for game controls:
@@ -502,6 +555,8 @@ function BindButtons_gamePlay(){
 
             document.body.addEventListener('keypress', keypress);
 
+        // mobile buttons pressed:
+
             btnMoveUp.addEventListener("touchstart", mobileBtnPressed);
             btnMoveForwards.addEventListener("touchstart", mobileBtnPressed);
             btnMoveBackwards.addEventListener("touchstart", mobileBtnPressed);
@@ -509,9 +564,18 @@ function BindButtons_gamePlay(){
             btnJump.addEventListener("touchstart", mobileBtnPressed);
             btnWheelie.addEventListener("touchstart", mobileBtnPressed);
 
+            btnMoveUp.addEventListener("mousedown", mobileBtnPressed);
+            btnMoveForwards.addEventListener("mousedown", mobileBtnPressed);
+            btnMoveBackwards.addEventListener("mousedown", mobileBtnPressed);
+            btnMoveDown.addEventListener("mousedown", mobileBtnPressed);
+            btnJump.addEventListener("mousedown", mobileBtnPressed);
+            btnWheelie.addEventListener("mousedown", mobileBtnPressed);
+
         // btns released :
 
             document.body.addEventListener('keyup', keyUp);
+
+        // mobile buttons released:
 
             btnMoveUp.addEventListener("touchend", mobileBtnReleased);
             btnMoveForwards.addEventListener("touchend", mobileBtnReleased);
@@ -520,11 +584,18 @@ function BindButtons_gamePlay(){
             btnJump.addEventListener("touchend", mobileBtnReleased);
             btnWheelie.addEventListener("touchend", mobileBtnReleased);
 
+            btnMoveUp.addEventListener("mouseup", mobileBtnReleased);
+            btnMoveForwards.addEventListener("mouseup", mobileBtnReleased);
+            btnMoveBackwards.addEventListener("mouseup", mobileBtnReleased);
+            btnMoveDown.addEventListener("mouseup", mobileBtnReleased);
+            btnJump.addEventListener("mouseup", mobileBtnReleased);
+            btnWheelie.addEventListener("mouseup", mobileBtnReleased);
+
 }
 
 function unBindButtons_gamePlay(){
 
-    // remove Key Press listeners for game controls:
+    // REMOVE Key Press listeners for game controls:
 
         // btns pressed:
 
@@ -537,6 +608,13 @@ function unBindButtons_gamePlay(){
             btnJump.removeEventListener("touchstart", mobileBtnPressed);
             btnWheelie.removeEventListener("touchstart", mobileBtnPressed);
 
+            btnMoveUp.removeEventListener("mousedown", mobileBtnPressed);
+            btnMoveForwards.removeEventListener("mousedown", mobileBtnPressed);
+            btnMoveBackwards.removeEventListener("mousedown", mobileBtnPressed);
+            btnMoveDown.removeEventListener("mousedown", mobileBtnPressed);
+            btnJump.removeEventListener("mousedown", mobileBtnPressed);
+            btnWheelie.removeEventListener("mousedown", mobileBtnPressed);
+
         // btns released :
 
             document.body.removeEventListener('keyup', keyUp);
@@ -548,8 +626,23 @@ function unBindButtons_gamePlay(){
             btnJump.removeEventListener("touchend", mobileBtnReleased);
             btnWheelie.removeEventListener("touchend", mobileBtnReleased);
 
+            btnMoveUp.removeEventListener("mouseup", mobileBtnReleased);
+            btnMoveForwards.removeEventListener("mouseup", mobileBtnReleased);
+            btnMoveBackwards.removeEventListener("mouseup", mobileBtnReleased);
+            btnMoveDown.removeEventListener("mouseup", mobileBtnReleased);
+            btnJump.removeEventListener("mouseup", mobileBtnReleased);
+            btnWheelie.removeEventListener("mouseup", mobileBtnReleased);
+
+
+
             
-            mobilePause.removeEventListener("touchstart", gamePause);
+            mobilePause.removeEventListener("touchend", gamePause);
+            mobilePause2.removeEventListener("touchend", gamePause);
+
+            mobilePause.removeEventListener("click", gamePause);
+            mobilePause2.removeEventListener("click", gamePause);
+    
+
 
     // bind the mobile buttons to do nothing! 
             btnsMove.addEventListener("touchstart", mobileBtnDoNothing);
@@ -557,16 +650,28 @@ function unBindButtons_gamePlay(){
 
 
             btnMoveUp.addEventListener("touchstart", mobileBtnDoNothing);
-            btnMoveForwards.addEventListener("touchstart", mobileBtnDoNothing);
-            btnMoveBackwards.addEventListener("touchstart", mobileBtnDoNothing);
-            btnJump.addEventListener("touchstart", mobileBtnDoNothing);
-            btnWheelie.addEventListener("touchstart", mobileBtnDoNothing);
-
             btnMoveUp.addEventListener("touchend", mobileBtnDoNothing);
+            btnMoveForwards.addEventListener("touchstart", mobileBtnDoNothing);
             btnMoveForwards.addEventListener("touchend", mobileBtnDoNothing);
+            btnMoveBackwards.addEventListener("touchstart", mobileBtnDoNothing);
             btnMoveBackwards.addEventListener("touchend", mobileBtnDoNothing);
+            btnJump.addEventListener("touchstart", mobileBtnDoNothing);
             btnJump.addEventListener("touchend", mobileBtnDoNothing);
-            btnWheelie.addEventListener("touchend", mobileBtnDoNothing);
+            btnWheelie.addEventListener("touchstart", mobileBtnDoNothing);
+            btnWheelie.addEventListener("touchend", mobileBtnDoNothing);            
+
+            btnMoveUp.addEventListener("mousedown", mobileBtnDoNothing);
+            btnMoveUp.addEventListener("mouseup", mobileBtnDoNothing);
+            btnMoveForwards.addEventListener("mousedown", mobileBtnDoNothing);
+            btnMoveForwards.addEventListener("mouseup", mobileBtnDoNothing);
+            btnMoveBackwards.addEventListener("mousedown", mobileBtnDoNothing);
+            btnMoveBackwards.addEventListener("mouseup", mobileBtnDoNothing);
+            btnMoveDown.addEventListener("mousedown", mobileBtnDoNothing);
+            btnMoveDown.addEventListener("mouseup", mobileBtnDoNothing);
+            btnJump.addEventListener("mousedown", mobileBtnDoNothing);
+            btnJump.addEventListener("mouseup", mobileBtnDoNothing);
+            btnWheelie.addEventListener("mousedown", mobileBtnDoNothing);
+            btnWheelie.addEventListener("mouseup", mobileBtnDoNothing);
 }
 
 function mobileBtnDoNothing(ev){
@@ -621,7 +726,7 @@ function mobileBtnReleased(ev) {
     }
 
     if(this.id=="btnMoveForwards") {
-        $('#btnsMove').removeClass("forwards");
+        $('#btnsMove').removeClass("forwards3");
         $('#introBtn').removeClass('pressedD');
     }
     if(this.id=="btnMoveBackwards") {
@@ -752,7 +857,7 @@ function startGame(ev,didAutoPlay){
         gsap.from("#mobileControls",3,{autoAlpha:0},"<1")
         gsap.to("#mobileControls",0,{display:"block"},"<");
 
-        gsap.to([introScreen,btnOption],0,{display:"none"});
+        gsap.to([introScreen,startSelect],0,{display:"none"});
 
         gsap.to("#tilt",0,{y:0});
 
@@ -968,9 +1073,7 @@ function gamePause() {
     gsap.set(pausedtxt,{autoAlpha:1});
 
 
-    gsap.set(controller,{className:"pulseController"});
-    
-    gsap.set([instructionsTxt3,instructionsTxt4], {className:"copy instructionsTxt instructionsTxtButt hidden paused" });
+    toggleControllerOverlay();
 
 
     unBindButtons_gamePlay();
@@ -994,7 +1097,6 @@ function gameResume(ev) {
 
     // console.log('resume');
 
-    
 
     // resuming after crash
     if(collided) {
@@ -1017,14 +1119,14 @@ function gameResume(ev) {
 
         gsap.delayedCall(1,detectCollision);
     } else {
-
-        // reumsing after pause: 
-        gsap.set(controller,{className:""});
-        gsap.set([instructionsTxt3,instructionsTxt4], {className:"copy instructionsTxt instructionsTxtButt hidden" });
-
+        // resuming after pause: 
         gsap.set(lyricstxt,{autoAlpha:1});
         gsap.delayedCall(0.01,detectCollision);
     }
+
+    // hide controller overlay:
+    toggleControllerOverlay(true);
+
     collideAll="";
     audio.play();
     audio.volume = 1;
@@ -1288,7 +1390,11 @@ function wheelie() {
 var backwardsCount = 0;
 function backwards() {
     backwardsCount++;
-    
+
+    if($('#player').hasClass('forwards_start')){
+        $('#player').removeClass('forwards_start');
+    }
+
     if($('#player').hasClass('forwards7')){
         $('#player').removeClass('forwards7');
         
@@ -1342,6 +1448,11 @@ function backwards() {
 var forwardsCount = 0;
 function forwards() {
     forwardsCount++;
+
+    if($('#player').hasClass('forwards_start')){
+        $('#player').removeClass('forwards_start');
+    }
+
     if($('#player').hasClass('forwards7'))
     {
         // do nothing
@@ -1850,7 +1961,9 @@ function playEnding(){
     gsap.killTweensOf(backtoBounce);
     gsap.killTweensOf(notJumping);
 
-    gsap.set(resumetxt,{autoAlpha:0,className:"copy"});
+    gsap.set([resumetxt],{autoAlpha:0,className:"copy"});
+    
+    toggleControllerOverlay(true);
 
 
     gsap.to([".obstacle",pausedtxt],0,{autoAlpha:0});
@@ -2266,9 +2379,12 @@ function doObstacleHit() {
     }
     
     // setup kkeypress to resume:
+
     gsap.set(resumetxt,{autoAlpha:1,className:"copy flashing",delay:1,onComplete:function(){
+        toggleControllerOverlay();
         BindButtons_gameResume();
     }});
+
     
 
 
@@ -2311,6 +2427,18 @@ function doRiderCrash(){
 
     // say something for crash
     doSpeech(collidedPhrases,3);
+}
+
+
+
+function toggleControllerOverlay(off){
+    if(!off){
+        gsap.set(controller,{className:"pulseController"});
+        gsap.set([instructionsTxt3,instructionsTxt4], {className:"copy instructionsTxt instructionsTxtButt hidden paused" });
+    } else {
+        gsap.set(controller,{className:""});
+        gsap.set([instructionsTxt3,instructionsTxt4], {className:"copy instructionsTxt instructionsTxtButt hidden" });
+    }
 }
 
 
