@@ -455,10 +455,6 @@ function introScreenBtnPressed(e){
 
 
 function showOptions(ev){
-    if(ev.cancelable) {
-        ev.preventDefault();
-    }
-
     btnOption.removeEventListener('touchend',showOptions);
     unBindButtons_startGame();
 
@@ -1057,6 +1053,7 @@ function gamePause() {
     tlLyrics.pause();
     tlramp.pause();
     tlhair.pause();
+    tlCruisePast.pause();
 
     gsap.set(lyricstxt,{autoAlpha:0});
 
@@ -1141,6 +1138,7 @@ function gameResume(ev) {
     tlhair.resume();  
     tlramp.resume();
     tlLyrics.resume();
+    tlCruisePast.resume();
     
     if(MountainsPlaying){
         if(tlMountainsBG.time()>0)
