@@ -32,7 +32,8 @@
         vertical-align: text-bottom;
         background-size: contain;
     }
-    #introBtn {
+    #introBtn,
+    #pauseBtn {
         background-image: url(../images/introBtn.png); 
         background-size: 100% auto;
         background-position: center top;
@@ -40,11 +41,17 @@
         width: 80px;
         vertical-align: text-bottom;
     }
-    #introBtn.pressedA { background-position: center -52px; }
-    #introBtn.pressedS { background-position: center -104px; height:52px; }
-    #introBtn.pressedD { background-position: center -156px; }
-    #introBtn.pressedW { background-position: center -208px; }
+    #introBtn.pressedA,
+    #pauseBtn.pressedA { background-position: center -52px; }
+    #introBtn.pressedS,
+    #pauseBtn.pressedS { background-position: center -104px; height:52px; }
+    #introBtn.pressedD,
+    #pauseBtn.pressedD { background-position: center -156px; }
+    #introBtn.pressedW,
+    #pauseBtn.pressedW { background-position: center -208px; }
 
+    #pauseBtnK,
+    #pauseBtnJ,
     #introBtnK,
     #introBtnJ {
         vertical-align: text-bottom;
@@ -52,12 +59,16 @@
         height: 24px;
         background-repeat: no-repeat;
     }
+    #pauseBtnK,
     #introBtnK{
         background-image: url(../images/introBtnK.png); 
     }
+    #pauseBtnJ,
     #introBtnJ {
         background-image: url(../images/introBtnJ.png); 
     }
+    #pauseBtnK.pressed,
+    #pauseBtnJ.pressed,
     #introBtnK.pressed,
     #introBtnJ.pressed {background-position: center 100%;}
     
@@ -79,24 +90,19 @@
         width:24px;
     }
     
-    #instructionsTxt3.paused,#instructionsTxt4.paused{
+    #pauseTxt1.paused,#pauseTxt2.paused{
         transform: translate(-50%, -50%) scale(1.4) rotate(-1deg)
     }
-    #instructionsTxt4.paused {
+    #pauseTxt2.paused {
         left: 730px;
         top: 238px;
         width: 290px;
-    }
-    #instructionsTxt4.paused,
-    #instructionsTxt3.paused {
-        opacity: 1!important;
-        visibility: visible!important;
     }
     #instructionsTxt4{
         line-height: 2em;
         top: 221px;
     }
-    #instructionsTxt4.paused {
+    #pauseTxt2.paused {
         top: 232px;
         left: 770px;
     }

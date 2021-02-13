@@ -65,6 +65,9 @@
     50% { color: #fff; }
     100% { color: rgb(91 182 39); }
 }
+#introTxt05 {
+    top: 140px;
+}
 #introTxt05a {
     font-size: 1.2em;   
 }
@@ -76,6 +79,19 @@
     50% { color: #fff; }
     100% { color: rgba(84,36,84,1); }
 }
+.introAlbum {
+    position: absolute;
+    top: 130px;
+    left: 50%;
+    opacity: 0;
+}
+#introAlbum1 {
+    transform: translateX(-60%) scale(0.75);
+}
+#introAlbum2 {
+    transform: translateX(-40%) scale(0.75)
+}
+
 #introLogo2 {
     height: 290px;
     top: 110px;

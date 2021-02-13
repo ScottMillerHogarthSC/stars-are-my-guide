@@ -134,6 +134,16 @@
 
       gtag('config', 'G-NKMBF439GH');
     </script>
+
+
+
+    <meta property="og:url"                content="https://stars-are-my-guide.ga/" />
+    <meta property="og:type"               content="website" />
+    <meta property="og:title"              content="Primitai - Stars are my Guide" />
+    <meta property="og:description"        content="Stars are my Guide is the new single from the Primitai album 'Violence of the Skies', with accompanying video game" />
+    <meta property="og:image"              content="https://stars-are-my-guide.ga/images/stars-are-my-guide-primitai-ogimage.jpg" />
+
+
 </head>
 <body>
     <audio id="audio"></audio>
@@ -177,6 +187,9 @@
                     <div id="introTxt01" class="copy hidden">presents</div>
 
                     <div id="introTxt05" class="copy hidden">from their 2021 album<br><span id="introTxt05a">Violence of the Skies</span></div>
+                    
+                    <img id="introAlbum1" class="introAlbum hidden" src="images/vio-vinyl2.png">
+                    <img id="introAlbum2" class="introAlbum hidden" src="images/vio-vinyl1.png">
 
                     <div id="introTxt02" class="copy hidden">a<br><span id="introTxt02a">@scottoftheriver</span><br><span id="introTxt02b" class="hidden">production</div>
                     
@@ -311,11 +324,21 @@
 
                 <div id="gameover" class="copy hidden">game over</div>
                 <div id="warningtxt" class="copy hidden"></div>
+                
+
                 <div id="pausedtxt" class="copy hidden">paused</div>
+                <div id="pauseTxt1" class="copy instructionsTxt instructionsTxtButt hidden">use <span id="pauseBtn"></span> to move</div>
+                <div id="pauseTxt2" class="copy instructionsTxt instructionsTxtButt hidden">use <span id="pauseBtnK"></span> to jump<br>use <span id="pauseBtnJ"></span> to wheelie</div>
+
                 <div id="resumetxt" class="copy hidden"><span class="instructions_desktop">press <img src="images/introBtnS.png"> to&nbsp;</span>continue<span class="instructions_mobile">?</span></div>
                 
                 <div id="instructionsTxt3" class="copy instructionsTxt instructionsTxtButt hidden">use <span id="introBtn"></span> to move</div>
                 <div id="instructionsTxt4" class="copy instructionsTxt instructionsTxtButt hidden">use <span id="introBtnK"></span> to jump<br>use <span id="introBtnJ"></span> to wheelie</div>
+
+
+
+
+
                 
                 <div id="endtxt" class="copy hidden">
                     <div id="endtxt_obs">
@@ -327,7 +350,7 @@
                         <div id="scoretxt">0</div>
                     </div>
                     <div id="endtxt_perf">* PERFECT RUN! *</div>
-                    <img src="images/perf.png" id="endtxt_perfBalloon" alt="">
+                    <img src="images/perf.png" id="endtxt_perfBalloon" class="hidden" alt="">
                     <div id="initailsWrap">
                         <h2>enter initials</h2>
                         <input id="initialstxt" name="initialstxt" type="text" maxlength="3" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
@@ -337,9 +360,15 @@
 
                 <div id="endScreenBtns">
                     <a id="replayBtn" href="http://stars-are-my-guide.ga" title="play the game again" class="copy">play again</a>
-                    <a id="shareBtn" target="_blank" title="email a friend about this game" class="copy">share</a>
-                    <a id="listenBtn" href="listen" target="_blank" title="find Primitai on your favourite streaming services" class="copy">hear more<br>primitai</a>
-                    <a id="dotcomBtn" href="http://www.primitai.com" target="_blank" title="visit the primitai official website" class="copy">visit<br>primitai.com</a>
+                    <a id="shareBtnEmail" class="copy shareBtn shareBtnIcon" target="_blank" title="email a friend about this game"></a>
+                    <a id="shareBtnTwitter" class="copy shareBtnIcon" target="_blank" title="tweet this game"></a>
+
+                    <a id="shareBtnFacebook" href="https://www.facebook.com/sharer/sharer.php?u=https://stars-are-my-guide.ga" class="copy shareBtnIcon" target="_blank" title="share this on facebook"></a>
+
+                    <a id="shareBtnWhatsapp" class="copy shareBtnIcon" target="_blank" title="whatsapp someone about this game"></a>
+
+                    <a id="listenBtn" href="listen" target="_blank" title="find Primitai on your favourite streaming services" class="copy endBtn">hear more<br>primitai</a>
+                    <a id="dotcomBtn" href="http://www.primitai.com" target="_blank" title="visit the primitai official website" class="copy endBtn">visit<br>primitai.com</a>
                 </div>
 
 

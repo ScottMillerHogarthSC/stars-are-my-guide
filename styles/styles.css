@@ -42,10 +42,11 @@ body{
     background-position: -115px -316px;
     max-width: 970px;
     max-height: 475px;
+    opacity: 0;
 }
-#controller.pulseController{
-    opacity: .7;
+#controller.showController{
     display: block;   
+
 }
 #container,#controllerWrap {
     background-color: #000;
@@ -677,13 +678,17 @@ div.rampLong img.rampLong {
 }
 #introBtn,
 #introBtnK,
-#introBtnJ {
+#introBtnJ,
+#pauseBtn,
+#pauseBtnK,
+#pauseBtnJ { 
     width: 80px;
     height: 52px;
     overflow: hidden;
     display: inline-block;
     position: relative;
 }
+#pauseBtn,
 #introBtn {
     background-image: url(../images/mobileControls.png); 
     background-size: 100% auto;
@@ -697,6 +702,7 @@ div.rampLong img.rampLong {
 #introBtn.pressedW { background-position: center -159px; }
 #introBtn.pressedS { background-position: center -210px; height:50px; }
 
+#pauseBtnK,#pauseBtnJ,
 #introBtnK,#introBtnJ{
     background-size: 100% auto;
     background-position: center top;
@@ -705,9 +711,11 @@ div.rampLong img.rampLong {
     vertical-align: middle;
     overflow: hidden;
 }
+#pauseBtnK,
 #introBtnK{
     background-image: url(../images/introBtnJump.png); 
 }
+#pauseBtnJ,
 #introBtnJ {
     background-image: url(../images/introBtnWheelie.png); 
 }
@@ -743,11 +751,11 @@ div.rampLong img.rampLong {
     top: 268px;
     transform: translate(-50%,-50%) scale(1.4);
 }
-#instructionsTxt3 {
+#instructionsTxt3,#pauseTxt1 {
     top: 217px;
     z-index: 1;
 }
-#instructionsTxt4 {
+#instructionsTxt4,#pauseTxt2 {
     top: 235px;
     z-index: 1;
     line-height: 3em;
@@ -761,11 +769,11 @@ div.rampLong img.rampLong {
 .instructions_mobile {
     display: inline-block;
 }
-#instructionsTxt3.paused {
+#pauseTxt1 {
     top: 240px;
     left: 280px;
 }
-#instructionsTxt3.paused,#instructionsTxt4.paused{
+#pauseTxt1.paused,#pauseTxt2.paused{
     transform: translate(-50%, -50%) scale(1.4) rotate(0deg)
 }
 
@@ -810,6 +818,7 @@ div.rampLong img.rampLong {
     left: 40px;
     width: 70px;
     animation: balloon 1.5s infinite ease-in-out alternate; 
+    opacity: 0;
 }
 @keyframes balloon {
     0% {
@@ -879,14 +888,13 @@ div.rampLong img.rampLong {
 }
 
 #endScreenBtns a#replayBtn {
-    top: 360px;
+    top: 390px;
     transform: scale(2) translate(-26%, -50%);
     animation: replayBounce 1s infinite steps(1);
 }
-#endScreenBtns a#shareBtn,
 #endScreenBtns a#listenBtn,
 #endScreenBtns a#dotcomBtn{
-    left: 45px;
+    left: 75px;
     transform: scale(1.2);
     line-height: 1.4em;
     background-color: #bfbfbf;
@@ -904,16 +912,61 @@ div.rampLong img.rampLong {
     border-bottom-color: rgb(5, 6, 8);
     cursor: pointer;
 }
-#endScreenBtns a#shareBtn {
-    left: 380px;
+#endScreenBtns a#dotcomBtn {
+    right: 5px;
+    left: auto;
+}
+#endScreenBtns a.shareBtn {
+    transform: scale(1.2);
+    line-height: 1.4em;
+    background-color: #bfbfbf;
+    padding: 0.6em;
+    color: #000;
+    font-size: 0.8em;
+    min-width: 90px;
+    min-height: 36px;
+    border-width: 2px;
+    border-top-color: #fff;
+    border-left-color: #fff;
+    border-right-color: rgb(5, 6, 8);
+    border-style: solid;
+    border-bottom-color: rgb(5, 6, 8);
+    left: 275px;
     min-height: 0px;
     top: 409px;
 }
-
-#endScreenBtns a#dotcomBtn {
-    right: 45px;
-    left: auto;
+#endScreenBtns a.shareBtnIcon{
+    background-size: auto 84px;
+    width: 84px;
+    height: 90px;
+    background-repeat: no-repeat;
+    background-position: center;
+    bottom: 0px;
+    position: absolute;
+    transform: none;
+    top: 120px;
+    opacity: 0;
 }
+#endScreenBtns a#shareBtnEmail{
+    left: 69px;
+    top: 240px;
+    transform: scale(0.75);
+    background-image: url(../images/sharebtn_email.png); 
+}
+#endScreenBtns a#shareBtnTwitter{
+    left: 80px;
+    background-image: url(../images/sharebtn_twitter.png); 
+}
+#endScreenBtns a#shareBtnFacebook{
+    left: 799px;
+    top: 240px;
+    background-image: url(../images/sharebtn_facebook.png); 
+}
+#endScreenBtns a#shareBtnWhatsapp{
+    left: 800px;
+    background-image: url(../images/sharebtn_whatsapp.png); 
+}
+
 
 #endScreenBtns a:hover,
 #endScreenBtns a:active {
@@ -1084,11 +1137,21 @@ div.rampLong img.rampLong {
     background-image: url(../images/sergio.png);
     width: 164px;
     height: 150px;
-    top: -4px;
-    left: -11px;
+    top: -24px;
+    left: -3px;
     position: absolute;
-    background-size: 164px 300px; 
-    animation: jetsGo 0.7s steps(2, end) infinite;
+    background-position-y: 0px;
+    background-size: 164px 450px;
+    animation: sergioPlay .5s steps(3, end) infinite alternate;
+    background-repeat: no-repeat;
+}
+@keyframes sergioPlay {
+    0%{ 
+        background-position-y: 0px;
+    }
+    100%{ 
+        background-position-y: -450px;
+    }
 }
 #flyPast.sergio #flyPast-jets {
     top: 34px;

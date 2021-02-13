@@ -13,7 +13,7 @@ html.clientHeight, html.scrollHeight, html.offsetHeight );
 
 var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 
-var btnMoveUp, btnMoveForwards, btnMoveBackwards, btnMoveDown, btnJump, btnOption, btnStart, replayBtn, shareBtn;
+var btnMoveUp, btnMoveForwards, btnMoveBackwards, btnMoveDown, btnJump, btnOption, btnStart, replayBtn, shareBtnEmail, shareBtnWhatsapp, shareBtnFacebook;
 var mobileControls, btns, mobilePause, mobilePause2, startSelect;
 
 var tlIntroScreen = gsap.timeline(),
@@ -90,7 +90,9 @@ function init()
     cheatstxt = document.getElementById("cheatstxt");
 
     replayBtn = document.getElementById("replayBtn");
-    shareBtn = document.getElementById("shareBtn");
+    shareBtnEmail = document.getElementById("shareBtnEmail");
+    shareBtnWhatsapp = document.getElementById("shareBtnWhatsapp");
+    shareBtnFacebook = document.getElementById("shareBtnFacebook");
     cta = document.getElementById("cta");
 
     skipIntro = document.getElementById("skipIntro");
@@ -277,7 +279,11 @@ function playIntroScreen() {
         .to(introTxt05a,0,{autoAlpha:0,ease:Linear.easeNone},"<")
         .call(typeText,["#introTxt05a",2],"<1")
         .to(introTxt05a,3,{autoAlpha:1,ease:Linear.easeNone},"<")
-        .to([introTxt05],0.5,{autoAlpha:0,ease:Linear.easeNone},">2")
+        .to(introAlbum2,1,{autoAlpha:1,ease:Linear.easeNone},"<")
+        .to(introAlbum1,0,{autoAlpha:1,ease:Linear.easeNone},">")
+        .to(introAlbum2,1.5,{x:"-=40",ease:Sine.easeInOut},"<")
+        .to(introAlbum1,1.5,{x:"+=40",ease:Sine.easeInOut},"<")
+        .to([introTxt05,introAlbum1,introAlbum2],0.5,{autoAlpha:0,ease:Linear.easeNone},">1.5")
         
         .to(introTxt02,3,{autoAlpha:1,ease:Linear.easeNone},">")
         .to(introTxt02a,0,{autoAlpha:0,ease:Linear.easeNone},"<")
@@ -289,14 +295,22 @@ function playIntroScreen() {
         .to(introTxt03,3,{autoAlpha:1,ease:Linear.easeNone},">")
         .to(introTxt03a,0,{autoAlpha:0,ease:Linear.easeNone},"<")
         .call(typeText,["#introTxt03a",2],"<1")
+
         .to(introTxt03a,3,{autoAlpha:1,ease:Linear.easeNone},"<")
         .to(introTxt03b,3,{autoAlpha:1,ease:Linear.easeNone},"<1")
-        .to([introTxt03],0.5,{autoAlpha:0,ease:Linear.easeNone},">1")
+
+        .to(flyPast,0,{className:"+=toad"},"<")
+        .to(flyPast,0,{x:0,z:0.01,y:-180},"<")
+        .to(flyPast,4,{x:1220,z:-0.01,y:-180,ease:Linear.easeNone},"<")
+        
+
+        
+        .to([introTxt03],0.5,{autoAlpha:0,ease:Linear.easeNone},"<3")
 
         .to([introTxt04],3,{autoAlpha:1,ease:Linear.easeNone},">")
         .to([introLogo2],3,{autoAlpha:1,ease:Linear.easeNone},"<1")
         .to([introTxt04,introLogo2],0.5,{autoAlpha:0,ease:Linear.easeNone},">")
-
+        .to(flyPast,0,{className:"-=toad",y:0},">")
         
 
         
@@ -722,7 +736,7 @@ function mobileBtnReleased(ev) {
     }
 
     if(this.id=="btnMoveForwards") {
-        $('#btnsMove').removeClass("forwards3");
+        $('#btnsMove').removeClass("forwards");
         $('#introBtn').removeClass('pressedD');
     }
     if(this.id=="btnMoveBackwards") {
@@ -1070,7 +1084,7 @@ function gamePause() {
     gsap.set(pausedtxt,{autoAlpha:1});
 
 
-    toggleControllerOverlay();
+    toggleControllerOverlay(false,0,0);
 
 
     unBindButtons_gamePlay();
@@ -1122,7 +1136,7 @@ function gameResume(ev) {
     }
 
     // hide controller overlay:
-    toggleControllerOverlay(true);
+    toggleControllerOverlay(true,0,0);
 
     collideAll="";
     audio.play();
@@ -1138,7 +1152,9 @@ function gameResume(ev) {
     tlhair.resume();  
     tlramp.resume();
     tlLyrics.resume();
-    tlCruisePast.resume();
+    if(tlCruisePast.isActive()){ 
+        tlCruisePast.resume();
+    }
     
     if(MountainsPlaying){
         if(tlMountainsBG.time()>0)
@@ -1961,7 +1977,7 @@ function playEnding(){
 
     gsap.set([resumetxt],{autoAlpha:0,className:"copy"});
     
-    toggleControllerOverlay(true);
+    toggleControllerOverlay(true,0,0);
 
 
     gsap.to([".obstacle",pausedtxt],0,{autoAlpha:0});
@@ -2040,15 +2056,16 @@ function tlEndingComplete(){
     $("#pointstxt").html(points);
 
     gsap.set(endtxt,{display:"block", autoAlpha:1});
+    gsap.set(mobileControls,{display:"none"});
 
     gsap.delayedCall(endInitialsDelay,function(){
         gsap.to(initailsWrap,0,{autoAlpha:1});
         document.getElementById('initialstxt').focus();
+        document.getElementById('initialstxt').addEventListener('keypress',highScoreEntered);
     });
 
     
 
-    document.getElementById('initialstxt').addEventListener('keypress',highScoreEntered);
 
     tlintro.pause();
     tlMainGame.pause();
@@ -2108,12 +2125,36 @@ function highScoreEntered(e) {
 
         $("#highscorestxt").html(highScoreListLower);
         
-        gsap.to(["#highscorestxt","#endScreenBtns"],0,{autoAlpha:1});
-        gsap.to(["#endScreenBtns"],0,{display:"block"});
-        gsap.to(["#mobileControls"],0,{display:"none"});
 
-        // share button
-        shareBtn.href="mailto:everyone.i.know?&subject=amazing game by this band called primitai&body=this game made by this band primitai is absolutely brilliant, i crashed "+obstaclesHittxt.innerHTML+" times and scored "+scoretxt.innerHTML+" points: http://www.primitai.com";
+        var tlHighscores = gsap.timeline();
+        // fly by over ending
+        tlHighscores.addLabel('flyby')
+            .to(player,0,{scaleX:-1,scaleY:1,x:650,y:-350,z:0.01,rotation:0},"<")
+            .to(".car-jets",0,{scaleX:2,autoAlpha:0},"<")
+            .to(player,1.5,{x:-550,z:-0.01,ease:Linear.easeNone},'>')
+            .to("#rider-jets", 0,{autoAlpha:1},"<1")
+            .add(wheelie,".5");
+
+
+            gsap.to([highscorestxt,endScreenBtns],0,{autoAlpha:1,delay:1})
+            gsap.to(endScreenBtns,0,{display:"block",delay:3});
+
+        // bind share button
+        shareBtnEmail.href="mailto:everyone.i.know?&subject=amazing game by this band called primitai&body=this game made by this band primitai is absolutely brilliant, i crashed "+obstaclesHittxt.innerHTML+" times and scored "+scoretxt.innerHTML+" points: https://stars-are-my-guide.ga/";
+        shareBtnWhatsapp.href="whatsapp://send?text=you gotta check out this game made by this band primitai! its absolutely brilliant. i crashed "+obstaclesHittxt.innerHTML+" times and scored "+scoretxt.innerHTML+" points. https://stars-are-my-guide.ga/";
+
+        // show bttons
+        gsap.to('.endBtn',0,{scaleX:1.2,scaleY:1.2,y:-15});
+        gsap.to('.endBtn',.3,{autoAlpha:1,stagger: 0.1,delay:2});
+        gsap.to('.endBtn',.3,{y:0,stagger: 0.1,delay:2,ease:Bounce.easeOut});
+        
+        gsap.to('.shareBtnIcon',0,{scaleX:.5,scaleY:.5,y:-15});
+        gsap.to('.shareBtnIcon',0,{autoAlpha:1,stagger: 0.1,delay:3});
+        gsap.to('.shareBtnIcon',.3,{y:0,stagger: 0.1,delay:3,ease:Bounce.easeOut});
+        
+
+
+
 
     }
 }
@@ -2259,9 +2300,18 @@ function playerCollided(whichObstacleHit) {
             if(isJumping){
                 // hit a ramp while jumping true
                 isJumping=false;
-                doObstacleHit();
+                isRamping=true;  
 
-                doRiderCrash();
+                gsap.killTweensOf(notJumping);
+                gsap.killTweensOf(backtoBounce);
+
+                gsap.delayedCall(1,function(){
+                    isRamping=false;
+
+                    doObstacleHit();
+
+                    doRiderCrash();
+                });
 
             } else {
                 if(!isRamping){
@@ -2379,7 +2429,7 @@ function doObstacleHit() {
     // setup kkeypress to resume:
 
     gsap.set(resumetxt,{autoAlpha:1,className:"copy flashing",delay:1,onComplete:function(){
-        toggleControllerOverlay();
+        toggleControllerOverlay(false,3,1);
         BindButtons_gameResume();
     }});
 
@@ -2429,13 +2479,17 @@ function doRiderCrash(){
 
 
 
-function toggleControllerOverlay(off){
+function toggleControllerOverlay(off,thisspeed,thisDelay){
     if(!off){
-        gsap.set(controller,{className:"pulseController"});
-        gsap.set([instructionsTxt3,instructionsTxt4], {className:"copy instructionsTxt instructionsTxtButt hidden paused" });
+        gsap.to(["#controller"],0,{autoAlpha:0});
+        gsap.to("#controller",0,{display:"block"});
+        gsap.to(["#controller"],thisspeed,{autoAlpha:.7,delay:thisDelay,ease:Linear.easeNone});
+        gsap.to([pauseTxt1,pauseTxt2], 0, {className:"copy instructionsTxt instructionsTxtButt hidden paused"});
+        gsap.to([pauseTxt1,pauseTxt2], thisspeed, {autoAlpha:1,delay:thisDelay,ease:Linear.easeNone});
     } else {
-        gsap.set(controller,{className:""});
-        gsap.set([instructionsTxt3,instructionsTxt4], {className:"copy instructionsTxt instructionsTxtButt hidden" });
+        gsap.killTweensOf([pauseTxt1,pauseTxt2]);
+        gsap.set("#controller",{display:"none"});
+        gsap.set([pauseTxt1,pauseTxt2], {autoAlpha:0,className:"copy instructionsTxt instructionsTxtButt hidden"});
     }
 }
 
