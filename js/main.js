@@ -13,7 +13,7 @@ html.clientHeight, html.scrollHeight, html.offsetHeight );
 
 var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 
-var btnMoveUp, btnMoveForwards, btnMoveBackwards, btnMoveDown, btnJump, btnOption, btnStart, replayBtn, shareBtnEmail, shareBtnWhatsapp, shareBtnFacebook;
+var btnMoveUp, btnMoveForwards, btnMoveBackwards, btnMoveDown, btnJump, btnOption, btnStart, replayBtn, shareBtnEmail, shareBtnWhatsapp, shareBtnFacebook, shareBtnTwitter;
 var mobileControls, btns, mobilePause, mobilePause2, startSelect;
 
 var tlIntroScreen = gsap.timeline(),
@@ -93,6 +93,8 @@ function init()
     shareBtnEmail = document.getElementById("shareBtnEmail");
     shareBtnWhatsapp = document.getElementById("shareBtnWhatsapp");
     shareBtnFacebook = document.getElementById("shareBtnFacebook");
+    shareBtnTwitter = document.getElementById("shareBtnTwitter");
+
     cta = document.getElementById("cta");
 
     skipIntro = document.getElementById("skipIntro");
@@ -2035,6 +2037,7 @@ function playEnding(){
         .to("#player",1,{top:"270px"},"<")
         
         .to(["#rider-go","#bike-go"],1,{rotationZ:-30},"-=3")
+        .to(["#shadow"],0.5,{autoAlpha:0},"<")
         .to("#rider-jets",0,{display:"none"},"<")
         .to("#rider", {className: 'riderBounce'},"<")
 
@@ -2095,6 +2098,7 @@ function tlEndingComplete(){
         document.getElementById('initialstxt').focus();
         document.getElementById('initialstxt').addEventListener('keypress',highScoreEntered);
 
+        audio.pause();
         audioEnding.play();
         audioEnding.addEventListener("timeupdate",endingAudioTimeUpdate);
     });
@@ -2196,6 +2200,11 @@ function highScoreEntered(e) {
         // bind share button
         shareBtnEmail.href="mailto:everyone.i.know?&subject=amazing game by this band called primitai&body=this game made by this band primitai is absolutely brilliant, i crashed "+obstaclesHittxt.innerHTML+" times and scored "+scoretxt.innerHTML+" points: https://stars-are-my-guide.ga/";
         shareBtnWhatsapp.href="whatsapp://send?text=you gotta check out this game made by this band primitai! its absolutely brilliant. i crashed "+obstaclesHittxt.innerHTML+" times and scored "+scoretxt.innerHTML+" points. https://stars-are-my-guide.ga/";
+
+        var url = "http://stars-are-my-guide.ga";
+        var text = "check out this amazing game by this band called Primitai";
+        shareBtnTwitter.href="http://twitter.com/share?url="+encodeURIComponent(url)+"&text="+encodeURIComponent(text);
+
 
         // show bttons
         gsap.to('.endBtn',0,{scaleX:1.2,scaleY:1.2,y:-15});
@@ -2535,16 +2544,18 @@ function doRiderCrash(){
 
 
 function toggleControllerOverlay(off,thisspeed,thisDelay){
-    if(!off){
-        gsap.to(["#controller"],0,{autoAlpha:0});
-        gsap.to("#controller",0,{display:"block"});
-        gsap.to(["#controller"],thisspeed,{autoAlpha:.7,delay:thisDelay,ease:Linear.easeNone});
-        gsap.to([pauseTxt1,pauseTxt2], 0, {className:"copy instructionsTxt instructionsTxtButt hidden paused"});
-        gsap.to([pauseTxt1,pauseTxt2], thisspeed, {autoAlpha:1,delay:thisDelay,ease:Linear.easeNone});
-    } else {
-        gsap.killTweensOf([pauseTxt1,pauseTxt2]);
-        gsap.set("#controller",{display:"none"});
-        gsap.set([pauseTxt1,pauseTxt2], {autoAlpha:0,className:"copy instructionsTxt instructionsTxtButt hidden"});
+    if(!endingPlayed){
+        if(!off){
+            gsap.to(["#controller"],0,{autoAlpha:0});
+            gsap.to("#controller",0,{display:"block"});
+            gsap.to(["#controller"],thisspeed,{autoAlpha:.7,delay:thisDelay,ease:Linear.easeNone});
+            gsap.to([pauseTxt1,pauseTxt2], 0, {className:"copy instructionsTxt instructionsTxtButt hidden paused"});
+            gsap.to([pauseTxt1,pauseTxt2], thisspeed, {autoAlpha:1,delay:thisDelay,ease:Linear.easeNone});
+        } else {
+            gsap.killTweensOf([pauseTxt1,pauseTxt2]);
+            gsap.set("#controller",{display:"none"});
+            gsap.set([pauseTxt1,pauseTxt2], {autoAlpha:0,className:"copy instructionsTxt instructionsTxtButt hidden"});
+        }
     }
 }
 
@@ -2842,9 +2853,8 @@ function endingAudioTimeUpdate(){
         if(!startedCredits){
             startedCredits=true;
             
-            gsap.to([endScreenBtns],5,{z:100,x:180});
-            gsap.to([highscorestxt],5,{z:190,x:240,y:-53});
-            gsap.to([endScreenBtns,highscorestxt],1,{delay:4,alpha:0});
+            // gsap.to([copyWrap],3,{z:1.1});
+            // gsap.to([copyWrap],1,{delay:2,alpha:0});
         }
     }
         

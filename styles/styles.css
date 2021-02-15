@@ -354,14 +354,14 @@ body{
 
 }
 .car-jets {
-    top: 40px;
-    left: 23px;
+    top: 29px;
+    left: 21px;
     transform: scaleY(1.2) scaleX(1.9);
     filter: hue-rotate(181deg);
 }
 #car-jets2 {
     top: -3px;
-    left: -10px;
+    left: -16px;
     transform: scaleY(1.2) scaleX(1.7);
 }
 #car-shadow {
