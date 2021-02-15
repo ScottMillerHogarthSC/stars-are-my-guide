@@ -67,8 +67,6 @@
     #introBtnJ {
         background-image: url(../images/introBtnJ.png); 
     }
-    #pauseBtnK.pressed,
-    #pauseBtnJ.pressed,
     #introBtnK.pressed,
     #introBtnJ.pressed {background-position: center 100%;}
     
@@ -90,8 +88,10 @@
         width:24px;
     }
     
-    #pauseTxt1.paused,#pauseTxt2.paused{
-        transform: translate(-50%, -50%) scale(1.4) rotate(-1deg)
+    #pauseTxt1.paused,
+    #pauseTxt2.paused{
+        transform: translate(-50%, -50%) scale(1.4) rotate(-1deg);
+        display: block;
     }
     #pauseTxt2.paused {
         left: 730px;

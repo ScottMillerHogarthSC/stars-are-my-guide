@@ -548,7 +548,7 @@ div.rampLong img.rampLong {
 }
 
 #resumetxt {
-    top: 315px;
+    top: 402px;
     transform: translate(-80%,-50%) scale(2) rotate(-1deg);
 }
 
@@ -773,8 +773,12 @@ div.rampLong img.rampLong {
     top: 240px;
     left: 280px;
 }
-#pauseTxt1.paused,#pauseTxt2.paused{
-    transform: translate(-50%, -50%) scale(1.4) rotate(0deg)
+#pauseTxt1.paused{
+    display: none;
+}
+#pauseTxt2.paused{
+    transform: translate(-50%, -27%) scale(2) rotate(0deg);
+    display: block;
 }
 
 
@@ -857,6 +861,9 @@ div.rampLong img.rampLong {
 }
 #highscorestxt span{
     animation: colorRotateRed 1s infinite;
+}
+#highscorestxt span.title{
+    animation: colorRotateYellow 1s infinite;
 }
 @keyframes colorRotateRed {
     0% { color: red; }
@@ -965,6 +972,10 @@ div.rampLong img.rampLong {
 #endScreenBtns a#shareBtnWhatsapp{
     left: 800px;
     background-image: url(../images/sharebtn_whatsapp.png); 
+}
+#endScreenBtns a.shareBtnIcon:hover,
+#endScreenBtns a.shareBtnIcon:active{
+    transform: scale(.75,.75)!important;
 }
 
 
@@ -1148,9 +1159,11 @@ div.rampLong img.rampLong {
 @keyframes sergioPlay {
     0%{ 
         background-position-y: 0px;
+        transform: rotate(-10deg) translateX(-20px) translateY(0px);
     }
     100%{ 
         background-position-y: -450px;
+        transform: rotate(0deg) translateX(0px) translateY(0px);
     }
 }
 #flyPast.sergio #flyPast-jets {

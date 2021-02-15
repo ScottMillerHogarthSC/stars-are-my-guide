@@ -147,6 +147,7 @@
 </head>
 <body>
     <audio id="audio"></audio>
+    <audio id="audioEnding" src="07_put_to_the_sword.mp3"></audio>
 
 
     <div id="loadingContent">
@@ -330,7 +331,7 @@
                 <div id="pauseTxt1" class="copy instructionsTxt instructionsTxtButt hidden">use <span id="pauseBtn"></span> to move</div>
                 <div id="pauseTxt2" class="copy instructionsTxt instructionsTxtButt hidden">use <span id="pauseBtnK"></span> to jump<br>use <span id="pauseBtnJ"></span> to wheelie</div>
 
-                <div id="resumetxt" class="copy hidden"><span class="instructions_desktop">press <img src="images/introBtnS.png"> to&nbsp;</span>continue<span class="instructions_mobile">?</span></div>
+                <div id="resumetxt" class="copy hidden">press<span class="instructions_mobile">&nbsp;start</span><span class="instructions_desktop">&nbsp;<img src="images/introBtnS.png">&nbsp;to continue</span></div>
                 
                 <div id="instructionsTxt3" class="copy instructionsTxt instructionsTxtButt hidden">use <span id="introBtn"></span> to move</div>
                 <div id="instructionsTxt4" class="copy instructionsTxt instructionsTxtButt hidden">use <span id="introBtnK"></span> to jump<br>use <span id="introBtnJ"></span> to wheelie</div>
@@ -350,7 +351,7 @@
                         <div id="scoretxt">0</div>
                     </div>
                     <div id="endtxt_perf">* PERFECT RUN! *</div>
-                    <img src="images/perf.png" id="endtxt_perfBalloon" class="hidden" alt="">
+                    <img src="images/perf.png" style="opacity: 0" id="endtxt_perfBalloon" class="hidden" alt="">
                     <div id="initailsWrap">
                         <h2>enter initials</h2>
                         <input id="initialstxt" name="initialstxt" type="text" maxlength="3" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>

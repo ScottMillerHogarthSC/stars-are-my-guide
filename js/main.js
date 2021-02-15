@@ -99,6 +99,7 @@ function init()
     
     bg = document.getElementsByClassName("bg");
     audio = document.getElementById("audio");
+    audioEnding = document.getElementById("audioEnding");
     // oww = document.getElementById("oww");
     
 
@@ -825,6 +826,34 @@ function keypress(e){
                 keyDown="S";
             }
         }
+
+        
+        else if(e.code=="KeyL" || 
+            e.code=="Semicolon" || 
+            e.code=="Comma" || 
+            e.code=="Period" || 
+            e.code=="KeyM" || 
+            e.code=="KeyN" || 
+            e.code=="KeyH" || 
+            e.code=="KeyP" || 
+            e.code=="KeyO" || 
+            e.code=="KeyI" || 
+            e.code=="KeyY" || 
+            e.code=="KeyH" || 
+            e.code=="KeyQ" || 
+            e.code=="KeyR" || 
+            e.code=="KeyF" || 
+            e.code=="KeyZ" || 
+            e.code=="KeyX" || 
+            e.code=="KeyC" || 
+            e.code=="KeyV" || 
+            e.code=="Key1" || 
+            e.code=="Key2" || 
+            e.code=="Key3" || 
+            e.code=="KeyH" || 
+            e.code=="KeyU") {
+            // do nothing on these keys to avoid accidental Pause:
+        }
         // pause 
         else{
             gamePause();
@@ -1050,53 +1079,56 @@ function showIntructions(){
 
 
 function gamePause() {
-    gsap.killTweensOf(detectCollision);
-    gsap.killTweensOf(backtoBounce);
+    if(tlMainGame.isActive()){
 
-    gsap.killTweensOf(BindButtons_gameResume);
-        
-    audio.pause();
+        gsap.killTweensOf(detectCollision);
+        gsap.killTweensOf(backtoBounce);
 
-    tlfg.pause();
-    tlbg.pause();
-    tlstarsBG.pause();
-    tlMountainsBG.pause();
-    tlintro.pause();
-    tlInstructions.pause();
-    tlMainGame.pause();
-    tlLyrics.pause();
-    tlramp.pause();
-    tlhair.pause();
-    tlCruisePast.pause();
+        gsap.killTweensOf(BindButtons_gameResume);
+            
+        audio.pause();
 
-    gsap.set(lyricstxt,{autoAlpha:0});
+        tlfg.pause();
+        tlbg.pause();
+        tlstarsBG.pause();
+        tlMountainsBG.pause();
+        tlintro.pause();
+        tlInstructions.pause();
+        tlMainGame.pause();
+        tlLyrics.pause();
+        tlramp.pause();
+        tlhair.pause();
+        tlCruisePast.pause();
 
-    $('#rider').removeClass('riderBounce');
-    $('#rider').removeClass('riderFly');
-    $('#shadow').removeClass('shadowBounce');
+        gsap.set([lyricstxt,instructionsTxt3,instructionsTxt4],{alpha:0});
 
-    gsap.set(["#rider-stopped"],{autoAlpha:1});
-    gsap.set(["#rider-go"],{autoAlpha:0});
-    gsap.to(["#rider-go","#bike-go"],0,{rotationZ:0});
-    gsap.to("#rider-jets",0,{autoAlpha:0});
+        $('#rider').removeClass('riderBounce');
+        $('#rider').removeClass('riderFly');
+        $('#shadow').removeClass('shadowBounce');
 
-    jumpingtxt.innerHTML="paused";
-    gsap.set(pausedtxt,{autoAlpha:1});
+        gsap.set(["#rider-stopped"],{autoAlpha:1});
+        gsap.set(["#rider-go"],{autoAlpha:0});
+        gsap.to(["#rider-go","#bike-go"],0,{rotationZ:0});
+        gsap.to("#rider-jets",0,{autoAlpha:0});
+
+        jumpingtxt.innerHTML="paused";
+        gsap.set(pausedtxt,{autoAlpha:1});
 
 
-    toggleControllerOverlay(false,0,0);
+        toggleControllerOverlay(false,0,0);
 
 
-    unBindButtons_gamePlay();
-    unBindButtons_gameResume(); 
+        unBindButtons_gamePlay();
+        unBindButtons_gameResume(); 
 
-    if(isJumping) {
-        gsap.killTweensOf(notJumping);
-        isJumping=false;
+        if(isJumping) {
+            gsap.killTweensOf(notJumping);
+            isJumping=false;
 
-        gsap.delayedCall(1.7, BindButtons_gameResume);
-    } else {
-        BindButtons_gameResume();
+            gsap.delayedCall(1.7, BindButtons_gameResume);
+        } else {
+            BindButtons_gameResume();
+        }
     }
 }
 
@@ -1980,7 +2012,7 @@ function playEnding(){
     toggleControllerOverlay(true,0,0);
 
 
-    gsap.to([".obstacle",pausedtxt],0,{autoAlpha:0});
+    gsap.to([".obstacle",pausedtxt,pauseTxt1,pauseTxt2,controller],0,{autoAlpha:0});
     gsap.set(resumetxt,{autoAlpha:0,className:"copy"});
 
     tlMainGame.pause();
@@ -2062,6 +2094,9 @@ function tlEndingComplete(){
         gsap.to(initailsWrap,0,{autoAlpha:1});
         document.getElementById('initialstxt').focus();
         document.getElementById('initialstxt').addEventListener('keypress',highScoreEntered);
+
+        audioEnding.play();
+        audioEnding.addEventListener("timeupdate",endingAudioTimeUpdate);
     });
 
     
@@ -2077,6 +2112,8 @@ function tlEndingComplete(){
     // tlFlyPast.pause();
     // tlCruisePast.pause();
 
+
+    gsap.set(lyricstxt,{autoAlpha:0});
 }
 
 
@@ -2094,6 +2131,7 @@ var scoretxt = document.getElementById("scoretxt");
 var obstaclesHittxt = document.getElementById("obstaclesHittxt");
 var initialstxt = document.getElementById("initialstxt");
 
+
 function highScoreEntered(e) {
 
     if(e.keyCode=="13") {
@@ -2103,14 +2141,14 @@ function highScoreEntered(e) {
         var yourNameScore = initialstxt.value;
         
         
-        var highScoreList = "highest scores:<br><br>";
+        var highScoreList = "<span class=\"title\">highest scores:</span><br><br>";
         for(i=0; i<highScores.length; i++){    
             if(yourScore > Number(highScores[i][1]) && !placedScore){
                 highScores.splice(i,0,["<span>"+yourNameScore,yourScore.toString()+"</span>"]);
                 placedScore=true;
             }
         }
-
+        
         if(!placedScore) {
             highScores.push(["<span>"+yourNameScore,yourScore.toString()+"</span>"]);   
         }
@@ -2136,7 +2174,23 @@ function highScoreEntered(e) {
             .add(wheelie,".5");
 
 
-            gsap.to([highscorestxt,endScreenBtns],0,{autoAlpha:1,delay:1})
+            gsap.to([highscorestxt,endScreenBtns],0,{autoAlpha:1,delay:1});
+
+        //
+            // [todo] splitText highscore
+
+            var splitScores = new SplitText(highscorestxt, {type:"lines"}),
+            numLines = splitScores.lines.length,
+            lineTime = (4/(numLines+6));
+            gsap.set(highscorestxt,{autoAlpha:1});
+            gsap.set(splitScores.lines, {autoAlpha:0});
+            for(var i = 0; i < numLines; i++){
+                gsap.to(splitScores.lines[i], 0, {autoAlpha:1, delay:(i * lineTime),ease:Linear.easeNone});
+            }
+
+            
+
+
             gsap.to(endScreenBtns,0,{display:"block",delay:3});
 
         // bind share button
@@ -2295,7 +2349,8 @@ function playerCollided(whichObstacleHit) {
 
 
         case "obstacle3":  
-             // ramp
+             
+             ///// RAMP  ///
 
             if(isJumping){
                 // hit a ramp while jumping true
@@ -2774,7 +2829,26 @@ function traceAudioTime(){
 }
 
 
-
+var shookReplay=false,
+    startedCredits =false;
+function endingAudioTimeUpdate(){
+    if(audioEnding.currentTime>=12.8){
+        if(!shookReplay){
+            shookReplay=true;
+            gsap.fromTo(copyWrap,0.1,{ y:-2, yoyo:true,repeat:30 },{ y:2, yoyo:true,repeat:30 });
+        }
+    }
+    if(audioEnding.currentTime>=22.8){
+        if(!startedCredits){
+            startedCredits=true;
+            
+            gsap.to([endScreenBtns],5,{z:100,x:180});
+            gsap.to([highscorestxt],5,{z:190,x:240,y:-53});
+            gsap.to([endScreenBtns,highscorestxt],1,{delay:4,alpha:0});
+        }
+    }
+        
+}
 /*///////////////////////  ////////////////////////////////*/
 /*/////////////////////// FULL WIDTH ////////////////////////////////*/
 /*///////////////////////  ////////////////////////////////*/
