@@ -178,11 +178,15 @@ function loadedAudio(){
     
         $(document).on('show.visibility', function() {
             if((tlbg.isActive() || introPlaying) && !endingComplete){
-                audio.play();    
+                audio.play();
+            }
+            if(audioEndingPlaying){
+                audioEnding.play();
             }
         });
         $(document).on('hide.visibility', function() {
             audio.pause();
+            audioEnding.pause();
         });
     
         // console.log("loaded Audio");
@@ -2058,8 +2062,9 @@ function playEnding(){
         .to(".car-jets",0.75,{scaleX:3,ease:Power1.easeInOut},"-=1");
 }
 
-var endingComplete = false;
-var endInitialsDelay = 3;
+var endingComplete = false,
+    endInitialsDelay = 3,
+    audioEndingPlaying = false;
 function tlEndingComplete(){
     endingComplete=true;
     // stop all timelines
@@ -2099,6 +2104,8 @@ function tlEndingComplete(){
         document.getElementById('initialstxt').addEventListener('keypress',highScoreEntered);
 
         audio.pause();
+
+        audioEndingPlaying = true;
         audioEnding.play();
         audioEnding.addEventListener("timeupdate",endingAudioTimeUpdate);
     });
@@ -2179,9 +2186,6 @@ function highScoreEntered(e) {
 
 
             gsap.to([highscorestxt,endScreenBtns],0,{autoAlpha:1,delay:1});
-
-        //
-            // [todo] splitText highscore
 
             var splitScores = new SplitText(highscorestxt, {type:"lines"}),
             numLines = splitScores.lines.length,
@@ -2757,11 +2761,7 @@ function traceAudioTime(){
 
     // flash lightning at heavy drop and go fast!!
     if(audio.currentTime-84>124.9 && !doneLightning) {
-
-    // [todo] - testing fast mode:
-    // if(audio.currentTime-84>14.9 && !doneLightning) {
         doneLightning=true;
-
 
         gsap.fromTo("#lightning", 
             { autoAlpha: 0 },
@@ -2780,7 +2780,6 @@ function traceAudioTime(){
         // make long gap ramps show
         gsap.to("#obstacle3",0,{className:"hidden ramp rampLong obstacle"});
 
-        // [todo] hyperspace
         gsap.to(".bgStars",0,{className:"bg bgStars fast",delay:0.8});
         gsap.to(".bgToGo",0,{className:"bg bgToGo fast",delay:0.8});
     }
@@ -2805,9 +2804,6 @@ function traceAudioTime(){
 
     // more lightning at outro start and super fast to end:
     if(audio.currentTime-84>outroStart && !doneLightning2) {
-
-        //[todo] 
-        // lightning speed
 
         gsap.to(".bgStars",1,{autoAlpha:0.3});
 
@@ -2835,8 +2831,6 @@ function traceAudioTime(){
             playEnding();
         }
     }
-    // [todo] - if need to see audio playback time
-    // console.log(audio.currentTime-84);
 }
 
 
