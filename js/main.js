@@ -16,6 +16,8 @@ var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator
 var btnMoveUp, btnMoveForwards, btnMoveBackwards, btnMoveDown, btnJump, btnOption, btnStart, replayBtn, shareBtnEmail, shareBtnWhatsapp, shareBtnFacebook, shareBtnTwitter;
 var mobileControls, btns, mobilePause, mobilePause2, startSelect;
 
+var btn_character1,btn_character2,btn_character3,btn_character4;
+
 var tlIntroScreen = gsap.timeline(),
     tlintro = gsap.timeline(),
     tlInstructions = gsap.timeline(),
@@ -117,6 +119,11 @@ function init()
     btnJump = document.getElementById("btnJump");
     btnOption = document.getElementById("btnOption");
     btnStart = document.getElementById("btnStart");
+    
+    btn_character1 = document.getElementById("btn_character1");
+    btn_character2 = document.getElementById("btn_character2");
+    btn_character3 = document.getElementById("btn_character3");
+    btn_character4 = document.getElementById("btn_character4");
 
     
     resizeWindow();
@@ -487,15 +494,37 @@ function showCharacters(ev){
     gsap.to([introTxtTitle,introTxtLogo],0,{autoAlpha:0});
     gsap.to(charactersScreen,0,{autoAlpha:1,display:"block"});
 
-    character1.addEventListener('click',function(){ optionsCharacter_chosen(1); });
-    character2.addEventListener('click',function(){ optionsCharacter_chosen(2); });
-    character3.addEventListener('click',function(){ optionsCharacter_chosen(3); });
-    character4.addEventListener('click',function(){ optionsCharacter_chosen(4); });
+    btn_character1.addEventListener('mouseover',function(){ optionsCharacter_hovered(1); });
+    btn_character2.addEventListener('mouseover',function(){ optionsCharacter_hovered(2); });
+    btn_character3.addEventListener('mouseover',function(){ optionsCharacter_hovered(3); });
+    btn_character4.addEventListener('mouseover',function(){ optionsCharacter_hovered(4); });
 
-    character1.addEventListener('touchend',function(){ optionsCharacter_chosen(1); });
-    character2.addEventListener('touchend',function(){ optionsCharacter_chosen(2); });
-    character3.addEventListener('touchend',function(){ optionsCharacter_chosen(3); });  
-    character4.addEventListener('touchend',function(){ optionsCharacter_chosen(4); });  
+    btn_character1.addEventListener('mouseout',function(){ optionsCharacter_nohover(); });
+    btn_character2.addEventListener('mouseout',function(){ optionsCharacter_nohover(); });
+    btn_character3.addEventListener('mouseout',function(){ optionsCharacter_nohover(); });
+    btn_character4.addEventListener('mouseout',function(){ optionsCharacter_nohover(); });
+
+    btn_character1.addEventListener('click',function(){ optionsCharacter_chosen(1); });
+    btn_character2.addEventListener('click',function(){ optionsCharacter_chosen(2); });
+    btn_character3.addEventListener('click',function(){ optionsCharacter_chosen(3); });
+    btn_character4.addEventListener('click',function(){ optionsCharacter_chosen(4); });
+
+    btn_character1.addEventListener('touchend',function(){ optionsCharacter_chosen(1); });
+    btn_character2.addEventListener('touchend',function(){ optionsCharacter_chosen(2); });
+    btn_character3.addEventListener('touchend',function(){ optionsCharacter_chosen(3); });  
+    btn_character4.addEventListener('touchend',function(){ optionsCharacter_chosen(4); });  
+}
+
+function optionsCharacter_nohover(charNo){
+    gsap.to(".img_character",0,{className:"img_character"});
+    gsap.to(".highlight_character",0,{className:"highlight_character"});
+}
+
+function optionsCharacter_hovered(charNo){
+    gsap.to(".img_character",0,{className:"img_character"});
+    gsap.to(".highlight_character",0,{className:"highlight_character"});
+    gsap.to("#img_character"+charNo,0,{className:"img_character on"});
+    gsap.to("#highlight_character"+charNo,0,{className:"highlight_character on"});
 }
 
 function optionsCharacter_chosen(charNo){
@@ -2749,8 +2778,11 @@ function traceAudioTime(){
 
         // got to the point in the song:
         // do auto play
-        unBindButtons_startGame();
-        startGame(false,true);
+
+
+        // [todo] turned off autplay!!
+        // unBindButtons_startGame();
+        // startGame(false,true);
     }
     
     // make BG red for Chorus 1

@@ -1118,6 +1118,80 @@ div.rampLong img.rampLong {
     left: 27px;
     background-size: 158% 120%;
     background-position: center;
+    z-index: 400;
+}
+.img_character {
+    position: absolute;
+    top: 47px;
+    left: 67px;
+    width: 831px;
+    height: 401px;
+    background-size: 100% auto;
+    background-position: center top;
+}
+.img_character.on {
+    background-position: center bottom;   
+}
+#img_character1 {background-image: url(../images/character-jon.png) }
+#img_character2 {background-image: url(../images/character-srdj.png) }
+#img_character3 {background-image: url(../images/character-guy.png) }
+#img_character4 {background-image: url(../images/character-scott.png) }
+
+#img_character5 {
+    background-image: url(../images/character-sergio.png);
+    width: 970px;
+    height: 475px;
+    top: 0;
+    left: 0;
+}
+.btn_character,.highlight_character {
+    position: absolute;
+    height: 277px;
+    width: 100px;
+    top: 170px;
+}
+#btn_character1,
+#highlight_character1 {
+    width: 140px;
+    left: 100px;
+}
+#btn_character2,
+#highlight_character2 {
+    width: 160px;
+    left: 252px;
+}
+#btn_character3,
+#highlight_character3 {
+    width: 130px;
+    left: 440px;
+}
+#btn_character4,
+#highlight_character4 {
+    width: 130px;
+    left: 560px;
+}
+#btn_character5 {
+    left: 710px
+}
+.highlight_character{
+    transition: background-color 1s;
+}
+.highlight_character.on {
+    background-color: rgba(255,0,0,0.3);
+}
+.img_character span {
+    opacity: 0;
+    display: inline-block;
+    position: absolute;
+    color: white;
+    top: 30px;
+    left: 44%;
+    transform: translateX(-50%);
+    width: 480px;
+    text-align: center;
+}
+.img_character.on span {
+    opacity: 1;
 }
 
 
