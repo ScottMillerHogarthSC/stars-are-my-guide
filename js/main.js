@@ -439,7 +439,7 @@ function BindButtons_startGame(){
      // mobile
     btnStart.addEventListener('touchend', startGame);
     btnWheelie.addEventListener('touchend', startGame);
-    btnOption.addEventListener('touchend', showOptions);
+    btnOption.addEventListener('touchend', showCharacters);
 
      //keyboard
     document.body.addEventListener('keypress', introScreenBtnPressed);
@@ -456,7 +456,7 @@ var instructions_optionsTxt = document.getElementById('instructions_optionsTxt')
 
 function introScreenBtnPressed(e){
     if(e.code=="KeyS") {
-        btnOption.removeEventListener('touchend', showOptions);
+        btnOption.removeEventListener('touchend', showCharacters);
         document.body.removeEventListener('keypress', introScreenBtnPressed);
         
         startGame(e);
@@ -465,7 +465,7 @@ function introScreenBtnPressed(e){
 
         document.body.addEventListener('keypress', introScreenBtnPressed);
 
-        showOptions();
+        showCharacters();
 
     } else {
 
@@ -474,16 +474,43 @@ function introScreenBtnPressed(e){
 
 
 
+// [todo] character select
 
-function showOptions(ev){
-    btnOption.removeEventListener('touchend',showOptions);
+function showCharacters(ev){
+    btnOption.removeEventListener('touchend',showCharacters);
     unBindButtons_startGame();
 
     $('#mobileControls').addClass("optionsShowing");
 
 
-    // show options screen: 
+    // show character select screen: 
     gsap.to([introTxtTitle,introTxtLogo],0,{autoAlpha:0});
+    gsap.to(charactersScreen,0,{autoAlpha:1,display:"block"});
+
+    character1.addEventListener('click',function(){ optionsCharacter_chosen(1); });
+    character2.addEventListener('click',function(){ optionsCharacter_chosen(2); });
+    character3.addEventListener('click',function(){ optionsCharacter_chosen(3); });
+    character4.addEventListener('click',function(){ optionsCharacter_chosen(4); });
+
+    character1.addEventListener('touchend',function(){ optionsCharacter_chosen(1); });
+    character2.addEventListener('touchend',function(){ optionsCharacter_chosen(2); });
+    character3.addEventListener('touchend',function(){ optionsCharacter_chosen(3); });  
+    character4.addEventListener('touchend',function(){ optionsCharacter_chosen(4); });  
+}
+
+function optionsCharacter_chosen(charNo){
+    if(charNo==undefined || charNo==0) {charNo="";}
+    gsap.to("#rider-go",0,{className: "player hidden character"+charNo});
+    gsap.to(charactersScreen,0,{autoAlpha:0,display:"none"});
+
+    showOptions();
+}
+
+function showOptions(){
+    $('#mobileControls').addClass("optionsShowing");
+
+
+    // show options screen: 
     gsap.to(optionsScreen,0,{autoAlpha:1,display:"block"});
 
     optionsBike.addEventListener('click',function(){ optionsBike_chosen(0); });
@@ -494,7 +521,6 @@ function showOptions(ev){
     optionsBike1.addEventListener('touchend',function(){ optionsBike_chosen(1); });
     optionsBike2.addEventListener('touchend',function(){ optionsBike_chosen(2); });  
 }
-
 
 
 function optionsBike_chosen(bikeNo){
@@ -841,18 +867,17 @@ function keypress(e){
             e.code=="KeyM" || 
             e.code=="KeyN" || 
             e.code=="KeyH" || 
-            e.code=="KeyP" || 
+            e.code=="KeyL" || 
             e.code=="KeyO" || 
             e.code=="KeyI" || 
-            e.code=="KeyY" || 
             e.code=="KeyH" || 
             e.code=="KeyQ" || 
+            e.code=="KeyE" || 
             e.code=="KeyR" || 
             e.code=="KeyF" || 
             e.code=="KeyZ" || 
             e.code=="KeyX" || 
             e.code=="KeyC" || 
-            e.code=="KeyV" || 
             e.code=="Key1" || 
             e.code=="Key2" || 
             e.code=="Key3" || 
@@ -920,7 +945,7 @@ function startGame(ev,didAutoPlay){
 
         
         // reset
-        gsap.set([flame,gameover,"#rider-stopped",instructionsTxt0,instructions_optionsTxt,introTxtTitle,introTxtLogo,optionsScreen],{autoAlpha:0,overwrite:true});
+        gsap.set([flame,gameover,"#rider-stopped",instructionsTxt0,instructions_optionsTxt,introTxtTitle,introTxtLogo,optionsScreen,charactersScreen],{autoAlpha:0,overwrite:true});
         gsap.set([player,"#rider-go",pointstxt,jumpingtxt],{autoAlpha:1});
 
         backtoBounce();
