@@ -482,23 +482,26 @@ function introScreenBtnPressed(e){
 }
 
 
-
-// [todo] character select
-
 function showCharacters(ev){
     btnOption.removeEventListener('touchend',showCharacters);
+    document.body.removeEventListener('keypress', introScreenBtnPressed);
+    
+
     unBindButtons_startGame();
 
     $('#mobileControls').addClass("optionsShowing");
 
+    // reset character screen
     gsap.to(".img_character",0,{alpha:1});
     gsap.to("#txt_character div",0,{className:""});
     gsap.to(".highlight_character",0,{className:"highlight_character"});
 
+    // slide up titles + start buttons:
+    gsap.to([introTxtTitle,introTxtLogo,instructionsTxt0,instructions_optionsTxt],1.5,{y:-475,z:0.01})
 
-    // show character select screen: 
-    gsap.to([introTxtTitle,introTxtLogo],0,{autoAlpha:0});
-    gsap.to(charactersScreen,0,{autoAlpha:1,display:"block"});
+    // show + slide up character select screen: 
+    gsap.to(charactersScreen,0,{x:0,y:475,autoAlpha:1,display:"block",z:0.01});
+    gsap.to(charactersScreen,1.5,{y:0,z:0});
 
     btn_character1.addEventListener('mouseover',optionsCharacter_hovered);
     btn_character2.addEventListener('mouseover',optionsCharacter_hovered);
@@ -595,7 +598,8 @@ function showOptions(e){
     btn_character3.removeEventListener('click',showOptions);
     btn_character4.removeEventListener('click',showOptions);
 
-    gsap.to(charactersScreen,0,{autoAlpha:0,display:"none"});
+    gsap.to(charactersScreen,1,{x:-970,z:0.01});
+    gsap.to(charactersScreen,0,{autoAlpha:0,display:"none",delay:1,z:0});
 
 
     var charNo = e.target.id.split("btn_character")[1];
@@ -604,7 +608,8 @@ function showOptions(e){
 
 
     // show options screen: 
-    gsap.to(optionsScreen,0,{autoAlpha:1,display:"block"});
+    gsap.to(optionsScreen,0,{autoAlpha:1,display:"block",x:970,y:0,z:0.01});
+    gsap.to(optionsScreen,1,{x:0,z:0});
 
     optionsBike.addEventListener('click',function(){ optionsBike_chosen(0); });
     optionsBike1.addEventListener('click',function(){ optionsBike_chosen(1); });
@@ -619,13 +624,17 @@ function showOptions(e){
 function optionsBike_chosen(bikeNo){
     if(bikeNo==undefined || bikeNo==0) {bikeNo="";}
     gsap.to("#bike-go",0,{className: "bike"+bikeNo});
-    gsap.to([introTxtTitle,introTxtLogo],0,{autoAlpha:1});
-    gsap.to(optionsScreen,0,{autoAlpha:0,display:"none"});
-
+    
     $('#mobileControls').removeClass("optionsShowing");
 
-    BindButtons_startGame();
+    gsap.to(optionsScreen,1,{y:475});
+    gsap.to(optionsScreen,0,{autoAlpha:0,display:"none",delay:1});
 
+
+    // slide up titles + start buttons:
+    gsap.to([introTxtTitle,introTxtLogo,instructionsTxt0,instructions_optionsTxt],1,{y:0})
+
+    BindButtons_startGame();
 }
 
 function unBindButtons_startGame(){
