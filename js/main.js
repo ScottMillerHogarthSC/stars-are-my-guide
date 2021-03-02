@@ -1464,22 +1464,28 @@ function jump() {
             tlhair.pause();
             primScreamTL = gsap.timeline({onComplete:function(){ tlhair.play(); }});
 
+            var speechbubTint=0;
+
             if(characterNum==1){ 
                 speechtxt.innerHTML="drums rule!";
 
             } else if(characterNum==4){ 
-                speechtxt.innerHTML="woohoo";
+                speechtxt.innerHTML="woohoo!";
+                speechbubTint=1;
 
             } else {
                 speechtxt.innerHTML="primitaaaii";
-
+                speechbubTint=1;
             }
             
             primScreamTL.addLabel('primScream')
                 .to('#rider-scream2',0,{autoAlpha:1},"<")
                 .to('#rider-scream2',0,{className:"playScream"},"<")
                 .to(['#rider-gogo','.hair-go'],0,{autoAlpha:0},"<")
+                //[todo] - speechbub tint
                 .to(speechbub,0,{autoAlpha:1,top:"-40px",rotation:-5},0)
+                // .to(speechbub,.01,{alpha:0,yoyo:true,repeat:15},0)
+
                 .to(speechbub,0,{autoAlpha:0,top:"4px",rotation:0},1.5)
                 .to('#rider-scream2',0,{autoAlpha:0},1.5)
                 .to('#rider-scream2',0,{className:""},1.5)
