@@ -647,6 +647,8 @@ function unBindButtons_startGame(){
 
 
 function BindButtons_gamePlay(){
+
+    toggleCursor(1);
     // console.log("BindButtons_gamePlay")
 
     // remove StartGame Event Listeners 
@@ -817,6 +819,9 @@ function unBindButtons_gamePlay(){
             btnJump.addEventListener("mouseup", mobileBtnDoNothing);
             btnWheelie.addEventListener("mousedown", mobileBtnDoNothing);
             btnWheelie.addEventListener("mouseup", mobileBtnDoNothing);
+
+
+            toggleCursor(0);
 }
 
 function mobileBtnDoNothing(ev){
@@ -3016,4 +3021,14 @@ function resizeWindow(){
     gsap.set([wrap],{height:windowheight});
     gsap.set([wrap],{width:windowwidth});
     
+}
+
+
+
+function toggleCursor(off) {
+    if(off) {
+        controllerWrap.style.cursor="none";
+    } else {
+        controllerWrap.style.cursor="default";
+    }
 }

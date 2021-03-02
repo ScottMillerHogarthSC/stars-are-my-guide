@@ -335,9 +335,7 @@ body{
 
 #rider-scream2, 
 .character1 #rider-scream2 { 
-    background-image: url("../images/rider-scream2.png");
-    top: -20px;
-    left: 4px;
+    background-image: url("../images/rider-scream-jon.png");
 }
 .character2 #rider-scream2 { background-image: url("../images/rider-stopped-srdjan.png"); }
 .character3 #rider-scream2 { background-image: url("../images/rider-scream2.png"); }
@@ -525,7 +523,7 @@ div.ramp {
     top: 200px;
     width: 1620px;
     height: 140px;
-    background-image: url(../images/lava.jpg);
+    background-image: url("../images/lava.jpg");
     position: absolute;
     animation: lavaflow 30s infinite linear;
 }
@@ -540,18 +538,18 @@ div.ramp {
 
 #rampLong {
     display: none;
+
+    width: 2200px;
+    height: 475px;
+    margin-left: -40px;
+    margin-top: -145px;
+    background-image: url("../images/obstacle_rampLong.png")
 }
 div.rampLong #ramp {
     display: none;
 }
 div.rampLong #rampLong {
     display: block;
-    width: 2200px;
-    height: 475px;
-    margin-left: -40px;
-    margin-top: -145px;
-    background-image: url("..images/obstacle_ramp.png")
-
 }
 
 .obstacle, #player{
