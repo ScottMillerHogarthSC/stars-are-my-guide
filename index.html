@@ -95,18 +95,21 @@
             outline:0;
             padding:0;
             margin:0;
+            background-color:#000;
+
         }
         #container {
-            display: none;
+            display: block;
         }
         #loadingContent{
             position:absolute;
-            background-color:transparent;
+            background-color:#000;
             z-index:10;
             box-sizing: border-box;
             -moz-box-sizing: border-box;
             -webkit-box-sizing: border-box;
-            border:1px solid #666666;
+            top: 0;
+            left: 0;
             height: 100%;
             width: 100%;
             min-width: 970px;
@@ -150,11 +153,6 @@
     <audio id="audioEnding" src="07_put_to_the_sword.mp3"></audio>
 
 
-    <div id="loadingContent">
-        <div id="loadingImage">
-            loading...  please wait.
-        </div>
-    </div>
     <div id="wrap" class="paused">
         <div id="controllerWrap">
             <div id="container" class="clickable">
@@ -246,14 +244,14 @@
 
                                     
                                     <div id="bike-go"></div>
-                                    <img src="images/rider-stopped.png" class="player" id="rider-stopped">
+                                    <div id="rider-stopped" class="player"></div>
                                     <div id="rider-go" class="player hidden">    
-                                        <div class="rider-go"></div>
-                                        <img src="images/rider-scream.png" class="rider-scream">
-                                        <img src="images/rider-scream2.png" class="rider-scream2">
-                                        <img src="images/hair-go1.png" class="hair-go" id="hair-go1">
-                                        <img src="images/hair-go2.png" class="hair-go" id="hair-go2">
-                                        <img src="images/hair-go3.png" class="hair-go" id="hair-go3">
+                                        <div id="rider-gogo" class="rider-go"></div>
+                                        <div id="rider-scream"></div>
+                                        <div id="rider-scream2"></div>
+                                        <div class="hair-go" id="hair-go1"></div>
+                                        <div class="hair-go" id="hair-go2"></div>
+                                        <div class="hair-go" id="hair-go3"></div>
                                     </div>
                                     
                                     <div id="rider-jets" class="player"></div>
@@ -425,12 +423,21 @@
                     <div id="highlight_character2" class="highlight_character"></div>
                     <div id="highlight_character3" class="highlight_character"></div>
                     <div id="highlight_character4" class="highlight_character"></div>
+                    <div id="highlight_character5" class="highlight_character"></div>
                     
-                    <div id="img_character1" class="img_character"><span>Jonny 'lazer' McWarren</span></div>
-                    <div id="img_character3" class="img_character"><span>Guy jp Miller</span></div>
-                    <div id="img_character2" class="img_character"><span>Srdjan Bilic</span></div>
+                    <div id="img_character1" class="img_character"></div>
+                    <div id="img_character3" class="img_character"></div>
+                    <div id="img_character2" class="img_character"></div>
                     <div id="img_character5" class="img_character"></div>
-                    <div id="img_character4" class="img_character"><span>Scott 'scottoftheriver' Miller</span></div>
+                    <div id="img_character4" class="img_character"></div>
+
+                    <div id="txt_character">
+                        <div id="txt_character1">Jonny 'Lazer' McWarren <span>- confirm?</span></div>
+                        <div id="txt_character2">Srdjan Bilic <span>- confirm?</span></div>
+                        <div id="txt_character3">Guy J. P. Miller <span>- confirm?</span></div>
+                        <div id="txt_character4">Scott Miller <span>- confirm?</span></div>
+                        <div id="txt_character5">Sergio 'Cheko' Giron <span>- confirm?</span></div>
+                    </div>
 
                     <div id="btn_character1" class="btn_character"></div>
                     <div id="btn_character2" class="btn_character"></div>
@@ -466,6 +473,12 @@
         <div id="footer">
             &copy;2021 primitai - 
             <a href="http://www.primitai.com" target="_blank">primitai.com</a> - <a href="http://stars-are-my-guide.ga" title="start the game again">start over?</a>
+        </div>
+    </div>
+
+    <div id="loadingContent">
+        <div id="loadingImage">
+            loading...  please wait.
         </div>
     </div>
 </body>

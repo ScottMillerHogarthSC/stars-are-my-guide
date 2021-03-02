@@ -270,15 +270,89 @@ body{
 #rider-go {
     width: 164px;
 }
-.hair-go,.rider-go,#bike-go {
+.hair-go,
+.rider-go,
+#bike-go,
+#rider-stopped {
     width:164px;
     height: 150px;
     position: absolute;
+    background-size: 100%;
+
 }
 .rider-go {
     background-image: url("../images/rider-go-new.png");
+}
+.character3 .rider-go{
+    /* guy */
+    background-image: url("../images/rider-go-new.png");
+}
+.character1 .rider-go{
+    /* jon */
+    background-image: url("../images/rider-go-new.png");
+}
+.character2 .rider-go{
+    background-image: url("../images/rider-go-srdjan.png");
+}
+.character4 .rider-go{
+    background-image: url("../images/rider-go-scott.png");
+}
+#hair-go1 { background-image: url("../images/hair-go1.png"); }
+#hair-go2 { background-image: url("../images/hair-go2.png"); }
+#hair-go3 { background-image: url("../images/hair-go3.png"); }
+
+.character2 .hair-go {
+    
+}
+.character2 #hair-go1 { background-image: url("../images/hair-go1-srdjan.png"); }
+.character2 #hair-go2 { background-image: url("../images/hair-go2-srdjan.png"); }
+.character2 #hair-go3 { background-image: url("../images/hair-go3-srdjan.png"); }
+
+.character4 #hair-go1 { background-image: url("../images/hair-go1-scott.png"); }
+.character4 #hair-go2 { background-image: url("../images/hair-go2-scott.png"); }
+.character4 #hair-go3 { background-image: url("../images/hair-go3-scott.png"); }
+
+#rider-stopped {
+    background-image: url("../images/rider-stopped.png");
+}
+.character1 #rider-stopped { background-image: url("../images/rider-stopped.png"); }
+.character2 #rider-stopped { background-image: url("../images/rider-stopped-srdjan.png"); }
+.character3 #rider-stopped { background-image: url("../images/rider-stopped.png"); }
+.character4 #rider-stopped { background-image: url("../images/rider-stopped-scott.png"); }
+
+#rider-scream,#rider-scream2 {
+    width: 100%;
+    position: absolute;
+    opacity: 0;
+    height: 100%;
     background-size: 100%;
 }
+.character1 #rider-scream { background-image: url("../images/rider-scream.png"); }
+.character2 #rider-scream { background-image: url("../images/rider-stopped-srdjan.png"); }
+.character3 #rider-scream { background-image: url("../images/rider-scream.png"); }
+.character4 #rider-scream { background-image: url("../images/rider-stopped-scott.png"); }
+
+#rider-scream2, 
+.character1 #rider-scream2 { 
+    background-image: url("../images/rider-scream2.png");
+    top: -20px;
+    left: 4px;
+}
+.character2 #rider-scream2 { background-image: url("../images/rider-stopped-srdjan.png"); }
+.character3 #rider-scream2 { background-image: url("../images/rider-scream2.png"); }
+.character4 #rider-scream2 { 
+    background-image: url("../images/rider-stopped-scott.png");
+    top: -50px; 
+}
+.character4 #rider-scream2.playScream{
+    animation: nothingflip 1.5s;
+}
+@keyframes nothingflip {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+}
+
+
 #bike-go {
     background-image: url("../images/bike.png");
     background-size: 100%;
@@ -292,15 +366,9 @@ body{
 .fzero #bike-go.bike2 {
     background-image: url("../images/bike3.png");
 }
-.rider-scream,.rider-scream2 {
-    width: 100%;
-    position: absolute;
-    opacity: 0;
-}
-.rider-scream2 {
-    top: -20px;
-    left: 4px;
-}
+
+
+
 .shadowBounce {
      animation: shadowBounce 1s infinite linear;
      transform-origin: center 90%;
@@ -878,9 +946,7 @@ div.rampLong img.rampLong {
 
 
 
-#endScreenBtns{
-    display: none;
-}
+
 #endScreenBtns a {
     cursor: pointer;
     font-size: 1em;
@@ -1063,7 +1129,7 @@ div.rampLong img.rampLong {
     width: 970px;
     height: 475px;
     position: absolute;
-    display: none;
+    /*display: none;*/
 }
 #optionsScreen #optionsTitle {
     left: 495px;
@@ -1113,12 +1179,22 @@ div.rampLong img.rampLong {
     left: 505px;
     top: 26px;
     transform: scale(1.3);
+
+    left: 475px;
+    top: 78px;
+    transform: scale(1.2);
 }
 #charactersScreen {
     left: 27px;
     background-size: 158% 120%;
     background-position: center;
     z-index: 400;
+
+        left: 27px;
+    background-size: 132% 90%;
+    background-position: center;
+    z-index: 400;
+    transform: scale(1.2);
 }
 .img_character {
     position: absolute;
@@ -1132,28 +1208,42 @@ div.rampLong img.rampLong {
 .img_character.on {
     background-position: center bottom;   
 }
-#img_character1 {background-image: url(../images/character-jon.png) }
-#img_character2 {background-image: url(../images/character-srdj.png) }
-#img_character3 {background-image: url(../images/character-guy.png) }
-#img_character4 {background-image: url(../images/character-scott.png) }
+#img_character1 {
+    background-image: url(../images/character-jon.png);
+    left: 87px;
+}
+#img_character2 {
+    background-image: url(../images/character-srdj.png);
+    left: 66px;
+}
+#img_character3 {
+    background-image: url(../images/character-guy.png);
+    left: 41px;
+}
+#img_character4 {
+    background-image: url(../images/character-scott.png);
+    left: 37px;
+}
 
 #img_character5 {
     background-image: url(../images/character-sergio.png);
     width: 970px;
     height: 475px;
     top: 0;
-    left: 0;
+    left: -30px;
 }
 .btn_character,.highlight_character {
     position: absolute;
-    height: 277px;
+    height: 225px;
     width: 100px;
     top: 170px;
+    cursor: pointer;
+    user-select: none;
 }
 #btn_character1,
 #highlight_character1 {
     width: 140px;
-    left: 100px;
+    left: 120px;
 }
 #btn_character2,
 #highlight_character2 {
@@ -1162,36 +1252,73 @@ div.rampLong img.rampLong {
 }
 #btn_character3,
 #highlight_character3 {
-    width: 130px;
-    left: 440px;
+    width: 150px;
+    left: 400px;
 }
 #btn_character4,
 #highlight_character4 {
-    width: 130px;
-    left: 560px;
+    width: 150px;
+    left: 527px;
 }
-#btn_character5 {
-    left: 710px
+#btn_character5,
+#highlight_character5 {
+    width: 130px;
+    left: 661px;
 }
 .highlight_character{
-    transition: background-color 1s;
+    transition: opacity 1s;
+    opacity: 0;
 }
-.highlight_character.on {
-    background-color: rgba(255,0,0,0.3);
+.highlight_character.on{
+    opacity: 1;
 }
-.img_character span {
+
+#highlight_character1.on { background-color: rgba(255,255,0,0.4); }
+#highlight_character2.on { 
+    background: rgb(0,55,142);
+    background: linear-gradient(180deg, rgba(0,55,142,.4) 0%, rgba(0,55,142,.4) 33%, rgba(247,247,247,.4) 33%, rgba(247,247,247,.4) 66%, rgba(215,0,2,.4) 66%, rgba(215,0,2,.4) 100%);
+ }
+#highlight_character3.on { background-color: rgba(100,100,255,0.4); }
+#highlight_character4.on { background-color: rgba(0,255,0,0.4); }
+#highlight_character5.on { background-color: rgba(150,150,150,0.9); }
+
+#txt_character div {
     opacity: 0;
     display: inline-block;
     position: absolute;
     color: white;
-    top: 30px;
-    left: 44%;
-    transform: translateX(-50%);
-    width: 480px;
+    top: 112px;
+    width: auto;
     text-align: center;
+    transform: scale(0.8);
 }
-.img_character.on span {
+#txt_character div.on {
     opacity: 1;
+    transition: opacity 1s .5s;
+}
+#txt_character div span {
+    opacity: 0;
+}
+#txt_character div span.char_confirm {
+    animation: flash 1s infinite linear;
+    color: yellow;
+}
+#txt_character div#txt_character1 { left: 70px; }
+#txt_character div#txt_character2 { left: 219px; }
+#txt_character div#txt_character3 { left: 330px; }
+#txt_character div#txt_character4 { left: 478px; }
+#txt_character div#txt_character5 { left: 429px; }
+
+#txt_character div#txt_character5{
+    color: grey;
+    top: 98px;
+    height: 33px;
+    line-height: 40px;
+    width: 420px;
+    background-size: auto 100%;
+    background-repeat: no-repeat;
+    background-position: 383px top;
+    background-image: url(../images/locked.png);
 }
 
 

@@ -16,7 +16,7 @@ var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator
 var btnMoveUp, btnMoveForwards, btnMoveBackwards, btnMoveDown, btnJump, btnOption, btnStart, replayBtn, shareBtnEmail, shareBtnWhatsapp, shareBtnFacebook, shareBtnTwitter;
 var mobileControls, btns, mobilePause, mobilePause2, startSelect;
 
-var btn_character1,btn_character2,btn_character3,btn_character4;
+var btn_character1,btn_character2,btn_character3,btn_character4,btn_character5;
 
 var tlIntroScreen = gsap.timeline(),
     tlintro = gsap.timeline(),
@@ -124,6 +124,7 @@ function init()
     btn_character2 = document.getElementById("btn_character2");
     btn_character3 = document.getElementById("btn_character3");
     btn_character4 = document.getElementById("btn_character4");
+    btn_character5 = document.getElementById("btn_character5");
 
     
     resizeWindow();
@@ -135,6 +136,7 @@ function init()
 
     gsap.set(player,{x:0,y:0,scale:1,autoAlpha:1});
     gsap.set([flame,gameover],{autoAlpha:0});
+    gsap.set([optionsScreen,charactersScreen,endScreenBtns],{display:"none"});
 
 
     if (audio.canPlayType('audio/ogg')) {
@@ -489,53 +491,115 @@ function showCharacters(ev){
 
     $('#mobileControls').addClass("optionsShowing");
 
+    gsap.to(".img_character",0,{alpha:1});
+    gsap.to("#txt_character div",0,{className:""});
+    gsap.to(".highlight_character",0,{className:"highlight_character"});
+
 
     // show character select screen: 
     gsap.to([introTxtTitle,introTxtLogo],0,{autoAlpha:0});
     gsap.to(charactersScreen,0,{autoAlpha:1,display:"block"});
 
-    btn_character1.addEventListener('mouseover',function(){ optionsCharacter_hovered(1); });
-    btn_character2.addEventListener('mouseover',function(){ optionsCharacter_hovered(2); });
-    btn_character3.addEventListener('mouseover',function(){ optionsCharacter_hovered(3); });
-    btn_character4.addEventListener('mouseover',function(){ optionsCharacter_hovered(4); });
+    btn_character1.addEventListener('mouseover',optionsCharacter_hovered);
+    btn_character2.addEventListener('mouseover',optionsCharacter_hovered);
+    btn_character3.addEventListener('mouseover',optionsCharacter_hovered);
+    btn_character4.addEventListener('mouseover',optionsCharacter_hovered);
+    btn_character5.addEventListener('mouseover',optionsCharacter_hovered);
 
-    btn_character1.addEventListener('mouseout',function(){ optionsCharacter_nohover(); });
-    btn_character2.addEventListener('mouseout',function(){ optionsCharacter_nohover(); });
-    btn_character3.addEventListener('mouseout',function(){ optionsCharacter_nohover(); });
-    btn_character4.addEventListener('mouseout',function(){ optionsCharacter_nohover(); });
+    btn_character1.addEventListener('mouseout',optionsCharacter_nohover);
+    btn_character2.addEventListener('mouseout',optionsCharacter_nohover);
+    btn_character3.addEventListener('mouseout',optionsCharacter_nohover);
+    btn_character4.addEventListener('mouseout',optionsCharacter_nohover);
+    btn_character5.addEventListener('mouseout',optionsCharacter_nohover);
 
-    btn_character1.addEventListener('click',function(){ optionsCharacter_chosen(1); });
-    btn_character2.addEventListener('click',function(){ optionsCharacter_chosen(2); });
-    btn_character3.addEventListener('click',function(){ optionsCharacter_chosen(3); });
-    btn_character4.addEventListener('click',function(){ optionsCharacter_chosen(4); });
-
-    btn_character1.addEventListener('touchend',function(){ optionsCharacter_chosen(1); });
-    btn_character2.addEventListener('touchend',function(){ optionsCharacter_chosen(2); });
-    btn_character3.addEventListener('touchend',function(){ optionsCharacter_chosen(3); });  
-    btn_character4.addEventListener('touchend',function(){ optionsCharacter_chosen(4); });  
+    btn_character1.addEventListener('click',optionsCharacter_chosen);
+    btn_character2.addEventListener('click',optionsCharacter_chosen);
+    btn_character3.addEventListener('click',optionsCharacter_chosen);
+    btn_character4.addEventListener('click',optionsCharacter_chosen);
 }
 
-function optionsCharacter_nohover(charNo){
+function optionsCharacter_nohover(){
     gsap.to(".img_character",0,{className:"img_character"});
+    gsap.to("#txt_character div",0,{className:""});
+    
     gsap.to(".highlight_character",0,{className:"highlight_character"});
 }
 
-function optionsCharacter_hovered(charNo){
+function optionsCharacter_hovered(e){
+    var charNo = e.target.id.split("btn_character")[1];
+    gsap.to(["#txt_character div",".char_confirm"],0,{className:""});
     gsap.to(".img_character",0,{className:"img_character"});
     gsap.to(".highlight_character",0,{className:"highlight_character"});
     gsap.to("#img_character"+charNo,0,{className:"img_character on"});
     gsap.to("#highlight_character"+charNo,0,{className:"highlight_character on"});
+    gsap.to("#txt_character"+charNo,0,{className:"on"});
 }
 
-function optionsCharacter_chosen(charNo){
+var characterNum = 3; // guy is default character
+function optionsCharacter_chosen(e){
+    var charNo = e.target.id.split("btn_character")[1];
+    
+    characterNum = charNo;
+
+    gsap.to(["#txt_character div",".char_confirm"],0,{className:""});
+    
+
+    gsap.to(".img_character",1,{alpha:1});
+
+    gsap.to(".img_character",0,{className:"img_character"});
+    gsap.to(".highlight_character",0,{className:"highlight_character"});
+    gsap.to("#img_character"+charNo,0,{className:"img_character on"});
+    gsap.to("#highlight_character"+charNo,0,{className:"highlight_character on"});
+    gsap.to("#txt_character"+charNo,0,{className:"on"});
+
+    
+    gsap.to("#txt_character"+charNo+" span",0,{className:"char_confirm"});
+
+    btn_character1.removeEventListener('mouseover',optionsCharacter_hovered);
+    btn_character2.removeEventListener('mouseover',optionsCharacter_hovered);
+    btn_character3.removeEventListener('mouseover',optionsCharacter_hovered);
+    btn_character4.removeEventListener('mouseover',optionsCharacter_hovered);
+    btn_character5.removeEventListener('mouseover',optionsCharacter_hovered);
+
+    btn_character1.removeEventListener('mouseout',optionsCharacter_nohover);
+    btn_character2.removeEventListener('mouseout',optionsCharacter_nohover);
+    btn_character3.removeEventListener('mouseout',optionsCharacter_nohover);
+    btn_character4.removeEventListener('mouseout',optionsCharacter_nohover);
+    btn_character5.removeEventListener('mouseout',optionsCharacter_nohover);
+
+    btn_character1.removeEventListener('click',showOptions);
+    btn_character2.removeEventListener('click',showOptions);
+    btn_character3.removeEventListener('click',showOptions);
+    btn_character4.removeEventListener('click',showOptions);
+    btn_character5.removeEventListener('click',showOptions);
+
+    
     if(charNo==undefined || charNo==0) {charNo="";}
-    gsap.to("#rider-go",0,{className: "player hidden character"+charNo});
+    gsap.to("#rider",0,{className: "character"+charNo});
+    gsap.to(".img_character:not(#img_character"+charNo+")",1,{alpha:.2});
+
+    btn_character1.addEventListener('click',optionsCharacter_chosen);
+    btn_character2.addEventListener('click',optionsCharacter_chosen);
+    btn_character3.addEventListener('click',optionsCharacter_chosen);
+    btn_character4.addEventListener('click',optionsCharacter_chosen);
+
+    document.getElementById("btn_character"+charNo).removeEventListener('click',optionsCharacter_chosen);
+
+    document.getElementById("btn_character"+charNo).addEventListener('click',showOptions);
+    
+}
+
+function showOptions(e){
+    btn_character1.removeEventListener('click',showOptions);
+    btn_character2.removeEventListener('click',showOptions);
+    btn_character3.removeEventListener('click',showOptions);
+    btn_character4.removeEventListener('click',showOptions);
+
     gsap.to(charactersScreen,0,{autoAlpha:0,display:"none"});
 
-    showOptions();
-}
 
-function showOptions(){
+    var charNo = e.target.id.split("btn_character")[1];
+
     $('#mobileControls').addClass("optionsShowing");
 
 
@@ -1114,9 +1178,9 @@ function setupGamePlayTimelines() {
         
     tlScream = gsap.timeline({paused:true});
     tlScream.addLabel('scream')
-    .to(".rider-scream",0,{autoAlpha:1},0)
-    .to([".rider-go",".hair-go",".rider-scream2"],0,{autoAlpha:0},0)
-    .to([".rider-scream","#rider-jets"],0,{autoAlpha:0},"1")
+    .to("#rider-scream",0,{autoAlpha:1},0)
+    .to(["#rider-gogo",".hair-go","#rider-scream2"],0,{autoAlpha:0},0)
+    .to(["#rider-scream","#rider-jets"],0,{autoAlpha:0},"1")
     .to("#rider-stopped",0,{autoAlpha:1},"1")
     .addLabel('screamDone');
 }
@@ -1205,7 +1269,7 @@ function gameResume(ev) {
     if(collided) {
         collided=false;
         gsap.set(resumetxt,{autoAlpha:0,className:"copy"});
-        gsap.set([flame,".rider-scream"],{autoAlpha:0});
+        gsap.set([flame,"#rider-scream"],{autoAlpha:0});
         gsap.to(shadow,0,{autoAlpha:0.4});
         
         hideSpeechBub();
@@ -1265,7 +1329,7 @@ function gameResume(ev) {
     tlScream.seek(0);
 
     gsap.set("#rider-stopped",{autoAlpha:0});
-    gsap.set(["#rider-go",".rider-go","#rider-jets"],{autoAlpha:1});
+    gsap.set(["#rider-go","#rider-gogo","#rider-jets"],{autoAlpha:1});
 
     
     jumpingtxt.innerHTML="go";
@@ -1391,15 +1455,26 @@ function jump() {
             tlhair.pause();
             primScreamTL = gsap.timeline({onComplete:function(){ tlhair.play(); }});
 
-            speechtxt.innerHTML="primitaaaii";
+            if(characterNum==1){ 
+                speechtxt.innerHTML="drums rule!";
+
+            } else if(characterNum==4){ 
+                speechtxt.innerHTML="woohoo";
+
+            } else {
+                speechtxt.innerHTML="primitaaaii";
+
+            }
             
             primScreamTL.addLabel('primScream')
-                .to('.rider-scream2',0,{autoAlpha:1},"<")
-                .to(['.rider-go','.hair-go'],0,{autoAlpha:0},"<")
+                .to('#rider-scream2',0,{autoAlpha:1},"<")
+                .to('#rider-scream2',0,{className:"playScream"},"<")
+                .to(['#rider-gogo','.hair-go'],0,{autoAlpha:0},"<")
                 .to(speechbub,0,{autoAlpha:1,top:"-40px",rotation:-5},0)
                 .to(speechbub,0,{autoAlpha:0,top:"4px",rotation:0},1.5)
-                .to('.rider-scream2',0,{autoAlpha:0},1.5)
-                .to(['.rider-go','.hair-go'],0,{autoAlpha:1},1.5)
+                .to('#rider-scream2',0,{autoAlpha:0},1.5)
+                .to('#rider-scream2',0,{className:""},1.5)
+                .to(['#rider-gogo','.hair-go'],0,{autoAlpha:1},1.5)
                 .add(function(){speakingLocked=false},2.5);
 
         } else if(tlMainGame.isActive()){
@@ -2094,13 +2169,10 @@ function playEnding(){
         .to([".car","#car-shadow"],6,{x:0,ease:Power1.easeOut},">")
         .to("#player",1,{top:"270px"},"<")
         
-        .to(["#rider-go","#bike-go"],1,{rotationZ:-30},"-=3")
+        .to(["#rider-go","#bike-go"],1,{rotationZ:-30},3)
         .to(["#shadow"],0.5,{autoAlpha:0},"<")
         .to("#rider-jets",0,{display:"none"},"<")
-        .to("#rider", {className: 'riderBounce'},"<")
-
-    
-        .to(["#rider-go","#bike-go"],1.5,{rotationZ:0,ease:Bounce.easeOut},">")
+        .to(["#rider-go","#bike-go"],1.5,{rotationZ:0,ease:Bounce.easeOut},4)
 
 
         .to("#rider-stopped", 0, {autoAlpha:0},">")
@@ -2781,8 +2853,8 @@ function traceAudioTime(){
 
 
         // [todo] turned off autplay!!
-        // unBindButtons_startGame();
-        // startGame(false,true);
+        unBindButtons_startGame();
+        startGame(false,true);
     }
     
     // make BG red for Chorus 1
