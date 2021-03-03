@@ -1197,6 +1197,18 @@ function setupGamePlayTimelines() {
     .to(["#rider-scream","#rider-jets"],0,{autoAlpha:0},"1")
     .to("#rider-stopped",0,{autoAlpha:1},"1")
     .addLabel('screamDone');
+
+    primScreamTL = gsap.timeline({paused:true,onComplete:function(){ tlhair.play(); }});
+    primScreamTL.addLabel('primScream')
+    .add(function(){tlhair.pause();},"<")
+    .to('#rider-scream2',0,{autoAlpha:1},"<")
+    .to('#rider-scream2',0,{className:"playScream"},"<")
+    .to(['#rider-gogo','.hair-go'],0,{autoAlpha:0},"<")
+    .to('#rider-scream2',0,{autoAlpha:0},1.5)
+    .to('#rider-scream2',0,{className:""},1.5)
+    .to(['#rider-gogo','.hair-go'],0,{autoAlpha:1},1.5)
+    .add(function(){tlhair.resume();},1.5)
+    .addLabel('primScreamDone',"<")
 }
 
 
@@ -1342,6 +1354,9 @@ function gameResume(ev) {
     tlScream.pause();
     tlScream.seek(0);
 
+    primScreamTL.pause();
+    primScreamTL.seek(0);
+
     gsap.set("#rider-stopped",{autoAlpha:0});
     gsap.set(["#rider-go","#rider-gogo","#rider-jets"],{autoAlpha:1});
 
@@ -1448,6 +1463,12 @@ function jump() {
     
     if(isRamping){ 
         // ramp has been hit so cant jump!
+
+        if(isRampFlying) {
+            //[todo] tricks!
+            primScreamTL.seek(0);
+            primScreamTL.play();
+        }
     }
 
     else {
@@ -1466,36 +1487,24 @@ function jump() {
 
             speakingLocked = true;
 
-            tlhair.pause();
-            primScreamTL = gsap.timeline({onComplete:function(){ tlhair.play(); }});
-
-            var speechbubTint=0;
-
             if(characterNum==1){ 
                 speechtxt.innerHTML="drums rule!";
 
+            } else if(characterNum==2){ 
+                speechtxt.innerHTML="skills!";
+
             } else if(characterNum==4){ 
                 speechtxt.innerHTML="woohoo!";
-                speechbubTint=1;
 
             } else {
                 speechtxt.innerHTML="primitaaaii";
-                speechbubTint=1;
-            }
             
-            primScreamTL.addLabel('primScream')
-                .to('#rider-scream2',0,{autoAlpha:1},"<")
-                .to('#rider-scream2',0,{className:"playScream"},"<")
-                .to(['#rider-gogo','.hair-go'],0,{autoAlpha:0},"<")
-                //[todo] - speechbub tint
-                .to(speechbub,0,{autoAlpha:1,top:"-40px",rotation:-5},0)
-                // .to(speechbub,.01,{alpha:0,yoyo:true,repeat:15},0)
+            gsap.to(speechbub,0,{autoAlpha:1,top:"-40px",rotation:-5});
+            gsap.to(speechbub,0,{autoAlpha:0,top:"4px",rotation:0,delay:1.5});
+            gsap.delayedCall(2.5,function(){speakingLocked=false})}
 
-                .to(speechbub,0,{autoAlpha:0,top:"4px",rotation:0},1.5)
-                .to('#rider-scream2',0,{autoAlpha:0},1.5)
-                .to('#rider-scream2',0,{className:""},1.5)
-                .to(['#rider-gogo','.hair-go'],0,{autoAlpha:1},1.5)
-                .add(function(){speakingLocked=false},2.5);
+            primScreamTL.seek(0);
+            primScreamTL.play();
 
         } else if(tlMainGame.isActive()){
 
