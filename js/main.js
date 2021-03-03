@@ -539,10 +539,15 @@ function optionsCharacter_hovered(e){
 }
 
 var characterNum = 3; // guy is default character
+var trickDelay = 1.5;
 function optionsCharacter_chosen(e){
     var charNo = e.target.id.split("btn_character")[1];
     
-    characterNum = charNo;
+    characterNum = Number(charNo);
+
+    if(characterNum==2 || characterNum==4){
+        trickDelay=1;
+    }
 
     gsap.to(["#txt_character div",".char_confirm"],0,{className:""});
     
@@ -648,7 +653,7 @@ function unBindButtons_startGame(){
 
 function BindButtons_gamePlay(){
 
-    toggleCursor(1);
+    toggleCursor(true);
     // console.log("BindButtons_gamePlay")
 
     // remove StartGame Event Listeners 
@@ -1204,10 +1209,10 @@ function setupGamePlayTimelines() {
     .to('#rider-scream2',0,{autoAlpha:1},"<")
     .to('#rider-scream2',0,{className:"playScream"},"<")
     .to(['#rider-gogo','.hair-go'],0,{autoAlpha:0},"<")
-    .to('#rider-scream2',0,{autoAlpha:0},1.5)
-    .to('#rider-scream2',0,{className:""},1.5)
-    .to(['#rider-gogo','.hair-go'],0,{autoAlpha:1},1.5)
-    .add(function(){tlhair.resume();},1.5)
+    .to('#rider-scream2',0,{autoAlpha:0},trickDelay)
+    .to('#rider-scream2',0,{className:""},trickDelay)
+    .to(['#rider-gogo','.hair-go'],0,{autoAlpha:1},trickDelay)
+    .add(function(){tlhair.resume();},trickDelay)
     .addLabel('primScreamDone',"<")
 }
 
@@ -1483,25 +1488,25 @@ function jump() {
 
         if (tlfg.isActive() && jumpCount % 9 === 0) {
             
-            // every 9 jumps do a stand-up scream
+            // every 9 jumps do a trick
 
             speakingLocked = true;
 
             if(characterNum==1){ 
                 speechtxt.innerHTML="drums rule!";
-
+                gsap.to(speechbub,0,{autoAlpha:1,top:"-10px",rotation:-5});
             } else if(characterNum==2){ 
                 speechtxt.innerHTML="skills!";
-
+                gsap.to(speechbub,0,{autoAlpha:1,top:"-40px",rotation:-5});
             } else if(characterNum==4){ 
                 speechtxt.innerHTML="woohoo!";
-
+                gsap.to(speechbub,0,{autoAlpha:1,top:"-40px",rotation:-5});
             } else {
                 speechtxt.innerHTML="primitaaaii";
-            
-            gsap.to(speechbub,0,{autoAlpha:1,top:"-40px",rotation:-5});
-            gsap.to(speechbub,0,{autoAlpha:0,top:"4px",rotation:0,delay:1.5});
-            gsap.delayedCall(2.5,function(){speakingLocked=false})}
+                gsap.to(speechbub,0,{autoAlpha:1,top:"-40px",rotation:-5});
+            }
+            gsap.to(speechbub,0,{autoAlpha:0,top:"4px",rotation:0,delay:trickDelay});
+            gsap.delayedCall(trickDelay+1,function(){speakingLocked=false});
 
             primScreamTL.seek(0);
             primScreamTL.play();
