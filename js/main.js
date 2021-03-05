@@ -552,11 +552,11 @@ function optionsCharacter_chosen(e){
     gsap.to(["#txt_character div",".char_confirm"],0,{className:""});
     
 
-    gsap.to(".img_character",1,{alpha:1});
+    gsap.to(".img_character",1,{alpha:.2});
 
     gsap.to(".img_character",0,{className:"img_character"});
     gsap.to(".highlight_character",0,{className:"highlight_character"});
-    gsap.to("#img_character"+charNo,0,{className:"img_character on"});
+    gsap.to("#img_character"+charNo,0,{className:"img_character on",alpha:1,overwrite:true});
     gsap.to("#highlight_character"+charNo,0,{className:"highlight_character on"});
     gsap.to("#txt_character"+charNo,0,{className:"on"});
 

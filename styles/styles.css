@@ -1313,12 +1313,13 @@ div.rampLong #rampLong {
     left: 661px;
 }
 .highlight_character{
-    transition: all 1s;
-    opacity: 0;
+    transition: transform 2s;
+    transform: scaleY(0);
+    transform-origin: center bottom;
 }
 .highlight_character.on{
-    transition: all 1s;
-    opacity: 1;
+    transition: transform 1s;
+    transform: scaleY(1);
 }
 
 #highlight_character1.on { background-color: rgba(255,255,0,0.6); }
