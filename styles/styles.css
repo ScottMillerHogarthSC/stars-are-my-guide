@@ -329,10 +329,10 @@ body{
     background-size: 100%;
 }
 .character1 #rider-scream { background-image: url("../images/rider-scream-jon.png"); }
-.character2 #rider-scream { background-image: url("../images/rider-stopped-srdjan.png"); }
+.character2 #rider-scream { background-image: url("../images/rider-scream-srdjan.png"); }
 #rider-scream,
 .character3 #rider-scream { background-image: url("../images/rider-scream.png"); }
-.character4 #rider-scream { background-image: url("../images/rider-stopped-scott.png"); }
+.character4 #rider-scream { background-image: url("../images/rider-scream-scott.png"); }
 
 .character1 #rider-scream2 {  
     background-image: url("../images/rider-scream2-jon.png"); 
@@ -1313,21 +1313,22 @@ div.rampLong #rampLong {
     left: 661px;
 }
 .highlight_character{
-    transition: opacity 1s;
+    transition: all 1s;
     opacity: 0;
 }
 .highlight_character.on{
+    transition: all 1s;
     opacity: 1;
 }
 
-#highlight_character1.on { background-color: rgba(255,255,0,0.4); }
+#highlight_character1.on { background-color: rgba(255,255,0,0.6); }
 #highlight_character2.on { 
     background: rgb(0,55,142);
     background: linear-gradient(180deg, rgba(0,55,142,.4) 0%, rgba(0,55,142,.4) 33%, rgba(247,247,247,.4) 33%, rgba(247,247,247,.4) 66%, rgba(215,0,2,.4) 66%, rgba(215,0,2,.4) 100%);
  }
-#highlight_character3.on { background-color: rgba(100,100,255,0.4); }
-#highlight_character4.on { background-color: rgba(0,255,0,0.4); }
-#highlight_character5.on { background-color: rgba(150,150,150,0.9); }
+#highlight_character3.on { background-color: rgba(100,100,255,0.6); }
+#highlight_character4.on { background-color: rgba(0,255,0,0.6); }
+#highlight_character5.on { background-color: rgba(142,18,18,0.9); }
 
 #txt_character div {
     opacity: 0;
@@ -1338,10 +1339,11 @@ div.rampLong #rampLong {
     width: auto;
     text-align: center;
     transform: scale(0.8);
+    transition: opacity .1s;
 }
 #txt_character div.on {
     opacity: 1;
-    transition: opacity 1s .5s;
+    transition: opacity .5s 0s ease-in;
 }
 #txt_character div span {
     opacity: 0;
@@ -1350,14 +1352,26 @@ div.rampLong #rampLong {
     animation: flash 1s infinite linear;
     color: yellow;
 }
-#txt_character div#txt_character1 { left: 70px; }
+#txt_character div#txt_character1 { 
+    color: rgba(255,255,0,1);
+    left: 70px; 
+}
 #txt_character div#txt_character2 { left: 219px; }
-#txt_character div#txt_character3 { left: 330px; }
-#txt_character div#txt_character4 { left: 478px; }
-#txt_character div#txt_character5 { left: 467px; }
+#txt_character div#txt_character3 { 
+    color: rgb(172 172 255);
+    left: 330px; 
+}
+#txt_character div#txt_character4 { 
+    color: rgba(0,255,0,1);
+    left: 478px; 
+}
+#txt_character div#txt_character5 { 
+    color: rgba(142,18,18,1);
+    left: 467px; 
+}
 
 #txt_character div#txt_character5{
-    color: grey;
+    color: #8e1212;
     top: 98px;
     height: 33px;
     line-height: 40px;
@@ -1366,6 +1380,7 @@ div.rampLong #rampLong {
     background-repeat: no-repeat;
     background-position: 343px top;
     background-image: url(../images/locked.png);
+    /*animation: flashing 1s infinite;*/
 }
 
 
