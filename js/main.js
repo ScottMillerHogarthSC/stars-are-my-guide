@@ -358,13 +358,13 @@ function showTitles(speed) {
     
     if(speed=="slowly") {
         gsap.to(instructionsTxt0,3,{autoAlpha:1,ease:Linear.easeNone});
-        gsap.to(instructions_optionsTxt,0,{autoAlpha:0,display:"block"});
+        // gsap.to(instructions_optionsTxt,0,{autoAlpha:0,display:"block"});
         gsap.to(instructions_optionsTxt,3,{autoAlpha:0.5,delay:1,ease:Linear.easeNone});
 
         gsap.to(instructionsTxt0,{className:"instructionsTxtButt flashing hidden copy",delay:4});
     } else {
         gsap.to(instructionsTxt0,0,{autoAlpha:1});
-        gsap.to(instructions_optionsTxt,0,{autoAlpha:0.5,display:"block"});
+        // gsap.to(instructions_optionsTxt,0,{autoAlpha:0.5,display:"block"});
         gsap.to(instructionsTxt0,{className:"instructionsTxtButt flashing hidden copy",delay:0});
         gsap.to([introTxtTitle,introTxtLogo],0,{autoAlpha:1});
     }
@@ -668,6 +668,7 @@ function optionsBike_chosen(bikeNo){
 
     // slide up titles + start buttons:
     gsap.to([introTxtTitle,introTxtLogo,instructionsTxt0,instructions_optionsTxt],1,{y:0})
+    gsap.to([instructions_optionsTxt],0,{autoAlpha:.5,display:"block"})
 
     BindButtons_startGame();
 }
@@ -2288,12 +2289,14 @@ var endingComplete = false,
 function tlEndingComplete(){
     endingComplete=true;
     // stop all timelines
-    // show high score
-    $("#scoretxt").html(points);
     
     $("#obstaclesHittxt").html(noObstaclesHit);
     if(noObstaclesHit==0){
 
+        // add 1000 points for perfect game!:
+        points = points + 1000;
+
+        
         // play perfect game anim:
 
         gsap.to(endtxt_perf,0,{autoAlpha:1});
@@ -2313,7 +2316,11 @@ function tlEndingComplete(){
         endInitialsDelay=2;
     }
     
+
     $("#pointstxt").html(points);
+
+    // show high score
+    $("#scoretxt").html(points);
 
     gsap.set(endtxt,{display:"block", autoAlpha:1});
     gsap.set(mobileControls,{display:"none"});
@@ -2370,6 +2377,11 @@ function highScoreEntered(e) {
         var placedScore = false;
         var yourScore = Number(scoretxt.innerHTML);
         var yourNameScore = initialstxt.value;
+        if(yourNameScore.length==1){
+            yourNameScore += "&nbsp;&nbsp;";
+        } else if (yourNameScore.length==2){
+            yourNameScore += "&nbsp;";
+        }
         
         
         var highScoreList = "<span class=\"title\">highest scores:</span><br><br>";

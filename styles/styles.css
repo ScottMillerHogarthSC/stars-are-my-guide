@@ -890,6 +890,7 @@ div.rampLong #rampLong {
 #instructions_optionsTxt {
     top: 268px;
     transform: translate(-50%,-50%) scale(1.4);
+    display: none;
 }
 #instructionsTxt3,#pauseTxt1 {
     top: 217px;
