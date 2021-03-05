@@ -1432,9 +1432,9 @@ function doSpeech(whatOccurred,delay,count,factor){
             var whichPhrase = Math.floor(Math.random() * whatOccurred.length-1) + 1; 
             speechtxt.innerHTML=whatOccurred[whichPhrase];
         
-            gsap.set(speechbub,{autoAlpha:1,top:"4px",rotation:0,delay:0.7});
+            gsap.set(speechbub,{autoAlpha:1,top:"4px",rotation:0});
             
-            gsap.delayedCall(delay+0.7, hideSpeechBub);
+            gsap.delayedCall(delay, hideSpeechBub);
 
         } else if(whatOccurred==vortexPhrases){
             var whichPhrase = Math.floor(Math.random() * whatOccurred.length-1) + 1; 
@@ -2642,6 +2642,7 @@ function doObstacleHit() {
     gsap.killTweensOf(detectCollision);
     gsap.killTweensOf(player);
     gsap.killTweensOf(playerMovements);
+    
 
     // volume increases each crash
     
@@ -2656,8 +2657,8 @@ function doObstacleHit() {
     
     // setup kkeypress to resume:
 
-    gsap.set(resumetxt,{autoAlpha:1,className:"copy flashing",delay:1,onComplete:function(){
-        toggleControllerOverlay(false,3,1);
+    gsap.set(resumetxt,{autoAlpha:1,className:"copy flashing",delay:2,onComplete:function(){
+        toggleControllerOverlay(false,.25,0);
         BindButtons_gameResume();
     }});
 
