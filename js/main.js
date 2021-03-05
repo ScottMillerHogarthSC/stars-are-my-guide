@@ -5,7 +5,7 @@ var isCheat = false;
 
 
 
-var container,controllerWrap,jumpingtxt,speechtxt,audio,oww,pointstxt,points=0;
+var container,controllerWrap,jumpingtxt,tricktxt,speechtxt,audio,oww,pointstxt,points=0;
 var body = document.body,
 html = document.documentElement;
 var pageHeight = Math.max( body.scrollHeight, body.offsetHeight, 
@@ -87,6 +87,7 @@ function init()
     container = document.getElementById("container");
     controllerWrap = document.getElementById("controllerWrap");
     jumpingtxt = document.getElementById("jumpingtxt");
+    tricktxt = document.getElementById("tricktxt");
     speechtxt = document.getElementById("speechtxt");
     pointstxt = document.getElementById("pointstxt");
     cheatstxt = document.getElementById("cheatstxt");
@@ -444,13 +445,20 @@ function unBindButtons_gameResume(){
 
 function BindButtons_startGame(){
     // console.log("BindButtons_startGame");
+    if(characterNum==0){
+        btnStart.addEventListener('touchend', showCharacters);
+        btnWheelie.addEventListener('touchend', showCharacters);
+    } else {
+        btnStart.removeEventListener('touchend', showCharacters);
+        btnStart.addEventListener('touchend', startGame);
+        btnWheelie.removeEventListener('touchend', showCharacters);
+        btnWheelie.addEventListener('touchend', startGame);    
+    }
 
      // mobile
-    btnStart.addEventListener('touchend', startGame);
-    btnWheelie.addEventListener('touchend', startGame);
     btnOption.addEventListener('touchend', showCharacters);
 
-     //keyboard
+    //keyboard
     document.body.addEventListener('keypress', introScreenBtnPressed);
 }
 
@@ -464,19 +472,41 @@ var instructions_optionsTxt = document.getElementById('instructions_optionsTxt')
     optionsBike2 = document.getElementById('optionsBike2');
 
 function introScreenBtnPressed(e){
-    if(e.code=="KeyS") {
-        btnOption.removeEventListener('touchend', showCharacters);
-        document.body.removeEventListener('keypress', introScreenBtnPressed);
+    if(characterNum==0){
+
+        if(e.code=="KeyS") {
+            btnOption.removeEventListener('touchend', showCharacters);
+            document.body.removeEventListener('keypress', introScreenBtnPressed);
         
-        startGame(e);
+            showCharacters();
 
-    } else if(e.code=="KeyO"){
+        } else if(e.code=="KeyO"){
 
-        document.body.addEventListener('keypress', introScreenBtnPressed);
+            document.body.addEventListener('keypress', introScreenBtnPressed);
 
-        showCharacters();
+            showCharacters();
+
+        } else {
+
+        }
 
     } else {
+
+        if(e.code=="KeyS") {
+            btnOption.removeEventListener('touchend', showCharacters);
+            document.body.removeEventListener('keypress', introScreenBtnPressed);
+        
+            startGame(e);
+
+        } else if(e.code=="KeyO"){
+
+            document.body.addEventListener('keypress', introScreenBtnPressed);
+
+            showCharacters();
+
+        } else {
+
+        }
 
     }
 }
@@ -538,7 +568,7 @@ function optionsCharacter_hovered(e){
     gsap.to("#txt_character"+charNo,0,{className:"on"});
 }
 
-var characterNum = 3; // guy is default character
+var characterNum = 0; // guy is default character
 var trickDelay = 1.5;
 function optionsCharacter_chosen(e){
     var charNo = e.target.id.split("btn_character")[1];
@@ -1045,6 +1075,7 @@ function startGame(ev,didAutoPlay){
 
         points=0;
 
+
         introPlaying=false;
 
         if(!didAutoPlay){
@@ -1058,7 +1089,7 @@ function startGame(ev,didAutoPlay){
         
         // reset
         gsap.set([flame,gameover,"#rider-stopped",instructionsTxt0,instructions_optionsTxt,introTxtTitle,introTxtLogo,optionsScreen,charactersScreen],{autoAlpha:0,overwrite:true});
-        gsap.set([player,"#rider-go",pointstxt,jumpingtxt],{autoAlpha:1});
+        gsap.set([player,"#rider-go"],{autoAlpha:1});
 
         backtoBounce();
             
@@ -1460,8 +1491,8 @@ function hideSpeechBub(){
     gsap.to(speechbub,0,{autoAlpha:0});
 }
 
-
-
+/* /// tricks counter //////  */
+var trickCount = 0;
 var isJumping = false;
 var jumpCount = 0;
 function jump() {
@@ -1470,9 +1501,14 @@ function jump() {
         // ramp has been hit so cant jump!
 
         if(isRampFlying) {
-            //[todo] tricks!
+            
             primScreamTL.seek(0);
             primScreamTL.play();
+
+            gsap.to(trickMeter,1,{width:0,className:""});
+            trickCount=0;   
+
+            points = points + 50;
         }
     }
 
@@ -1486,35 +1522,56 @@ function jump() {
         jumpCount++;
         jumpingtxt.innerHTML="jump";
 
-        if (tlfg.isActive() && jumpCount % 9 === 0) {
-            
+        // build up the "trick meter"
+        
+        if(tlMainGame.isActive()){
+            if(trickCount<8){
+                trickCount++;
+                gsap.to(trickMeter,.1,{width:(trickCount*11.11)});
+
+            } else if(trickCount == 8){
+
+                // on 8 make it flash!
+                trickCount++;
+                gsap.to(trickMeter,.1,{width:(trickCount*11.11)});
+
+                gsap.to(trickMeter,0,{className:"flashing"});
             // every 9 jumps do a trick
 
-            speakingLocked = true;
+            } else if (trickCount == 9) {
+                
+                gsap.to(trickMeter,1,{width:0,className:""});
+                trickCount=0;   
 
-            if(characterNum==1){ 
-                speechtxt.innerHTML="drums rule!";
-                gsap.to(speechbub,0,{autoAlpha:1,top:"-10px",rotation:-5});
-            } else if(characterNum==2){ 
-                speechtxt.innerHTML="skills!";
-                gsap.to(speechbub,0,{autoAlpha:1,top:"-40px",rotation:-5});
-            } else if(characterNum==4){ 
-                speechtxt.innerHTML="woohoo!";
-                gsap.to(speechbub,0,{autoAlpha:1,top:"-40px",rotation:-5});
-            } else {
-                speechtxt.innerHTML="primitaaaii";
-                gsap.to(speechbub,0,{autoAlpha:1,top:"-40px",rotation:-5});
-            }
-            gsap.to(speechbub,0,{autoAlpha:0,top:"4px",rotation:0,delay:trickDelay});
-            gsap.delayedCall(trickDelay+1,function(){speakingLocked=false});
+                speakingLocked = true;
 
-            primScreamTL.seek(0);
-            primScreamTL.play();
+                if(characterNum==1){ 
+                    speechtxt.innerHTML="drums rule!";
+                    gsap.to(speechbub,0,{autoAlpha:1,top:"-10px",rotation:-5});
+                } else if(characterNum==2){ 
+                    speechtxt.innerHTML="skills!";
+                    gsap.to(speechbub,0,{autoAlpha:1,top:"-40px",rotation:-5});
+                } else if(characterNum==4){ 
+                    speechtxt.innerHTML="woohoo!";
+                    gsap.to(speechbub,0,{autoAlpha:1,top:"-40px",rotation:-5});
+                } else {
+                    speechtxt.innerHTML="primitaaaii";
+                    gsap.to(speechbub,0,{autoAlpha:1,top:"-40px",rotation:-5});
+                }
+                gsap.to(speechbub,0,{autoAlpha:0,top:"4px",rotation:0,delay:trickDelay});
+                gsap.delayedCall(trickDelay+1,function(){speakingLocked=false});
 
-        } else if(tlMainGame.isActive()){
+
+                points = points + 50;
+
+
+
+                primScreamTL.seek(0);
+                primScreamTL.play();
+
+            } 
 
             doSpeech(jumpPhrases,1.5,jumpCount,3);
-
         }
         
 
@@ -1537,16 +1594,16 @@ function jump() {
         gsap.set(shadow,{autoAlpha:0.4});
         gsap.to(shadow,1,{autoAlpha:0,scaleX:0.6});
         
-        gsap.to(shadow,1.5,{autoAlpha:0.5,scaleX:1,delay:1,ease:Bounce.easeOut});
+        gsap.to(shadow,1.5,{autoAlpha:0.3,scaleX:1,delay:1,ease:Bounce.easeOut});
         
-        gsap.delayedCall(1.7,notJumping);
+        gsap.delayedCall(1.3,notJumping);
     }
 }
 
 function notJumping(){
     isJumping=false; 
     jumpingtxt.innerHTML="go";
-    gsap.delayedCall(0.6,backtoBounce);
+    gsap.delayedCall(1,backtoBounce);
 }
 
 var wheelieCount=0;
@@ -1559,7 +1616,7 @@ function wheelie() {
     $('#shadow').removeClass('shadowBounce');
     
     if(!isRampFlying) {
-        jumpingtxt.innerHTML="&#47;&#47;";
+        jumpingtxt.innerHTML="wheelie";
         gsap.delayedCall(0.7,function(){
             jumpingtxt.innerHTML="go";
         });
@@ -1822,6 +1879,9 @@ function playObstaclesTL(){
     // obstacles timeline! 
     gsap.killTweensOf(detectCollision);
     detectCollision();
+
+    jumpingtxt.innerHTML="go";
+    gsap.to([tricktxt,jumpingtxt,pointstxt],0,{autoAlpha:1});
 
     tlMainGame = gsap.timeline({onComplete:tlMainGameComplete});
 
@@ -2186,7 +2246,7 @@ function playEnding(){
 
     tlMainGame.pause();
 
-    gsap.set([pointstxt,jumpingtxt],{autoAlpha:0});
+    gsap.set([pointstxt,jumpingtxt,tricktxt],{autoAlpha:0});
     gsap.to([".mobileControl"],0,{display:"none"});
 
 
@@ -2642,10 +2702,14 @@ function doObstacleHit() {
     gsap.killTweensOf(detectCollision);
     gsap.killTweensOf(player);
     gsap.killTweensOf(playerMovements);
-    
+
+
+    // reset trick count after crash
+    gsap.to(trickMeter,0,{width:0,className:""});
+    trickCount=0;
+
 
     // volume increases each crash
-    
     if(crashCount<20){
         if(0.3+(audioIncreaseAmount/20)<1){
             audio.volume=0.3+(audioIncreaseAmount/20);
