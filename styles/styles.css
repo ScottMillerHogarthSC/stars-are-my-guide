@@ -1251,6 +1251,7 @@ div.rampLong #rampLong {
     height: 401px;
     background-size: 100% auto;
     background-position: center top;
+    z-index: 5
 }
 .img_character.on {
     background-position: center bottom;   
@@ -1287,6 +1288,9 @@ div.rampLong #rampLong {
     cursor: pointer;
     user-select: none;
 }
+.btn_character {
+    z-index: 6;
+}
 #btn_character1,
 #highlight_character1 {
     width: 140px;
@@ -1316,20 +1320,22 @@ div.rampLong #rampLong {
     transition: transform 2s;
     transform: scaleY(0);
     transform-origin: center bottom;
+    z-index: 1;
 }
 .highlight_character.on{
     transition: transform 1s;
     transform: scaleY(1);
+    z-index: 4;
 }
 
-#highlight_character1.on { background-color: rgba(255,255,0,0.6); }
-#highlight_character2.on { 
+#highlight_character1 { background-color: rgb(152 154 2); }
+#highlight_character2 { 
     background: rgb(0,55,142);
-    background: linear-gradient(180deg, rgba(0,55,142,.4) 0%, rgba(0,55,142,.4) 33%, rgba(247,247,247,.4) 33%, rgba(247,247,247,.4) 66%, rgba(215,0,2,.4) 66%, rgba(215,0,2,.4) 100%);
+    background: linear-gradient(180deg, rgba(0,23,57,1) 0%, rgba(0,23,57,1) 33%, rgba(99,99,99,1) 33%, rgba(99,99,99,1) 66%, rgba(86,0,1,1) 66%, rgba(86,0,1,1) 100%);
  }
-#highlight_character3.on { background-color: rgba(100,100,255,0.6); }
-#highlight_character4.on { background-color: rgba(0,255,0,0.6); }
-#highlight_character5.on { background-color: rgba(142,18,18,0.9); }
+#highlight_character3 { background-color: rgb(60 60 153); }
+#highlight_character4 { background-color: rgb(0 153 0); }
+#highlight_character5 { background-color: rgb(128 16 17); }
 
 #txt_character div {
     opacity: 0;
