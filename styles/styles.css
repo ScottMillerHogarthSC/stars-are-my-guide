@@ -1317,13 +1317,13 @@ div.rampLong #rampLong {
     left: 661px;
 }
 .highlight_character{
-    transition: transform 2s;
+    transition: transform 1s ease-in;
     transform: scaleY(0);
     transform-origin: center bottom;
     z-index: 1;
 }
 .highlight_character.on{
-    transition: transform 1s;
+    transition: transform .7s ease-out;
     transform: scaleY(1);
     z-index: 4;
 }
