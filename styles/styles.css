@@ -55,6 +55,7 @@ body{
     height: 475px;
     /*position: absolute;*/
     user-select: none;
+    -webkit-tap-highlight-color: transparent;
     perspective: 1px;
 }
 #controllerWrap{
@@ -1287,6 +1288,7 @@ div.rampLong #rampLong {
     top: 170px;
     cursor: pointer;
     user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 .btn_character {
     z-index: 6;
@@ -1525,6 +1527,7 @@ div.rampLong #rampLong {
     opacity: .7;
     /*filter: invert(1);*/
     user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 .pulseMobileControls {
     animation: pulseMobileControls 1s ease-in-out 5 alternate;
