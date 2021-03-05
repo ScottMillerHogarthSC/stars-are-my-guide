@@ -1,0 +1,9 @@
+.highlight_character{
+    transition: transform 2s;
+    transform: scaleY(0);
+    transform-origin: center bottom;
+}
+.highlight_character.on{
+    transition: transform 1s;
+    transform: scaleY(1);
+}
