@@ -28,6 +28,7 @@ body{
     background-size: cover;
     background-position: center;
     overflow: hidden;
+    text-align: center;
 }
 #controller{
     width: 1145px;
@@ -172,6 +173,13 @@ body{
     position: absolute;
     opacity: 0;
 }
+#awesome{
+    width: 100%;
+    height: 100%;
+    background-color:yellow;
+    position: absolute;
+    opacity: 0;
+}
 #area {
     position: absolute;
     width: 100%;
@@ -196,6 +204,7 @@ body{
 .player {
     height: 150px;
     position: absolute;
+    left: 0;
 }
 #playerMovements {
     transform: translateZ(0px);
@@ -706,11 +715,8 @@ div.rampLong #rampLong {
     overflow: hidden;
 }
 #copyWrap {
-    /*perspective: 100px;*/
-    /*perspective-origin: 870px center;*/
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0%;
+    left: 0%;
     width: 970px;
     height: 475px;
     position: absolute;
@@ -980,7 +986,7 @@ div.rampLong #rampLong {
     animation: colorRotateYellow .5s infinite;
 }
 #initailsWrap {
-    top: 80px;
+    top: 70px;
     position: absolute;
     width: 100%;
     opacity: 0;
@@ -994,7 +1000,21 @@ div.rampLong #rampLong {
     font-size: 2em;
     outline: none;
     width: 100px;
+    text-transform: lowercase;
 }
+#submitscore {
+    background-color: #fff;
+    border: none;
+    font-family: 'Press Start 2P';
+    font-size: .6em;
+    line-height: 16px;
+    right: 33px;
+    top: 176px;
+    opacity: .7;
+    position: absolute;
+}
+
+
 #highscorestxt {
     text-align: center;
     line-height: 1.2em;
@@ -1335,7 +1355,7 @@ div.rampLong #rampLong {
     left: 661px;
 }
 .highlight_character{
-    transition: transform 1s ease-in;
+    transition: transform .3s ease-in;
     transform: scaleY(0);
     transform-origin: center bottom;
     z-index: 1;
@@ -1384,11 +1404,11 @@ div.rampLong #rampLong {
 #txt_character div#txt_character2 { left: 219px; }
 #txt_character div#txt_character3 { 
     color: rgb(172 172 255);
-    left: 330px; 
+    left: 360px; 
 }
 #txt_character div#txt_character4 { 
     color: rgba(0,255,0,1);
-    left: 478px; 
+    left: 388px; 
 }
 #txt_character div#txt_character5 { 
     color: rgba(142,18,18,1);

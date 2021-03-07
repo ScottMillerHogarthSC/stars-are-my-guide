@@ -3,8 +3,8 @@
 #controllerWrap{
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);    
-    transform-origin: left top;
+    transform-origin: center center;
+    transform: translate(-50%,-50%);
     position: absolute;
 }
 @media screen and (min-width: 1088px) and (min-height: 666px) {
@@ -110,6 +110,17 @@
         top: 345px;
         transform: translate(-50%,-50%) scale(2);
         text-shadow: 0 0 8px black;
+    }
+    #submitscore {
+        display: none;
+    }
+}
+@media screen and (min-height: 475px) {
+    #controllerWrap{
+        /*top: 50%;
+        left: 50%;
+        transform-origin: center center;
+        transform: translate(-50%,-50%);*/
     }
 }
 @media screen and (min-height: 550px) {
