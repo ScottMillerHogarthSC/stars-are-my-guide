@@ -346,8 +346,8 @@ body{
 
 .character1 #rider-scream2 {  
     background-image: url("../images/rider-scream2-jon.png"); 
-    top: 0px;
-    left: 0px; 
+    top: -15px;
+    left: -5px; 
 }
 .character2 #rider-scream2 { 
     background-image: url("../images/rider-scream2-srdjan.png"); 
@@ -879,7 +879,7 @@ div.rampLong #rampLong {
 #introBtnOptions {
     
 }
-#introBtnS {
+.mobile #introBtnS {
     background-image: url('../images/introBtnWheelie.png');
     background-size: 100% auto;
     height: 26px;
@@ -895,7 +895,8 @@ div.rampLong #rampLong {
 }
 #instructions_optionsTxt {
     top: 268px;
-    transform: translate(-50%,-50%) scale(1.4);
+    left: 293px;
+    transform: scale(1.4);
     display: none;
 }
 #instructionsTxt3,#pauseTxt1 {
@@ -1586,7 +1587,9 @@ div.rampLong #rampLong {
     height: 255px;
 }
 #mobileControls.optionsShowing,
-#mobileControls.off{
+#mobileControls.off,
+.mobile #mobileControls.optionsShowing, 
+.mobile #mobileControls.off {
     display: none;
 }
 .mobileControl,.btnMove  {

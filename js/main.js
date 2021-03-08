@@ -12,6 +12,10 @@ var pageHeight = Math.max( body.scrollHeight, body.offsetHeight,
 html.clientHeight, html.scrollHeight, html.offsetHeight );
 
 var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+var isFirefox=false;
+if(navigator.userAgent.indexOf("Firefox") != -1 ) {
+    isFirefox=true;
+}
 
 var btnMoveUp, btnMoveForwards, btnMoveBackwards, btnMoveDown, btnJump, btnOption, btnStart, replayBtn, shareBtnEmail, shareBtnWhatsapp, shareBtnFacebook, shareBtnTwitter;
 var mobileControls, btns, mobilePause, mobilePause2, startSelect;
@@ -83,6 +87,7 @@ function init()
 {
     console.log("init");
 
+
     // main content
     wrap = document.getElementById("wrap");
 
@@ -134,6 +139,12 @@ function init()
 
     $( window ).resize(resizeWindow);
 
+
+    if ('ontouchstart' in document.documentElement) {
+        wrap.classList.add("mobile");
+    } else {
+        wrap.classList.remove("mobile");
+    }
 
 
 
@@ -450,15 +461,26 @@ function BindButtons_startGame(){
     if(characterNum==0){
         btnStart.addEventListener('touchend', showCharacters);
         btnWheelie.addEventListener('touchend', showCharacters);
+
+        btnStart.addEventListener('click', showCharacters);
+        btnWheelie.addEventListener('click', showCharacters);
     } else {
         btnStart.removeEventListener('touchend', showCharacters);
-        btnStart.addEventListener('touchend', startGame);
         btnWheelie.removeEventListener('touchend', showCharacters);
-        btnWheelie.addEventListener('touchend', startGame);    
+
+        btnStart.removeEventListener('click', showCharacters);
+        btnWheelie.removeEventListener('click', showCharacters);
+
+        btnStart.addEventListener('touchend', startGame);
+        btnWheelie.addEventListener('touchend', startGame);
+        
+        btnStart.addEventListener('click', startGame);
+        btnWheelie.addEventListener('click', startGame);
     }
 
      // mobile
     btnOption.addEventListener('touchend', showCharacters);
+    btnOption.addEventListener('click', showCharacters);
 
     //keyboard
     document.body.addEventListener('keypress', introScreenBtnPressed);
@@ -478,6 +500,10 @@ function introScreenBtnPressed(e){
 
         if(e.code=="KeyS") {
             btnOption.removeEventListener('touchend', showCharacters);
+            btnOption.removeEventListener('click', showCharacters);
+            btnWheelie.removeEventListener('click', showCharacters);
+            btnWheelie.removeEventListener('touchend', showCharacters);
+
             document.body.removeEventListener('keypress', introScreenBtnPressed);
         
             showCharacters();
@@ -485,6 +511,11 @@ function introScreenBtnPressed(e){
         } else if(e.code=="KeyO"){
 
             document.body.addEventListener('keypress', introScreenBtnPressed);
+
+            btnOption.removeEventListener('touchend', showCharacters);
+            btnOption.removeEventListener('click', showCharacters);
+            btnWheelie.removeEventListener('click', showCharacters);
+            btnWheelie.removeEventListener('touchend', showCharacters);
 
             showCharacters();
 
@@ -495,7 +526,7 @@ function introScreenBtnPressed(e){
     } else {
 
         if(e.code=="KeyS") {
-            btnOption.removeEventListener('touchend', showCharacters);
+            
             document.body.removeEventListener('keypress', introScreenBtnPressed);
         
             startGame(e);
@@ -516,6 +547,8 @@ function introScreenBtnPressed(e){
 
 function showCharacters(ev){
     btnOption.removeEventListener('touchend',showCharacters);
+    btnOption.removeEventListener('click',showCharacters);
+
     document.body.removeEventListener('keypress', introScreenBtnPressed);
     
 
@@ -680,6 +713,13 @@ function unBindButtons_startGame(){
 
     btnWheelie.removeEventListener('touchend', startGame);
     btnStart.removeEventListener('touchend', startGame);
+
+    btnWheelie.removeEventListener('click', startGame);
+    btnStart.removeEventListener('click', startGame);
+
+    btnWheelie.removeEventListener('click', startGame);
+    btnStart.removeEventListener('click', startGame);
+
     document.body.removeEventListener('keypress', startGame);
 }
 
@@ -1513,8 +1553,8 @@ function jump() {
             primScreamTL.seek(0);
             primScreamTL.play();
 
-            gsap.to(trickMeter,1,{width:0,className:""});
-            trickCount=0;   
+            // gsap.to(trickMeter,1,{width:0,className:""});
+            // trickCount=0;   
 
             points = points + 50;
         }
@@ -1803,7 +1843,11 @@ var playerTopPos = 245,
     playerBotPos = 345;
 function upwards() {
     gsap.to(player,0.6,{top:+playerTopPos+"px",ease:Power1.easeInOut});
-    gsap.to(playerMovements,0.6,{z:-100,ease:Power1.easeInOut});
+    if(isFirefox){
+        gsap.to(playerMovements,0.6,{z:-0.36,ease:Power1.easeInOut});
+    } else {
+        gsap.to(playerMovements,0.6,{z:-100,ease:Power1.easeInOut});
+    }
 
     jumpingtxt.innerHTML="turn";
     gsap.delayedCall(0.2,function(){

@@ -21,6 +21,9 @@
     #mobileControls {
         display: none;
     }
+    .mobile #mobileControls {
+        display: block;
+    }
     #introBtnS {
         background-image: url('../images/introBtnS.png');
         width: 26px;
@@ -75,7 +78,11 @@
         top: 213px;
     }
     #instructions_optionsTxt {
-        top: 275px;
+        top: 268px;
+        left: 323px;
+    }
+    .mobile #instructions_optionsTxt {
+        left: 293px;
     }
     .instructions_desktop {
         display: inline-block;
@@ -87,6 +94,14 @@
         vertical-align: text-bottom;
         width:24px;
     }
+
+    .mobile .instructions_desktop {
+        display: none;
+    }
+    .mobile .instructions_mobile {
+        display: inline-block;
+    }
+    
     
     #pauseTxt1.paused,
     #pauseTxt2.paused{
