@@ -694,18 +694,21 @@ function showOptions(e){
 function optionsBike_chosen(bikeNo){
     if(bikeNo==undefined || bikeNo==0) {bikeNo="";}
     gsap.to("#bike-go",0,{className: "bike"+bikeNo});
+        
     
-    $('#mobileControls').removeClass("optionsShowing");
+    
+    gsap.delayedCall(.75,function(){
+        gsap.to(optionsScreen,1,{y:475});
+        gsap.to(optionsScreen,0,{autoAlpha:0,display:"none",delay:1});
 
-    gsap.to(optionsScreen,1,{y:475});
-    gsap.to(optionsScreen,0,{autoAlpha:0,display:"none",delay:1});
 
-
-    // slide up titles + start buttons:
-    gsap.to([introTxtTitle,introTxtLogo,instructionsTxt0,instructions_optionsTxt],1,{y:0})
-    gsap.to([instructions_optionsTxt],0,{autoAlpha:.5,display:"block"})
-
-    BindButtons_startGame();
+        // slide up titles + start buttons:
+        gsap.to([introTxtTitle,introTxtLogo,instructionsTxt0,instructions_optionsTxt],1,{y:0})
+        gsap.to([instructions_optionsTxt],0,{autoAlpha:.5,display:"block"})
+    
+        BindButtons_startGame();
+        $('#mobileControls').removeClass("optionsShowing");
+    });
 }
 
 function unBindButtons_startGame(){
